@@ -25,18 +25,21 @@ class DataAcutators:
         rospy.loginfo("Connected.")
 
     def set_nav_goal(self, x, y, q0, q1, q2, q3):
-        mb_goal = MoveBaseGoal()
-        mb_goal.target_pose.header.frame_id = '/map'  # Note: the frame_id must be map
-        mb_goal.target_pose.pose.position.x = x
-        mb_goal.target_pose.pose.position.y = y
-        mb_goal.target_pose.pose.position.z = 0.0  # z must be 0.0 (no height in the map)
-        # Orientation of the robot is expressed in the yaw value of euler angles
-        mb_goal.target_pose.pose.orientation = Quaternion(q0, q1, q2, q3)
-        self.nav_as.send_goal(mb_goal)
-        rospy.loginfo("Waiting for result...")
-        self.nav_as.wait_for_result()
-        result = str(self.nav_as.get_state())
-        # 3 is SUCCESS, 4 is ABORTED (couldnt get there), 5 REJECTED (the goal is not attainable)
+        try:
+            mb_goal = MoveBaseGoal()
+            mb_goal.target_pose.header.frame_id = '/map'  # Note: the frame_id must be map
+            mb_goal.target_pose.pose.position.x = x
+            mb_goal.target_pose.pose.position.y = y
+            mb_goal.target_pose.pose.position.z = 0.0  # z must be 0.0 (no height in the map)
+            # Orientation of the robot is expressed in the yaw value of euler angles
+            mb_goal.target_pose.pose.orientation = Quaternion(q0, q1, q2, q3)
+            self.nav_as.send_goal(mb_goal)
+            rospy.loginfo("Waiting for result...")
+            self.nav_as.wait_for_result()
+            result = str(self.nav_as.get_state())
+            # 3 is SUCCESS, 4 is ABORTED (couldnt get there), 5 REJECTED (the goal is not attainable)
+        except Exception, e:
+            return str(5)
         return result
 
     def say_something(self, _text):
@@ -121,7 +124,7 @@ class GoToTable(smach.State):
     def execute(self, userdata):
         rospy.loginfo('Entering State GoToTable')
         self.da.say_something("Okay my friend, I will drive to the table")
-        goal = self.da.set_nav_goal(6.01, -6.244, 0.0, 0.0, 0.98, -0.159)
+        goal = self.da.set_nav_goal(7.28, -7.01, 0.0, 0.0, 0.91, -0.393)
         if goal == "3":
             self.da.say_something("I am done. What shall I do?")
             return 'arrived'
@@ -160,7 +163,7 @@ class WhatIs(smach.State):
         see = "I see "
         objects = self.ds.current_objects
         if len(objects) < 1:
-            self.da.say_something("I can not see any objects")
+            self.da.say_something("Unfortunately, I can not see any objects")
         else:
             for o in objects:
                 self.da.say_something(see + str(o))
@@ -186,7 +189,7 @@ class WhoIs(smach.State):
                 one = "One person is "
                 age = "The age is "
                 self.da.say_something(one + str(o).split(':')[0])
-                print str(o).split(':')[1]
+                # print str(o).split(':')[1]
                 self.da.say_something(age + str(o).split(':')[1])
         self.ds.reset_people()
         return 'whois'
