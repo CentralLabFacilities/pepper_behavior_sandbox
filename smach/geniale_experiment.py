@@ -144,7 +144,7 @@ class GoToInit(smach.State):
         self.da.say_something("Well, going back.")
         goal = self.da.set_nav_goal(8.77, -4.94, 0.0, 0.0, 0.94, -0.31)
         if goal == "3":
-            self.da.say_something("I am at my init position. What can I do for you?")
+            self.da.say_something("I am back where I started. What can I do for you?")
             return 'arrived'
         else:
             self.da.say_something("I could not reach my init position")
