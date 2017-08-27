@@ -27,9 +27,18 @@ class DataAcutators:
         self.nav_as.wait_for_server()
         rospy.loginfo("Connected.")
 
+    def set_head_down(self):
+        self.head_pub.publish(self.down)
+
+    def set_head_drive(self):
+        self.head_pub.publish(self.drive)
+
+    def set_head_normal(self):
+        self.head_pub.publish(self.normal)
+
     def set_nav_goal(self, x, y, q0, q1, q2, q3):
         try:
-            self.head_pub.publish(self.drive)
+            self.set_head_drive()
             mb_goal = MoveBaseGoal()
             mb_goal.target_pose.header.frame_id = '/map'  # Note: the frame_id must be map
             mb_goal.target_pose.pose.position.x = x
@@ -44,7 +53,7 @@ class DataAcutators:
             # 3 is SUCCESS, 4 is ABORTED (couldnt get there), 5 REJECTED (the goal is not attainable)
         except Exception, e:
             return str(5)
-        self.head_pub.publish(self.normal)
+            self.set_head_normal()
         return result
 
     def say_something(self, _text):
@@ -190,6 +199,8 @@ class WhatIs(smach.State):
         self.da = _da
 
     def execute(self, userdata):
+        self.da.set_head_down()
+        time.sleep(1.5)
         rospy.loginfo('Entering State WhatIs')
         see = "I see "
         objects = self.ds.current_objects
