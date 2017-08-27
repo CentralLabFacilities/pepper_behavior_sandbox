@@ -20,6 +20,7 @@ class DataAcutators:
         self.down = '25.0'
         self.drive = '15.0'
         self.normal = '0.0'
+        self.current_goal = MoveBaseGoal()
         self.nav_as = actionlib.SimpleActionClient('/move_base', MoveBaseAction)
         self.speech_as = actionlib.SimpleActionClient('/naoqi_tts_feedback', SpeechWithFeedbackAction)
         self.head_pub = rospy.Publisher('/pepper_robot/set/head/tilt', String, queue_size=1)
@@ -36,6 +37,22 @@ class DataAcutators:
     def set_head_normal(self):
         self.head_pub.publish(self.normal)
 
+    def look_closer(self):
+        try:
+            self.set_head_drive()
+            self.current_goal.target_pose.pose.position.x = self.current_goal.target_pose.pose.position.x+0.30
+            mb_goal = self.current_goal
+            self.nav_as.send_goal(mb_goal)
+            rospy.loginfo("Waiting for result...")
+            self.nav_as.wait_for_result()
+            result = str(self.nav_as.get_state())
+            # 3 is SUCCESS, 4 is ABORTED (couldnt get there), 5 REJECTED (the goal is not attainable)
+        except Exception, e:
+            return str(5)
+            self.set_head_normal()
+        self.set_head_normal()
+        return result
+
     def set_nav_goal(self, x, y, q0, q1, q2, q3):
         try:
             self.set_head_drive()
@@ -46,6 +63,7 @@ class DataAcutators:
             mb_goal.target_pose.pose.position.z = 0.0  # z must be 0.0 (no height in the map)
             # Orientation of the robot is expressed in the yaw value of euler angles
             mb_goal.target_pose.pose.orientation = Quaternion(q0, q1, q2, q3)
+            self.current_goal = mb_goal
             self.nav_as.send_goal(mb_goal)
             rospy.loginfo("Waiting for result...")
             self.nav_as.wait_for_result()
@@ -106,6 +124,7 @@ class WaitForCommand(smach.State):
         smach.State.__init__(self, outcomes=['table',
                                              'init',
                                              'persons',
+                                             'closer',
                                              'what',
                                              'shelf',
                                              'sliding door',
@@ -148,7 +167,11 @@ class WaitForCommand(smach.State):
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             return 'what'
-        elif self.ds.current_context == "Detect persons":
+        elif self.ds.current_context == "Please look a little closer":
+            rospy.loginfo(self.ds.current_context)
+            self.ds.reset_context()
+            return 'closer'
+        elif self.ds.current_context == "Can you find any person":
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             return 'persons'
@@ -190,6 +213,23 @@ class GoTo(smach.State):
         else:
             self.da.say_something("I could not reach the %s, oh no!" % userdata.go_to_goal)
             rospy.logwarn('Could not reach table: %s' % str(result))
+            return 'fail'
+
+
+class LookCloser(smach.State):
+    def __init__(self, _da):
+        smach.State.__init__(self, outcomes=['arrived', 'fail'], input_keys=['go_to_goal'])
+        self.da = _da
+
+    def execute(self, userdata):
+        rospy.loginfo('Entering State LookCloser')
+        result = self.da.look_closer()
+        if result == "3":
+            self.da.say_something("That is a little closer now. Is it?")
+            return 'arrived'
+        else:
+            self.da.say_something("Could not look closer!")
+            rospy.logwarn('Could not look closer %s' % str(result))
             return 'fail'
 
 
@@ -255,6 +295,7 @@ def main():
                                             'sliding door': 'GOTO',
                                             'exit door': 'GOTO',
                                             'what': 'WHATIS',
+                                            'closer': 'LOOKCLOSER',
                                             'persons': 'WHOIS',
                                             'none': 'WAIT'})
 
@@ -267,6 +308,10 @@ def main():
 
         smach.StateMachine.add('WHOIS', WhoIs(ds, da),
                                transitions={'whois': 'WAIT'})
+
+        smach.StateMachine.add('LOOKCLOSER', LookCloser(da),
+                               transitions={'arrived': 'WAIT',
+                                            'fail': 'WAIT'})
 
     # Introspection viewer
     sis = smach_ros.IntrospectionServer('server_name', sm, '/GENIALE')
