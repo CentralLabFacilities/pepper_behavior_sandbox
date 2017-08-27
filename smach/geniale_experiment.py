@@ -124,13 +124,13 @@ class GoToTable(smach.State):
     def execute(self, userdata):
         rospy.loginfo('Entering State GoToTable')
         self.da.say_something("Okay my friend, I will drive to the table")
-        goal = self.da.set_nav_goal(7.28, -7.01, 0.0, 0.0, 0.91, -0.393)
+        goal = self.da.set_nav_goal(6.56, -6.77, 0.0, 0.0, -0.54, 0.83)
         if goal == "3":
             self.da.say_something("I am done. What shall I do?")
             return 'arrived'
         else:
             self.da.say_something("I could not reach the table, oh no!")
-            rospy.logwarn('Could not reach table')
+            rospy.logwarn('Could not reach table %s' % str(goal))
             return 'fail'
 
 
