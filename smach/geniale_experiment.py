@@ -40,7 +40,10 @@ class DataAcutators:
     def look_closer(self):
         try:
             self.set_head_drive()
-            self.current_goal.target_pose.pose.position.x = self.current_goal.target_pose.pose.position.x+0.30
+            if self.current_goal.target_pose.pose.position.x < 0:
+                self.current_goal.target_pose.pose.position.x = self.current_goal.target_pose.pose.position.x+0.15
+            else:
+                self.current_goal.target_pose.pose.position.x = self.current_goal.target_pose.pose.position.x-0.15
             mb_goal = self.current_goal
             self.nav_as.send_goal(mb_goal)
             rospy.loginfo("Waiting for result...")
