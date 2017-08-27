@@ -17,14 +17,19 @@ from naoqi_bridge_msgs.msg import SpeechWithFeedbackAction, SpeechWithFeedbackAc
 
 class DataAcutators:
     def __init__(self):
+        self.down = '25'
+        self.drive = '15'
+        self.normal = '0'
         self.nav_as = actionlib.SimpleActionClient('/move_base', MoveBaseAction)
         self.speech_as = actionlib.SimpleActionClient('/naoqi_tts_feedback', SpeechWithFeedbackAction)
+        self.head_pub = rospy.Publisher('/pepper_robot/set/head/tilt', String, queue_size=1)
         rospy.loginfo("Connecting to /move_base...")
         self.nav_as.wait_for_server()
         rospy.loginfo("Connected.")
 
     def set_nav_goal(self, x, y, q0, q1, q2, q3):
         try:
+            self.head_pub.publish(self.drive)
             mb_goal = MoveBaseGoal()
             mb_goal.target_pose.header.frame_id = '/map'  # Note: the frame_id must be map
             mb_goal.target_pose.pose.position.x = x
@@ -39,6 +44,7 @@ class DataAcutators:
             # 3 is SUCCESS, 4 is ABORTED (couldnt get there), 5 REJECTED (the goal is not attainable)
         except Exception, e:
             return str(5)
+        self.head_pub.publish(self.normal)
         return result
 
     def say_something(self, _text):
@@ -172,7 +178,7 @@ class GoTo(smach.State):
             self.da.say_something("I am done. What shall I do?")
             return 'arrived'
         else:
-            self.da.say_something("I could not reach the table, oh no!")
+            self.da.say_something("I could not reach the %s, oh no!" % userdata.go_to_goal)
             rospy.logwarn('Could not reach table: %s' % str(result))
             return 'fail'
 
