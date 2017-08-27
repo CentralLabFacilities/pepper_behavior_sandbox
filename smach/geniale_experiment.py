@@ -54,6 +54,7 @@ class DataAcutators:
         except Exception, e:
             return str(5)
             self.set_head_normal()
+        self.set_head_normal()
         return result
 
     def say_something(self, _text):
