@@ -17,9 +17,9 @@ from naoqi_bridge_msgs.msg import SpeechWithFeedbackAction, SpeechWithFeedbackAc
 
 class DataAcutators:
     def __init__(self):
-        self.down = '25'
-        self.drive = '15'
-        self.normal = '0'
+        self.down = '25.0'
+        self.drive = '15.0'
+        self.normal = '0.0'
         self.nav_as = actionlib.SimpleActionClient('/move_base', MoveBaseAction)
         self.speech_as = actionlib.SimpleActionClient('/naoqi_tts_feedback', SpeechWithFeedbackAction)
         self.head_pub = rospy.Publisher('/pepper_robot/set/head/tilt', String, queue_size=1)
