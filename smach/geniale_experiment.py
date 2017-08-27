@@ -3,17 +3,16 @@
 import time
 import rospy
 import smach
-import roslib
 import smach_ros
 import actionlib
 from std_msgs.msg import String
 from math import radians, degrees
-from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from people_msgs.msg import Person, People
-from naoqi_bridge_msgs.msg import SpeechWithFeedbackAction, SpeechWithFeedbackActionGoal, SpeechWithFeedbackGoal
-from geometry_msgs.msg import PoseWithCovarianceStamped, Quaternion
 from visualization_msgs.msg import Marker, MarkerArray
+from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
+from geometry_msgs.msg import PoseWithCovarianceStamped, Quaternion
 from tf.transformations import quaternion_from_euler, euler_from_quaternion
+from naoqi_bridge_msgs.msg import SpeechWithFeedbackAction, SpeechWithFeedbackActionGoal, SpeechWithFeedbackGoal
 
 
 class DataAcutators:
@@ -88,8 +87,16 @@ class DataSensors:
 
 class WaitForCommand(smach.State):
     def __init__(self, _ds):
-        smach.State.__init__(self, outcomes=['table', 'init', 'gender', 'what', 'shelf', 'none'],
-                             input_keys=['go_to_goal'], output_keys=['go_to_goal'])
+        smach.State.__init__(self, outcomes=['table',
+                                             'init',
+                                             'persons',
+                                             'what',
+                                             'shelf',
+                                             'sliding door',
+                                             'exit door',
+                                             'none'],
+                             input_keys=['go_to_goal'],
+                             output_keys=['go_to_goal'])
         self.ds = _ds
 
     def execute(self, userdata):
@@ -97,28 +104,38 @@ class WaitForCommand(smach.State):
         while self.ds.current_context == "":
             time.sleep(0.1)
         if self.ds.current_context == "Drive to the table":
-            rospy.loginfo('Drive to the table')
+            rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             userdata.go_to_goal = "table"
             return 'table'
         elif self.ds.current_context == "Go back to init position":
-            rospy.loginfo('Go back to init position')
+            rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             userdata.go_to_goal = "init"
             return 'init'
         elif self.ds.current_context == "Drive to the shelf":
-            rospy.loginfo('Drive to the shelf')
+            rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             userdata.go_to_goal = "shelf"
             return 'shelf'
+        elif self.ds.current_context == "Drive to sliding door":
+            rospy.loginfo(self.ds.current_context)
+            self.ds.reset_context()
+            userdata.go_to_goal = "sliding door"
+            return 'sliding door'
+        elif self.ds.current_context == "Drive to exit door":
+            rospy.loginfo(self.ds.current_context)
+            self.ds.reset_context()
+            userdata.go_to_goal = "exit door"
+            return 'exit door'
         elif self.ds.current_context == "What is on the table":
-            rospy.loginfo('What is on the table')
+            rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             return 'what'
-        elif self.ds.current_context == "What is the gender of the person":
-            rospy.loginfo('What is the gender of the person')
+        elif self.ds.current_context == "Detect persons":
+            rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
-            return 'gender'
+            return 'persons'
         rospy.logwarn('No valid command')
         self.ds.reset_context()
         return 'none'
@@ -133,14 +150,20 @@ class GoTo(smach.State):
         rospy.loginfo('Entering State GoToTable')
         result = 0
         if userdata.go_to_goal == "init":
-            self.da.say_something("Okay my friend, I will drive to the %s position" % userdata.go_to_goal)
+            self.da.say_something("Okay my friend, I will drive to the %s position." % userdata.go_to_goal)
             result = self.da.set_nav_goal(0.99, 0.78, 0.0, 0.0, -0.34, 0.93)
         elif userdata.go_to_goal == "shelf":
-            self.da.say_something("Going to the %s" % userdata.go_to_goal)
-            result = self.da.set_nav_goal(3.24, -2.46, 0.0, 0.0, -0.55, 0.83)
+            self.da.say_something("Going to the %s." % userdata.go_to_goal)
+            result = self.da.set_nav_goal(2.98, -2.35, 0.0, 0.0, -0.44, 0.89)
         elif userdata.go_to_goal == "table":
-            self.da.say_something("With pleasure. Trying to reach the %s" % userdata.go_to_goal)
+            self.da.say_something("With pleasure. Trying to reach the %s." % userdata.go_to_goal)
             result = self.da.set_nav_goal(1.05, -1.99, 0.0, 0.0, 0.98, 0.16)
+        elif userdata.go_to_goal == "sliding door":
+            self.da.say_something("That is not too far. Going to reach the %s." % userdata.go_to_goal)
+            result = self.da.set_nav_goal(3.14, -1.01, 0.0, 0.0, -0.17, 0.98)
+        elif userdata.go_to_goal == "exit door":
+            self.da.say_something("%s it is." % userdata.go_to_goal)
+            result = self.da.set_nav_goal(3.44, 0.28, 0.0, 0.0, 0.65, 0.75)
         elif userdata.go_to_goal == "":
             self.da.say_something("That is not an actual location")
             rospy.logwarn('Location is empty')
@@ -211,8 +234,10 @@ def main():
                                transitions={'table': 'GOTO',
                                             'init': 'GOTO',
                                             'shelf': 'GOTO',
+                                            'sliding door': 'GOTO',
+                                            'exit door': 'GOTO',
                                             'what': 'WHATIS',
-                                            'gender': 'WHOIS',
+                                            'persons': 'WHOIS',
                                             'none': 'WAIT'})
 
         smach.StateMachine.add('GOTO', GoTo(da),
