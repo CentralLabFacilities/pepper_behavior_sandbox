@@ -88,7 +88,8 @@ class DataSensors:
 
 class WaitForCommand(smach.State):
     def __init__(self, _ds):
-        smach.State.__init__(self, outcomes=['table', 'init', 'age', 'what', 'gender', 'none'])
+        smach.State.__init__(self, outcomes=['table', 'init', 'gender', 'what', 'shelf', 'none'],
+                             input_keys=['go_to_goal'], output_keys=['go_to_goal'])
         self.ds = _ds
 
     def execute(self, userdata):
@@ -98,11 +99,18 @@ class WaitForCommand(smach.State):
         if self.ds.current_context == "Drive to the table":
             rospy.loginfo('Drive to the table')
             self.ds.reset_context()
+            userdata.go_to_goal = "table"
             return 'table'
         elif self.ds.current_context == "Go back to init position":
             rospy.loginfo('Go back to init position')
             self.ds.reset_context()
+            userdata.go_to_goal = "init"
             return 'init'
+        elif self.ds.current_context == "Drive to the shelf":
+            rospy.loginfo('Drive to the shelf')
+            self.ds.reset_context()
+            userdata.go_to_goal = "shelf"
+            return 'shelf'
         elif self.ds.current_context == "What is on the table":
             rospy.loginfo('What is on the table')
             self.ds.reset_context()
@@ -116,39 +124,33 @@ class WaitForCommand(smach.State):
         return 'none'
 
 
-class GoToTable(smach.State):
+class GoTo(smach.State):
     def __init__(self, _da):
-        smach.State.__init__(self, outcomes=['arrived', 'fail'])
+        smach.State.__init__(self, outcomes=['arrived', 'fail'], input_keys=['go_to_goal'])
         self.da = _da
 
     def execute(self, userdata):
         rospy.loginfo('Entering State GoToTable')
-        self.da.say_something("Okay my friend, I will drive to the table")
-        goal = self.da.set_nav_goal(6.56, -6.77, 0.0, 0.0, -0.54, 0.83)
-        if goal == "3":
+        result = 0
+        if userdata.go_to_goal == "init":
+            self.da.say_something("Okay my friend, I will drive to the %s position" % userdata.go_to_goal)
+            result = self.da.set_nav_goal(0.99, 0.78, 0.0, 0.0, -0.34, 0.93)
+        elif userdata.go_to_goal == "shelf":
+            self.da.say_something("Going to the %s" % userdata.go_to_goal)
+            result = self.da.set_nav_goal(3.24, -2.46, 0.0, 0.0, -0.55, 0.83)
+        elif userdata.go_to_goal == "table":
+            self.da.say_something("With pleasure. Trying to reach the %s" % userdata.go_to_goal)
+            result = self.da.set_nav_goal(1.05, -1.99, 0.0, 0.0, 0.98, 0.16)
+        elif userdata.go_to_goal == "":
+            self.da.say_something("That is not an actual location")
+            rospy.logwarn('Location is empty')
+            return 'fail'
+        if result == "3":
             self.da.say_something("I am done. What shall I do?")
             return 'arrived'
         else:
             self.da.say_something("I could not reach the table, oh no!")
-            rospy.logwarn('Could not reach table %s' % str(goal))
-            return 'fail'
-
-
-class GoToInit(smach.State):
-    def __init__(self, _da):
-        smach.State.__init__(self, outcomes=['arrived', 'fail'])
-        self.da = _da
-
-    def execute(self, userdata):
-        rospy.loginfo('Entering State GoToInit')
-        self.da.say_something("Well, going back.")
-        goal = self.da.set_nav_goal(8.77, -4.94, 0.0, 0.0, 0.94, -0.31)
-        if goal == "3":
-            self.da.say_something("I am back where I started. What can I do for you?")
-            return 'arrived'
-        else:
-            self.da.say_something("I could not reach my init position")
-            rospy.logwarn('Could not reach init')
+            rospy.logwarn('Could not reach table: %s' % str(result))
             return 'fail'
 
 
@@ -189,7 +191,6 @@ class WhoIs(smach.State):
                 one = "One person is "
                 age = "The age is "
                 self.da.say_something(one + str(o).split(':')[0])
-                # print str(o).split(':')[1]
                 self.da.say_something(age + str(o).split(':')[1])
         self.ds.reset_people()
         return 'whois'
@@ -201,23 +202,20 @@ def main():
     da = DataAcutators()
     # Create a SMACH state machine
     sm = smach.StateMachine(outcomes=['exit'])
+    sm.userdata.go_to_goal = ""
 
     # Open the container
     with sm:
         # Add states to the container
         smach.StateMachine.add('WAIT', WaitForCommand(ds),
-                               transitions={'table': 'GOTOTABLE',
-                                            'init': 'GOTOINIT',
-                                            'age': 'WAIT',
+                               transitions={'table': 'GOTO',
+                                            'init': 'GOTO',
+                                            'shelf': 'GOTO',
                                             'what': 'WHATIS',
                                             'gender': 'WHOIS',
                                             'none': 'WAIT'})
 
-        smach.StateMachine.add('GOTOTABLE', GoToTable(da),
-                               transitions={'arrived': 'WAIT',
-                                            'fail': 'WAIT'})
-
-        smach.StateMachine.add('GOTOINIT', GoToInit(da),
+        smach.StateMachine.add('GOTO', GoTo(da),
                                transitions={'arrived': 'WAIT',
                                             'fail': 'WAIT'})
 
