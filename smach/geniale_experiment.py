@@ -166,7 +166,7 @@ class WaitForCommand(smach.State):
             self.ds.reset_context()
             userdata.go_to_goal = "exit door"
             return 'exit door'
-        elif self.ds.current_context == "What is on the table":
+        elif self.ds.current_context == "What objects do you see":
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             return 'what'
@@ -174,7 +174,7 @@ class WaitForCommand(smach.State):
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             return 'closer'
-        elif self.ds.current_context == "Can you find any person":
+        elif self.ds.current_context == "Detect people please":
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             return 'persons'
