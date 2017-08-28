@@ -29,10 +29,6 @@ class DataAcutators:
         rospy.loginfo("Connecting to /move_base...")
         self.nav_as.wait_for_server()
         rospy.loginfo("Connected.")
-        time.sleep(2)
-        rospy.loginfo("Stopping Computation of objects and people")
-        self.compute_people(True)
-        self.compute_objects(True)
 
     def compute_people(self, _data):
         b = Bool()
@@ -141,7 +137,7 @@ class DataSensors:
 
 
 class WaitForCommand(smach.State):
-    def __init__(self, _ds):
+    def __init__(self, _ds, _da):
         smach.State.__init__(self, outcomes=['table',
                                              'init',
                                              'persons',
@@ -154,6 +150,7 @@ class WaitForCommand(smach.State):
                              input_keys=['go_to_goal'],
                              output_keys=['go_to_goal'])
         self.ds = _ds
+        self.da = _da
 
     def execute(self, userdata):
         rospy.loginfo('Entering State WaitForCommand')
@@ -261,9 +258,9 @@ class WhatIs(smach.State):
         self.da = _da
 
     def execute(self, userdata):
-        self.da.compute_objects(True)
         self.da.set_head_down()
-        time.sleep(1.5)
+        self.da.compute_objects(True)
+        time.sleep(2.5)
         rospy.loginfo('Entering State WhatIs')
         see = "I see "
         objects = self.ds.current_objects
@@ -284,8 +281,9 @@ class WhoIs(smach.State):
         self.da = _da
 
     def execute(self, userdata):
-        self.da.compute_people(True)
         rospy.loginfo('Entering State WhatIs')
+        self.da.compute_people(True)
+        time.sleep(2.5)
         people = self.ds.current_people
         if len(people) < 1:
             self.da.say_something("I can not see any person, I am sorry.")
@@ -313,7 +311,7 @@ def main():
     # Open the container
     with sm:
         # Add states to the container
-        smach.StateMachine.add('WAIT', WaitForCommand(ds),
+        smach.StateMachine.add('WAIT', WaitForCommand(ds, da),
                                transitions={'table': 'GOTO',
                                             'init': 'GOTO',
                                             'shelf': 'GOTO',
