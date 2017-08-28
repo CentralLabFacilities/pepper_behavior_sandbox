@@ -211,7 +211,7 @@ class GoTo(smach.State):
             rospy.logwarn('Location is empty')
             return 'fail'
         if result == "3":
-            self.da.say_something("I am done. What shall I do?")
+            self.da.say_something("I am done. Can I do something else?")
             return 'arrived'
         else:
             self.da.say_something("I could not reach the %s, oh no!" % userdata.go_to_goal)
