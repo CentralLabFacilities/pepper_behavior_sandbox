@@ -5,7 +5,7 @@ import rospy
 import smach
 import smach_ros
 import actionlib
-from std_msgs.msg import String
+from std_msgs.msg import String, Bool
 from math import radians, degrees
 from people_msgs.msg import Person, People
 from visualization_msgs.msg import Marker, MarkerArray
@@ -24,9 +24,27 @@ class DataAcutators:
         self.nav_as = actionlib.SimpleActionClient('/move_base', MoveBaseAction)
         self.speech_as = actionlib.SimpleActionClient('/naoqi_tts_feedback', SpeechWithFeedbackAction)
         self.head_pub = rospy.Publisher('/pepper_robot/set/head/tilt', String, queue_size=1)
+        self.obj_compute = rospy.Publisher('/clf_detect_objects_surb/compute', Bool, queue_size=1)
+        self.people_compute = rospy.Publisher('/clf_detect_dlib_faces/compute', Bool, queue_size=1)
         rospy.loginfo("Connecting to /move_base...")
         self.nav_as.wait_for_server()
         rospy.loginfo("Connected.")
+        time.sleep(2)
+        rospy.loginfo("Stopping Computation of objects and people")
+        self.compute_people(True)
+        self.compute_objects(True)
+
+    def compute_people(self, _data):
+        b = Bool()
+        b.data = _data
+        self.people_compute.publish(b)
+        rospy.loginfo("Detecting People: %s" % str(b.data))
+
+    def compute_objects(self, _data):
+        b = Bool()
+        b.data = _data
+        self.obj_compute.publish(b)
+        rospy.loginfo("Detecting Objects: %s" % str(b.data))
 
     def set_head_down(self):
         self.head_pub.publish(self.down)
@@ -243,6 +261,7 @@ class WhatIs(smach.State):
         self.da = _da
 
     def execute(self, userdata):
+        self.da.compute_objects(True)
         self.da.set_head_down()
         time.sleep(1.5)
         rospy.loginfo('Entering State WhatIs')
@@ -254,6 +273,7 @@ class WhatIs(smach.State):
             for o in objects:
                 self.da.say_something(see + str(o))
         self.ds.reset_objects()
+        self.da.compute_objects(False)
         return 'report'
 
 
@@ -264,6 +284,7 @@ class WhoIs(smach.State):
         self.da = _da
 
     def execute(self, userdata):
+        self.da.compute_people(True)
         rospy.loginfo('Entering State WhatIs')
         people = self.ds.current_people
         if len(people) < 1:
@@ -277,6 +298,7 @@ class WhoIs(smach.State):
                 self.da.say_something(one + str(o).split(':')[0])
                 self.da.say_something(age + str(o).split(':')[1])
         self.ds.reset_people()
+        self.da.compute_people(False)
         return 'whois'
 
 
