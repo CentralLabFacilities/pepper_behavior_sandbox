@@ -4,7 +4,7 @@ PROJECT(pepper_behavior_sandbox)
 SET(CMAKE_BUILD_TYPE distribution)
 
 MESSAGE("-- You are building on: ${CMAKE_SYSTEM_NAME}")
-MESSAGE("-- If you don't set -DCMAKE_INSTALL_PREFIX and -DMORSE_ROOT, defaults are used.")
+MESSAGE("-- If you don't set -DCMAKE_INSTALL_PREFIX, defaults are used.")
 
 SET(PREFIX "/usr/local")
 IF (CMAKE_INSTALL_PREFIX)
