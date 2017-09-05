@@ -1,6 +1,5 @@
-import smach
 import rospy
-from actuators.head_control import HeadControlPepper
+import smach
 
 
 class MoveHeadPepper(smach.State):

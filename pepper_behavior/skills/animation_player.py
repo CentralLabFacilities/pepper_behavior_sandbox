@@ -1,11 +1,14 @@
-import smach
+#!/usr/bin/env python
+
 import rospy
-from actuators.ros_string_pub import RosStringPub
+import smach
+
+from pepper_behavior.actuators.ros_string_pub import RosStringPub
 
 
 class AnimationPlayerPepper(smach.State):
-    def __init__(self, scope, animation, wait=5):
-        self.scope = scope
+    def __init__(self, animation, wait=5):
+        self.scope = '/pepper/animation_player'
         self.wait = wait
         self.animation = animation
         smach.State.__init__(self, outcomes=['success'])

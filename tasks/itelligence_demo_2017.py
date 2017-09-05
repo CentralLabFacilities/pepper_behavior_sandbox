@@ -3,37 +3,37 @@
 import rospy
 import smach
 import smach_ros
-from actuators.base_control import BaseControlPepper
-from actuators.head_control import HeadControlPepper
-from skills.move_head import MoveHeadPepper
-from skills.turn_base import TurnBasePepper
-from actuators.talk import TalkControllerPepper
-from skills.talk import Talk
-from skills.iterate import Counter, Iterate
-from skills.animation_player import AnimationPlayerPepper
+
+from pepper_behavior.skills.animation_player import AnimationPlayerPepper
+from pepper_behavior.skills.calculate_person_position import CalculatePersonPosition
+from pepper_behavior.skills.iterate import Counter, Iterate
+from pepper_behavior.skills.move_head import MoveHeadPepper
+from pepper_behavior.skills.talk import Talk
+
+from pepper_behavior.actuators.head_control import HeadControlPepper
+from pepper_behavior.actuators.talk import TalkControllerPepper
+
+from pepper_behavior.sensors.person_sensor import PersonSensor
+
 
 def main():
     simulation = True
     rospy.init_node('intelligence_pepper_state_machine')
     hc = HeadControlPepper()
-    bc = BaseControlPepper()
     tc = TalkControllerPepper(sim=simulation)
+    ps = PersonSensor()
 
     # Create a SMACH state machine
     sm = smach.StateMachine(outcomes=['exit'])
     sm.userdata.mode = 0
 
     wait_timer_idle = 15
-    look_vertical = 'down'
+    wait_timer_attention = 10
+    look_vertical = 'up'
 
 
     # Open the container
     with sm:
-
-        smach.StateMachine.add(
-            'Animation', AnimationPlayerPepper(scope='/pepper/animation_player', animation='animations/Stand/Emotions/Positive/Happy_1'),
-            transitions={'success': 'Animation'})
-
         smach.StateMachine.add(
             'Iterate', Iterate(iterationsteps=3),
             transitions={'success_0':'Idle_Statemaschine','success_1':'Attention_Statemaschine', 'success_2':'Look_Statemaschine'},
@@ -51,7 +51,7 @@ def main():
                 transitions={'success': 'Counter_idle'})
 
             smach.StateMachine.add(
-                'Counter_idle', Counter(numbers=3),
+                'Counter_idle', Counter(numbers=1),
                 transitions={'success':'MoveHead_left_idle', 'end':'idle_success'},
                 remapping={'counter_input': 'iteration', 'counter_output': 'iteration'})
 
@@ -74,16 +74,66 @@ def main():
         smach.StateMachine.add('Idle_Statemaschine', sm_idle, transitions={'idle_success': 'Iterate'})
 
         with sm_attention:
-            sm_attention.userdata.iteration = 0
+            sm_attention.userdata.iteration = 1
+            sm_attention.userdata.vertical_angle = 0.0
+            sm_attention.userdata.horizontal_angle = 0.0
 
             smach.StateMachine.add(
-                'Talk_mode_attention', Talk(controller=tc, text='Attention Mode'),
-                transitions={'success': 'Counter_attention'})
+                'Iterate', Iterate(iterationsteps=4),
+                transitions={'success_0': 'attention_success', 'success_1': 'MoveHead_left',
+                             'success_2': 'MoveHead_center','success_3': 'MoveHead_right'},
+                remapping={'iterate_input': 'iteration', 'iterate_output': 'iteration'})
 
             smach.StateMachine.add(
-                'Counter_attention', Counter(numbers=3),
-                transitions={'end': 'attention_success', 'success': 'Talk_mode_attention'},
-                remapping={'counter_input': 'iteration', 'counter_output': 'iteration'})
+                'MoveHead_left',
+                MoveHeadPepper(_hv=look_vertical, _hh='left', controller=hc, wait=wait_timer_attention),
+                transitions={'success': 'CalculatePersonPosition'})
+
+            smach.StateMachine.add(
+                'MoveHead_center',
+                MoveHeadPepper(_hv=look_vertical, _hh='center', controller=hc, wait=wait_timer_attention),
+                transitions={'success': 'CalculatePersonPosition'})
+
+            smach.StateMachine.add(
+                'MoveHead_right',
+                MoveHeadPepper(_hv=look_vertical, _hh='right', controller=hc, wait=wait_timer_attention),
+                transitions={'success': 'CalculatePersonPosition'})
+
+            smach.StateMachine.add(
+                'CalculatePersonPosition', CalculatePersonPosition(controller=ps,max_distance=2.5),
+                transitions={'success': 'LookToPerson', 'repeat': 'CalculatePersonPosition','no_person_found':'Iterate'},
+                remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
+
+            smach.StateMachine.add(
+                'LookToPerson', MoveHeadPepper(controller=hc),
+                transitions={'success': 'Animation'},
+                remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
+
+            smach.StateMachine.add(
+                'Animation', AnimationPlayerPepper(animation='animations/Stand/Emotions/Positive/Happy_1'),
+                transitions={'success': 'TalkWelcome'})
+
+            smach.StateMachine.add(
+                'TalkWelcome', Talk(controller=tc, text='Hallo, ich bin Pepper!'),#Herzlich willkommen auf der '
+                                                                #'itelligence World 2017! Ich bin ein humanoider Roboter '
+                                                                #'und arbeite zur Zeit am CITEC der Universitaet Bielefeld.', wait=20),
+                transitions={'success': 'MoveHead_demo'})
+
+            smach.StateMachine.add(
+                'MoveHead_demo',
+                MoveHeadPepper(_hv=look_vertical, _hh='right', controller=hc, wait=3),
+                transitions={'success': 'Animation_demo'})
+
+            smach.StateMachine.add(
+                'Animation_demo', AnimationPlayerPepper(animation='animations/Stand/Emotions/Positive/Happy_1'),
+                transitions={'success': 'TalkWelcome_demo'})
+
+            smach.StateMachine.add(
+                'TalkWelcome_demo', Talk(controller=tc, text='Wir haben dieses'),# Jahr wieder eine Menge Demoszenarien zu '
+                                                             #'Industrie 4.0 und Internet of Things Werfen Sie nach der
+                                                             #'Key-Note doch einfach mal einen Blick in unsere '
+                                                             #'Ausstellung.', wait=20),
+                transitions={'success': 'Iterate'})
 
         smach.StateMachine.add('Attention_Statemaschine', sm_attention, transitions={'attention_success': 'Iterate'})
 

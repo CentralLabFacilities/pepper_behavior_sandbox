@@ -29,7 +29,7 @@ class Counter(smach.State):
         smach.State.__init__(self, outcomes=out, input_keys=['counter_input'], output_keys=['counter_output'])
     def execute(self, userdata):
         nextmode = userdata.counter_input + 1
-        if nextmode == self.diff_outputs:
+        if nextmode > self.diff_outputs:
             nextmode = 0
             userdata.counter_output = nextmode
             #return 'success_'+ str(0)
