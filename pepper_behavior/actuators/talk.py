@@ -1,12 +1,11 @@
-#!/usr/bin/env python
-
 import rospy
 import actionlib
 from naoqi_bridge_msgs.msg import SpeechWithFeedbackAction, SpeechWithFeedbackGoal
 from std_msgs.msg import String
 
+
 class TalkControllerPepper:
-    def __init__(self,sim=False):
+    def __init__(self, sim=False):
         self.sim = sim
         if sim:
             self.head_pub = rospy.Publisher('/talk', String, queue_size=1)
@@ -28,4 +27,3 @@ class TalkControllerPepper:
             self.speech_as.send_goal(tts_goal)
             result = self.speech_as.wait_for_result()
         return result
-
