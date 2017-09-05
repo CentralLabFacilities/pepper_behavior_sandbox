@@ -27,8 +27,8 @@ def main():
     sm = smach.StateMachine(outcomes=['exit'])
     sm.userdata.mode = 0
 
-    wait_timer_idle = 15
-    wait_timer_attention = 10
+    wait_timer_idle = 5
+    wait_timer_attention = 5
     look_vertical = 'up'
 
     # Open the container

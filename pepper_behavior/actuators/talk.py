@@ -26,4 +26,5 @@ class TalkControllerPepper:
         else:
             self.speech_as.send_goal(tts_goal)
             result = self.speech_as.wait_for_result()
+            result = 'success' #remove and use real results
         return result
