@@ -154,6 +154,7 @@ class WaitForCommand(smach.State):
 
     def execute(self, userdata):
         rospy.loginfo('Entering State WaitForCommand')
+        self.da.set_head_down()
         while self.ds.current_context == "":
             time.sleep(0.1)
         if self.ds.current_context == "Drive to the table":
