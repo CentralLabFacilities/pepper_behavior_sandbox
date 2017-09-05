@@ -33,6 +33,11 @@ def main():
 
     # Open the container
     with sm:
+
+        smach.StateMachine.add(
+            'Init_Talk', Talk(controller=tc, text='I am ready.'),
+            transitions={'success': 'Iterate'})
+
         smach.StateMachine.add(
             'Iterate', Iterate(iterationsteps=3),
             transitions={'success_0': 'Idle_Statemaschine', 'success_1': 'Attention_Statemaschine',
