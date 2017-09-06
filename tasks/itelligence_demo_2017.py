@@ -173,7 +173,7 @@ def main():
                                    remapping={'angle_horizontal': 'horizontal_direction'})
 
             smach.StateMachine.add(
-                'LookSSL', MoveHeadPepper(controller=hc, _hv='up', wait=10),
+                'LookSSL', MoveHeadPepper(controller=hc, _hv='up', wait=3),
                 transitions={'success': 'Counter_look'},
                 remapping={'head_horizontal': 'horizontal_direction'})
 
