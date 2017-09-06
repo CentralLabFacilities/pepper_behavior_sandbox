@@ -24,13 +24,14 @@ class CalculatePersonPosition(smach.State):
                 try:
                     self.tf.waitForTransform('base_link', 'CameraDepth_optical_frame', rospy.Time.now(), rospy.Duration(4.0))
                     p = self.tf.transformPose("base_link", pose)
-                    t = self.tf.lookupTransform('base_link', 'CameraDepth_optical_frame', rospy.Time.now())
                     self.dist = dist
                     self.pose = p.pose
                 except Exception:
                     print("Exception")
+                    rospy.sleep(2)
+                    return 'repeat'
             if dist > self.max_distance and self.max_distance == self.dist:
-                print('Detected person to far away.')
+                print('Detected person to far away. Distance: %s ' % dist)
         if self.pose:
             (vertical, horizontal) = rotation(self.pose)
             self.counter = 0
@@ -53,8 +54,14 @@ def distance(trans):
 
 def rotation(pose):
     print ("orientation")
-    horizontal = math.tan(pose.position.y / pose.position.x)
-    vertical = math.tan(pose.position.z / pose.position.x)
+    x = pose.position.x+ 0.0133
+    y = pose.position.y + 0.039
+    z = pose.position.z + 0.288 + 0.1
+    print(x)
+    print(y)
+    print(z)
+    horizontal = math.tan(y / x)
+    vertical = math.tan(z / x)
     print(horizontal)
     print(vertical)
     return (vertical, horizontal)

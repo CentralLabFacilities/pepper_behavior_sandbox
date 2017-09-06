@@ -24,7 +24,7 @@ from pepper_behavior.sensors.ros_sub import RosSub
 
 
 def main():
-    simulation = False
+    simulation = True
     rospy.init_node('intelligence_pepper_state_machine')
     hc = HeadControlPepper()
     tc = TalkControllerPepper(sim=simulation)
@@ -132,9 +132,9 @@ def main():
                 transitions={'success': 'TalkWelcome'})
 
             smach.StateMachine.add(
-                'TalkWelcome', Talk(controller=tc, text='Hallo, ich bin Pepper!'),  # Herzlich willkommen auf der '
-                # 'itelligence World 2017! Ich bin ein humanoider Roboter '
-                # 'und arbeite zur Zeit am CITEC der Universitaet Bielefeld.', wait=20),
+                'TalkWelcome', Talk(controller=tc, text='Hallo, ich bin Pepper! Herzlich willkommen auf der '
+                 'itelligence World 2017! Ich bin ein humanoider Roboter '
+                 'und arbeite zur Zeit am CITEC der Universitaet Bielefeld.', wait=20),
                 transitions={'success': 'LookToPerson_afterAnimation'})
 
             smach.StateMachine.add(
@@ -159,11 +159,11 @@ def main():
                 remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
             smach.StateMachine.add(
-                'TalkWelcome_demo', Talk(controller=tc, text='Wir haben dieses'),
-                # Jahr wieder eine Menge Demoszenarien zu '
-                # 'Industrie 4.0 und Internet of Things Werfen Sie nach der
-                # 'Key-Note doch einfach mal einen Blick in unsere '
-                # 'Ausstellung.', wait=20),
+                'TalkWelcome_demo', Talk(controller=tc, text='Wir haben dieses'
+                 'Jahr wieder eine Menge Demoszenarien zu '
+                 'Industrie 4.0 und Internet of Things Werfen Sie nach der'
+                 'Key-Note doch einfach mal einen Blick in unsere '
+                 'Ausstellung.', wait=20),
                 transitions={'success': 'Iterate'})
 
         smach.StateMachine.add('Attention_Statemaschine', sm_attention, transitions={'attention_success': 'Iterate'})
