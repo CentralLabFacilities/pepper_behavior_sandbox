@@ -24,7 +24,7 @@ from pepper_behavior.sensors.ros_sub import RosSub
 
 
 def main():
-    simulation = True
+    simulation = False
     rospy.init_node('intelligence_pepper_state_machine')
     hc = HeadControlPepper()
     tc = TalkControllerPepper(sim=simulation)
