@@ -1,9 +1,6 @@
 import smach
-from clf_perception_vision.msg import ExtendedPersonStamped
-from geometry_msgs.msg import Transform, PoseStamped, Quaternion
 import rospy
 import tf
-from tf.transformations import euler_from_quaternion
 import math
 
 
@@ -26,7 +23,7 @@ class CalculatePersonPosition(smach.State):
             if dist < self.dist:
                 self.tf.waitForTransform('/base_link', '/CameraDepth_optical_frame', rospy.Time(), rospy.Duration(4.0))
                 p = self.tf.transformPose("base_link", pose)
-                t = self.tf.lookupTransform('base_link','/CameraDepth_optical_frame',rospy.Time())
+                t = self.tf.lookupTransform('base_link', '/CameraDepth_optical_frame', rospy.Time())
                 self.dist = dist
                 self.pose = p.pose
             if dist > self.max_distance and self.max_distance == self.dist:

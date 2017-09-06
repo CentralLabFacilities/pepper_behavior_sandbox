@@ -1,10 +1,12 @@
 import rospy
 from clf_perception_vision.msg import ExtendedPeople
 
+
 class PersonSensor():
     def __init__(self):
         self.people = []
-        self.people_sensor = rospy.Subscriber("/clf_perception_vision/people/raw/transform", ExtendedPeople, self.people_callback)
+        self.people_sensor = rospy.Subscriber("/clf_perception_vision/people/raw/transform", ExtendedPeople,
+                                              self.people_callback)
         print("Init Person Sensor")
 
     def people_callback(self, data):
@@ -14,4 +16,3 @@ class PersonSensor():
 
     def getDetectedPerson(self):
         return self.people
-

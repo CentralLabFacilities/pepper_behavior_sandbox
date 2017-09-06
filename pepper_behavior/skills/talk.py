@@ -3,7 +3,7 @@ import smach
 
 
 class Talk(smach.State):
-    def __init__(self, controller, text=None,wait=2):
+    def __init__(self, controller, text=None, wait=2):
         self.text = text
         self.wait = wait
         if self.text:
@@ -12,7 +12,7 @@ class Talk(smach.State):
             input_k = ['text']
         smach.State.__init__(self, outcomes=['success'], input_keys=input_k)
         self.talk = controller
-        rospy.sleep(1)
+
     def execute(self, userdata):
         if self.text:
             talk = self.text

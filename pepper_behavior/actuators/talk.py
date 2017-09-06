@@ -11,7 +11,7 @@ class TalkControllerPepper:
             self.head_pub = rospy.Publisher('/talk', String, queue_size=1)
         else:
             self.speech_as = actionlib.SimpleActionClient('/naoqi_tts_feedback', SpeechWithFeedbackAction)
-            self.speech_as.wait_for_server(rospy.Duration(4))
+            self.speech_as.wait_for_server(rospy.Duration(2))
         rospy.loginfo("Connected to Speech Client.")
 
     def say_something(self, _text):
@@ -26,5 +26,5 @@ class TalkControllerPepper:
         else:
             self.speech_as.send_goal(tts_goal)
             result = self.speech_as.wait_for_result()
-            result = 'success' #remove and use real results
+            result = 'success'  # remove and use real results
         return result

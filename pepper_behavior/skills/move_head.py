@@ -17,13 +17,12 @@ class MoveHeadPepper(smach.State):
         smach.State.__init__(self, outcomes=['success'], input_keys=input_k)
         self.wait = wait
         self.headcontrol = controller
-        rospy.sleep(1)
 
     def execute(self, userdata):
         if self.hv and self.hh:
             result = self.headcontrol.set_head(self.hv, self.hh)
         elif self.hv:
-            result = self.headcontrol.set_head(self.hv,userdata.head_horizontal)
+            result = self.headcontrol.set_head(self.hv, userdata.head_horizontal)
         elif self.hh:
             result = self.headcontrol.set_head(userdata.head_vertical, self.hh)
         else:

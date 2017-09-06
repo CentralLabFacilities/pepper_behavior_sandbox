@@ -1,11 +1,10 @@
-#!/usr/bin/env python
-
 import rospy
 import actionlib
 import tf
 import math
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
-from geometry_msgs.msg import  Quaternion
+from geometry_msgs.msg import Quaternion
+
 
 class BaseControlPepper:
     def __init__(self):
@@ -59,7 +58,7 @@ class BaseControlPepper:
                 result = 'success'
             elif result == 4:
                 result = 'aborted'
-            elif result ==5:
+            elif result == 5:
                 result = 'rejected'
             else:
                 result = 'unknown'

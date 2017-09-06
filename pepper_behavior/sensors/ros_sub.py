@@ -1,5 +1,6 @@
 import rospy
 
+
 class RosSub():
     def __init__(self, dataType, scope):
         self.data = None
@@ -13,4 +14,3 @@ class RosSub():
 
     def getData(self):
         return self.data
-
