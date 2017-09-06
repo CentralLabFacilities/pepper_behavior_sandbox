@@ -144,7 +144,7 @@ def main():
 
 
             smach.StateMachine.add(
-                'Point_demo', LeftArmGesture(controller=lac, gesture='point_demo', wait=10),
+                'Point_demo', LeftArmGesture(controller=lac, gesture='demo', wait=10),
                 transitions={'success': 'Point_demo_left',
                              'unknown_gesture': 'TalkWelcome_demo'})
 
