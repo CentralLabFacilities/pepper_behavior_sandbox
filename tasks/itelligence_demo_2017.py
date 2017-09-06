@@ -27,7 +27,7 @@ def main():
     hc = HeadControlPepper()
     tc = TalkControllerPepper(sim=simulation)
     ps = PersonSensor()
-    rs_ssl = RosSub(dataType=Float64, scope="/TODO")
+    rs_ssl = RosSub(dataType=Float64, scope='/pepper_robot/ssl/angle')
     animation_pub = RosStringPub('/pepper/animation_player')
 
     # Create a SMACH state machine

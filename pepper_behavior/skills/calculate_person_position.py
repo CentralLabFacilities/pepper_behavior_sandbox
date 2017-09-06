@@ -29,6 +29,8 @@ class CalculatePersonPosition(smach.State):
                 t = self.tf.lookupTransform('base_link','/CameraDepth_optical_frame',rospy.Time())
                 self.dist = dist
                 self.pose = p.pose
+            if dist > self.max_distance and self.max_distance == self.dist:
+                print('Detected person to far away.')
         if self.pose:
             (vertical, horizontal) = rotation(self.pose)
             self.counter = 0
