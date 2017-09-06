@@ -11,7 +11,7 @@ class HeadControlPepper:
         self.head_pub = rospy.Publisher('/pepper_robot/pose/joint_angles', JointAnglesWithSpeed, queue_size=1)
         rospy.loginfo("Connected to Head Control.")
 
-    def set_head(self, vertical, horizontal):
+    def set_head(self, vertical, horizontal, speed=0.05):
         # vertical: back up down drive
         # horizontal: strong_left left half_left center half_right right strong_right
         vertical_option = {'back': -10.0, 'up': 0.0, 'drive': 13.0, 'down': 25.0}
@@ -20,7 +20,7 @@ class HeadControlPepper:
                              'strong_left': 60.0, 'strong_right': -60.0}
         horizontal_parameter = horizontal_option.get(horizontal, horizontal)
         self.position.joint_angles = [math.radians(vertical_parameter), math.radians(horizontal_parameter)]
-        self.position.speed = 0.05
+        self.position.speed = speed
         rospy.loginfo("Set Head vertical: %s." % vertical)
         rospy.loginfo("Set Head horizontal: %s." % horizontal)
         self.head_pub.publish(self.position)
