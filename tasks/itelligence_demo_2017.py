@@ -122,7 +122,7 @@ def main():
                 remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
 
             smach.StateMachine.add(
-                'LookToPerson', MoveHeadPepper(controller=hc, wait=0),
+                'LookToPerson', MoveHeadPepper(controller=hc, wait=1),
                 transitions={'success': 'Animation'},
                 remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
@@ -152,7 +152,7 @@ def main():
             smach.StateMachine.add(
                 'TalkWelcome_demo', Talk(controller=tc, text='Wir haben dieses'
                  'Jahr wieder eine Menge Demoszenarien zu '
-                 'Industrie 4.0 und Internet of Things Werfen Sie nach der'
+                 'Industrie 4.0 und Internet of Zhings Werfen Sie nach der'
                  'Key-Note doch einfach mal einen Blick in unsere '
                  'Ausstellung.'),
                 transitions={'success': 'Iterate'})
