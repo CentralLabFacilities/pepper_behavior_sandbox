@@ -168,7 +168,7 @@ def main():
                 transitions={'end': 'look_success', 'success': 'SSL'},
                 remapping={'counter_input': 'iteration', 'counter_output': 'iteration'})
 
-            smach.StateMachine.add('SSL', Ssl(sensor=rs_ssl), transitions={'success':'LookSSL'},
+            smach.StateMachine.add('SSL', Ssl(sensor=rs_ssl), transitions={'success':'LookSSL','no_sound':'Counter_look'},
                                    remapping={'angle_horizontal':'horizontal_direction'})
 
             smach.StateMachine.add(
