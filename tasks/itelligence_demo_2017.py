@@ -116,7 +116,7 @@ def main():
                 transitions={'success': 'CalculatePersonPosition'})
 
             smach.StateMachine.add(
-                'CalculatePersonPosition', CalculatePersonPosition(controller=ps, max_distance=2.5),
+                'CalculatePersonPosition', CalculatePersonPosition(controller=ps, max_distance=4),
                 transitions={'success': 'LookToPerson', 'repeat': 'CalculatePersonPosition',
                              'no_person_found': 'Iterate'},
                 remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
@@ -134,7 +134,7 @@ def main():
             smach.StateMachine.add(
                 'TalkWelcome', Talk(controller=tc, text='Hallo, ich bin Pepper! Herzlich willkommen auf der '
                  'itelligence World 2017! Ich bin ein humanoider Roboter '
-                 'und arbeite zur Zeit am CITEC der Universitaet Bielefeld.', wait=20),
+                 'und arbeite zur Zeit am CITEC der Universitaet Bielefeld.'),
                 transitions={'success': 'LookToPerson_afterAnimation'})
 
             smach.StateMachine.add(
@@ -155,7 +155,7 @@ def main():
 
             smach.StateMachine.add(
                 'LookToPerson_afterAnimation_demo', MoveHeadPepper(controller=hc, wait=1),
-                transitions={'success': 'TalkWelcome_demo'},
+                transitions={'success': 'TalkWelcome_demo'},=
                 remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
             smach.StateMachine.add(
@@ -163,7 +163,7 @@ def main():
                  'Jahr wieder eine Menge Demoszenarien zu '
                  'Industrie 4.0 und Internet of Things Werfen Sie nach der'
                  'Key-Note doch einfach mal einen Blick in unsere '
-                 'Ausstellung.', wait=20),
+                 'Ausstellung.'),
                 transitions={'success': 'Iterate'})
 
         smach.StateMachine.add('Attention_Statemaschine', sm_attention, transitions={'attention_success': 'Iterate'})

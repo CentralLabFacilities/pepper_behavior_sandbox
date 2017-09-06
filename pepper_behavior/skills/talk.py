@@ -3,9 +3,8 @@ import smach
 
 
 class Talk(smach.State):
-    def __init__(self, controller, text=None, wait=2):
+    def __init__(self, controller, text=None):
         self.text = text
-        self.wait = wait
         if self.text:
             input_k = []
         else:
@@ -19,5 +18,4 @@ class Talk(smach.State):
         else:
             talk = userdata.text
         result = self.talk.say_something(talk)
-        rospy.sleep(self.wait)
         return result

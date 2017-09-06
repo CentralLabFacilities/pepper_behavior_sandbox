@@ -35,8 +35,8 @@ class CalculatePersonPosition(smach.State):
         if self.pose:
             (vertical, horizontal) = rotation(self.pose)
             self.counter = 0
-            userdata.person_angle_vertical = math.degrees(vertical)
-            userdata.person_angle_horizontal = math.degrees(horizontal)
+            userdata.person_angle_vertical = vertical
+            userdata.person_angle_horizontal = horizontal
             return 'success'
         elif self.counter > 5:
             self.counter = 0
@@ -56,12 +56,12 @@ def rotation(pose):
     print ("orientation")
     x = pose.position.x+ 0.0133
     y = pose.position.y + 0.039
-    z = pose.position.z + 0.288 + 0.1
+    z = pose.position.z - 0.288
     print(x)
     print(y)
     print(z)
-    horizontal = math.tan(y / x)
-    vertical = math.tan(z / x)
+    horizontal = math.degrees(math.tan(y / x))
+    vertical = math.degrees(math.tan(-z / x))
     print(horizontal)
     print(vertical)
     return (vertical, horizontal)
