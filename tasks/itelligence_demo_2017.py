@@ -40,7 +40,7 @@ def main():
     sm.userdata.mode = 0
 
     wait_timer_idle = 5
-    wait_timer_attention = 2
+    wait_timer_attention = 4
     look_vertical = 'up'
 
     # Open the container
