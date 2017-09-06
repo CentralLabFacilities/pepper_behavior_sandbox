@@ -4,16 +4,21 @@ import rospy
 import smach
 import smach_ros
 
+from std_msgs.msg import Float64
+
 from pepper_behavior.skills.animation_player import AnimationPlayerPepper
 from pepper_behavior.skills.calculate_person_position import CalculatePersonPosition
 from pepper_behavior.skills.iterate import Counter, Iterate
 from pepper_behavior.skills.move_head import MoveHeadPepper
 from pepper_behavior.skills.talk import Talk
+from pepper_behavior.skills.ssl import Ssl
 
 from pepper_behavior.actuators.head_control import HeadControlPepper
 from pepper_behavior.actuators.talk import TalkControllerPepper
+from pepper_behavior.actuators.ros_string_pub import RosStringPub
 
 from pepper_behavior.sensors.person_sensor import PersonSensor
+from pepper_behavior.sensors.ros_sub import RosSub
 
 
 def main():
@@ -22,6 +27,8 @@ def main():
     hc = HeadControlPepper()
     tc = TalkControllerPepper(sim=simulation)
     ps = PersonSensor()
+    rs_ssl = RosSub(dataType=Float64, scope="/TODO")
+    animation_pub = RosStringPub('/pepper/animation_player')
 
     # Create a SMACH state machine
     sm = smach.StateMachine(outcomes=['exit'])
@@ -120,7 +127,7 @@ def main():
                 remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
             smach.StateMachine.add(
-                'Animation', AnimationPlayerPepper(animation='animations/Stand/Emotions/Positive/Happy_1'),
+                'Animation', AnimationPlayerPepper(controller=animation_pub, animation='animations/Stand/Emotions/Positive/Happy_1'),
                 transitions={'success': 'TalkWelcome'})
 
             smach.StateMachine.add(
@@ -135,7 +142,7 @@ def main():
                 transitions={'success': 'Animation_demo'})
 
             smach.StateMachine.add(
-                'Animation_demo', AnimationPlayerPepper(animation='animations/Stand/Emotions/Positive/Happy_1'),
+                'Animation_demo', AnimationPlayerPepper(controller=animation_pub, animation='animations/Stand/Emotions/Positive/Happy_1'),
                 transitions={'success': 'TalkWelcome_demo'})
 
             smach.StateMachine.add(
@@ -150,6 +157,7 @@ def main():
 
         with sm_look:
             sm_look.userdata.iteration = 0
+            sm_look.userdata.horizontal_direction = 0.0
 
             smach.StateMachine.add(
                 'Talk_mode_look_person', Talk(controller=tc, text='Look Mode'),
@@ -157,8 +165,16 @@ def main():
 
             smach.StateMachine.add(
                 'Counter_look', Counter(numbers=3),
-                transitions={'end': 'look_success', 'success': 'Talk_mode_look_person'},
+                transitions={'end': 'look_success', 'success': 'SSL'},
                 remapping={'counter_input': 'iteration', 'counter_output': 'iteration'})
+
+            smach.StateMachine.add('SSL', Ssl(sensor=rs_ssl), transitions={'success':'LookSSL'},
+                                   remapping={'angle_horizontal':'horizontal_direction'})
+
+            smach.StateMachine.add(
+                'LookSSL', MoveHeadPepper(controller=hc,_hv= 'up',wait=10),
+                transitions={'success': 'Counter_look'},
+                remapping={'head_horizontal': 'horizontal_direction'})
 
         smach.StateMachine.add('Look_Statemaschine', sm_look, transitions={'look_success': 'Iterate'})
 

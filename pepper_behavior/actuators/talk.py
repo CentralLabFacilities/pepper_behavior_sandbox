@@ -11,7 +11,7 @@ class TalkControllerPepper:
             self.head_pub = rospy.Publisher('/talk', String, queue_size=1)
         else:
             self.speech_as = actionlib.SimpleActionClient('/naoqi_tts_feedback', SpeechWithFeedbackAction)
-            self.speech_as.wait_for_server()
+            self.speech_as.wait_for_server(rospy.Duration(4))
         rospy.loginfo("Connected to Speech Client.")
 
     def say_something(self, _text):
