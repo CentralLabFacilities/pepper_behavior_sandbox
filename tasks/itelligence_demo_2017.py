@@ -63,10 +63,6 @@ def main():
             sm_idle.userdata.iteration = 0
 
             smach.StateMachine.add(
-                'Talk_mode_idle', Talk(controller=tc, text='Idle Mode'),
-                transitions={'success': 'Counter_idle'})
-
-            smach.StateMachine.add(
                 'Counter_idle', Counter(numbers=1),
                 transitions={'success': 'MoveHead_left_idle', 'end': 'idle_success'},
                 remapping={'counter_input': 'iteration', 'counter_output': 'iteration'})
@@ -132,7 +128,7 @@ def main():
 
             smach.StateMachine.add(
                 'Animation',
-                AnimationPlayerPepper(controller=animation_pub, animation='animations/Stand/Emotions/Positive/Happy_1'),
+                AnimationPlayerPepper(controller=animation_pub, animation='animations/Stand/Gestures/Hey_1'),
                 transitions={'success': 'LookToPerson_afterAnimation'})
 
             smach.StateMachine.add(
@@ -152,7 +148,7 @@ def main():
                 transitions={'success': 'Point_demo'})
 
             smach.StateMachine.add(
-                'Point_demo', LeftArmGesture(controller=lac, gesture='test', wait=10),
+                'Point_demo', LeftArmGesture(controller=lac, gesture='point_demo', wait=10),
                 transitions={'success': 'LookToPerson_afterAnimation_demo',
                              'unknown_gesture': 'LookToPerson_afterAnimation_demo'})
 
@@ -176,11 +172,7 @@ def main():
             sm_look.userdata.horizontal_direction = 0.0
 
             smach.StateMachine.add(
-                'Talk_mode_look_person', Talk(controller=tc, text='Look Mode'),
-                transitions={'success': 'Counter_look'})
-
-            smach.StateMachine.add(
-                'Counter_look', Counter(numbers=3),
+                'Counter_look', Counter(numbers=10),
                 transitions={'end': 'look_success', 'success': 'SSL'},
                 remapping={'counter_input': 'iteration', 'counter_output': 'iteration'})
 
@@ -196,7 +188,7 @@ def main():
         smach.StateMachine.add('Look_Statemaschine', sm_look, transitions={'look_success': 'Iterate'})
 
     # Introspection viewer
-    sis = smach_ros.IntrospectionServer('server_name', sm, '/GENIALE')
+    sis = smach_ros.IntrospectionServer('server_name', sm, '/ITELLIGENCE')
     sis.start()
 
     # Execute SMACH plan
