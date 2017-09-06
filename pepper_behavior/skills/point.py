@@ -10,6 +10,6 @@ class LeftArmGesture(smach.State):
         smach.State.__init__(self, outcomes=['success', 'unknown_gesture'])
 
     def execute(self, userdata):
-        result = self.controller.set_right_arm(self.gesture)
+        result = self.controller.set_arm(self.gesture)
         rospy.sleep(self.wait)
         return result
