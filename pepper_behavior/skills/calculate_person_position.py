@@ -22,9 +22,9 @@ class CalculatePersonPosition(smach.State):
             dist = distance(pose.pose.position)
             if dist < self.dist:
                 try:
-                    self.tf.waitForTransform('/base_link', '/CameraDepth_optical_frame', rospy.Time(), rospy.Duration(4.0))
+                    self.tf.waitForTransform('base_link', 'CameraDepth_optical_frame', rospy.Time.now(), rospy.Duration(4.0))
                     p = self.tf.transformPose("base_link", pose)
-                    t = self.tf.lookupTransform('base_link', '/CameraDepth_optical_frame', rospy.Time())
+                    t = self.tf.lookupTransform('base_link', 'CameraDepth_optical_frame', rospy.Time.now())
                     self.dist = dist
                     self.pose = p.pose
                 except Exception:
