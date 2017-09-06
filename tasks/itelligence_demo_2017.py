@@ -155,7 +155,7 @@ def main():
 
             smach.StateMachine.add(
                 'LookToPerson_afterAnimation_demo', MoveHeadPepper(controller=hc, wait=1),
-                transitions={'success': 'TalkWelcome_demo'},=
+                transitions={'success': 'TalkWelcome_demo'},
                 remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
             smach.StateMachine.add(
