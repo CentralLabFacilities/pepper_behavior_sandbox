@@ -17,6 +17,8 @@ class LeftArmControlPepper:
         else:
             return 'unknown_gesture'
         self.position.speed = 0.1
+        print('left arm')
+        print(self.position)
         self.head_pub.publish(self.position)
         return 'success'
 
@@ -28,5 +30,7 @@ class LeftArmControlPepper:
         else:
             return 'unknown_gesture'
         self.position.speed = 0.1
+        print('left arm')
+        print(self.position)
         self.head_pub.publish(self.position)
         return 'success'
