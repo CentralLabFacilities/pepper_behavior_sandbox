@@ -8,7 +8,7 @@ class LeftArmControlPepper:
         self.position = JointAnglesWithSpeed()
         self.position.joint_names = ['LShoulderPitch', 'LShoulderRoll', 'LElbowYaw', 'LElbowRoll', 'LWristYaw']
         self.position.joint_angles = [0.0, 20.0, 0.0, 5.0, 0.0]
-        self.head_pub = rospy.Publisher('/pepper_robot/set/arm/left/tilt', JointAnglesWithSpeed, queue_size=1)
+        self.head_pub = rospy.Publisher('/pepper_robot/pose/joint_angles', JointAnglesWithSpeed, queue_size=1)
         rospy.loginfo("Connected to Arm Control.")
 
     def set_arm(self, gesture):

@@ -8,7 +8,7 @@ class HeadControlPepper:
         self.position = JointAnglesWithSpeed()
         self.position.joint_names = ['HeadPitch', 'HeadYaw']
         self.position.joint_angles = [0.0, 0.0]
-        self.head_pub = rospy.Publisher('/pepper_robot/set/head/tilt', JointAnglesWithSpeed, queue_size=1)
+        self.head_pub = rospy.Publisher('/pepper_robot/pose/joint_angles', JointAnglesWithSpeed, queue_size=1)
         rospy.loginfo("Connected to Head Control.")
 
     def set_head(self, vertical, horizontal):
