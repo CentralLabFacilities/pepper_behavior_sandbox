@@ -20,7 +20,7 @@ class HeadControlPepper:
                              'strong_left': 60.0, 'strong_right': -60.0}
         horizontal_parameter = horizontal_option.get(horizontal, horizontal)
         self.position.joint_angles = [math.radians(vertical_parameter), math.radians(horizontal_parameter)]
-        self.position.speed = 0.1
+        self.position.speed = 0.05
         rospy.loginfo("Set Head vertical: %s." % vertical)
         rospy.loginfo("Set Head horizontal: %s." % horizontal)
         self.head_pub.publish(self.position)

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python2
 
 import rospy
 import smach
@@ -116,13 +116,13 @@ def main():
                 transitions={'success': 'CalculatePersonPosition'})
 
             smach.StateMachine.add(
-                'CalculatePersonPosition', CalculatePersonPosition(controller=ps, max_distance=4),
+                'CalculatePersonPosition', CalculatePersonPosition(controller=ps, max_distance=2.5),
                 transitions={'success': 'LookToPerson', 'repeat': 'CalculatePersonPosition',
                              'no_person_found': 'Iterate'},
                 remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
 
             smach.StateMachine.add(
-                'LookToPerson', MoveHeadPepper(controller=hc),
+                'LookToPerson', MoveHeadPepper(controller=hc, wait=0),
                 transitions={'success': 'Animation'},
                 remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
@@ -139,24 +139,15 @@ def main():
 
             smach.StateMachine.add(
                 'LookToPerson_afterAnimation', MoveHeadPepper(controller=hc, wait=1),
-                transitions={'success': 'MoveHead_demo'},
+                transitions={'success': 'Point_demo'},
                 remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
-
-            smach.StateMachine.add(
-                'MoveHead_demo',
-                MoveHeadPepper(_hv=look_vertical, _hh='right', controller=hc, wait=1),
-                transitions={'success': 'Point_demo'})
 
             smach.StateMachine.add(
                 'Point_demo', LeftArmGesture(controller=lac, gesture='point_demo', wait=10),
-                transitions={'success': 'LookToPerson_afterAnimation_demo',
-                             'unknown_gesture': 'LookToPerson_afterAnimation_demo'})
+                transitions={'success': 'TalkWelcome_demo',
+                             'unknown_gesture': 'TalkWelcome_demo'})
 
-            smach.StateMachine.add(
-                'LookToPerson_afterAnimation_demo', MoveHeadPepper(controller=hc, wait=1),
-                transitions={'success': 'TalkWelcome_demo'},
-                remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
             smach.StateMachine.add(
                 'TalkWelcome_demo', Talk(controller=tc, text='Wir haben dieses'
