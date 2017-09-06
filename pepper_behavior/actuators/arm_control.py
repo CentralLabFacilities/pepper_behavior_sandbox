@@ -20,7 +20,7 @@ class LeftArmControlPepper:
                                       math.radians(0.0)]
         elif gesture == 'point_demo':
             self.position.joint_names = ['RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll', 'RWristYaw']
-            self.position.joint_angles = [math.radians(95.8), math.radians(-6.6), math.radians(83.8), math.radians(16.2),
+            self.position.joint_angles = [math.radians(95.8), math.radians(-6.6), math.radians(83.8), math.radians(-16.2),
                 math.radians(1.4)]
         else:
             return 'unknown_gesture'
