@@ -21,11 +21,14 @@ class CalculatePersonPosition(smach.State):
             pose = p.pose
             dist = distance(pose.pose.position)
             if dist < self.dist:
-                self.tf.waitForTransform('/base_link', '/CameraDepth_optical_frame', rospy.Time(), rospy.Duration(4.0))
-                p = self.tf.transformPose("base_link", pose)
-                t = self.tf.lookupTransform('base_link', '/CameraDepth_optical_frame', rospy.Time())
-                self.dist = dist
-                self.pose = p.pose
+                try:
+                    self.tf.waitForTransform('/base_link', '/CameraDepth_optical_frame', rospy.Time(), rospy.Duration(4.0))
+                    p = self.tf.transformPose("base_link", pose)
+                    t = self.tf.lookupTransform('base_link', '/CameraDepth_optical_frame', rospy.Time())
+                    self.dist = dist
+                    self.pose = p.pose
+                except Exception:
+                    print("Exception")
             if dist > self.max_distance and self.max_distance == self.dist:
                 print('Detected person to far away.')
         if self.pose:

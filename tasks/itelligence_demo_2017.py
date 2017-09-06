@@ -129,18 +129,19 @@ def main():
             smach.StateMachine.add(
                 'Animation',
                 AnimationPlayerPepper(controller=animation_pub, animation='animations/Stand/Gestures/Hey_1'),
-                transitions={'success': 'LookToPerson_afterAnimation'})
-
-            smach.StateMachine.add(
-                'LookToPerson_afterAnimation', MoveHeadPepper(controller=hc, wait=1),
-                transitions={'success': 'TalkWelcome'},
-                remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
+                transitions={'success': 'TalkWelcome'})
 
             smach.StateMachine.add(
                 'TalkWelcome', Talk(controller=tc, text='Hallo, ich bin Pepper!'),  # Herzlich willkommen auf der '
                 # 'itelligence World 2017! Ich bin ein humanoider Roboter '
                 # 'und arbeite zur Zeit am CITEC der Universitaet Bielefeld.', wait=20),
-                transitions={'success': 'MoveHead_demo'})
+                transitions={'success': 'LookToPerson_afterAnimation'})
+
+            smach.StateMachine.add(
+                'LookToPerson_afterAnimation', MoveHeadPepper(controller=hc, wait=1),
+                transitions={'success': 'MoveHead_demo'},
+                remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
+
 
             smach.StateMachine.add(
                 'MoveHead_demo',
