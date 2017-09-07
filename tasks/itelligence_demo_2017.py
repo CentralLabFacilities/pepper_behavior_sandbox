@@ -135,17 +135,17 @@ def main():
 
             smach.StateMachine.add(
                 'MoveHead_left',
-                MoveHeadPepper(_hv=look_vertical, _hh='left', controller=hc, wait=wait_timer_attention),
+                MoveHeadPepper(_hv='center', _hh='left', controller=hc, wait=wait_timer_attention),
                 transitions={'success': 'CalculatePersonPosition'})
 
             smach.StateMachine.add(
                 'MoveHead_center',
-                MoveHeadPepper(_hv=look_vertical, _hh='center', controller=hc, wait=wait_timer_attention),
+                MoveHeadPepper(_hv='center', _hh='center', controller=hc, wait=wait_timer_attention),
                 transitions={'success': 'CalculatePersonPosition'})
 
             smach.StateMachine.add(
                 'MoveHead_right',
-                MoveHeadPepper(_hv=look_vertical, _hh='right', controller=hc, wait=wait_timer_attention),
+                MoveHeadPepper(_hv='center', _hh='right', controller=hc, wait=wait_timer_attention),
                 transitions={'success': 'CalculatePersonPosition'})
 
             smach.StateMachine.add(
@@ -199,7 +199,7 @@ def main():
             sm_look.userdata.horizontal_direction = 0.0
 
             smach.StateMachine.add(
-                'pre_ssl', MoveHeadPepper(controller='center', _hv='up', wait=2, speed=0.05),
+                'pre_ssl', MoveHeadPepper(controller=hc,_hh='center', _hv='up', wait=2, speed=0.05),
                 transitions={'success': 'Counter_look'})
 
             smach.StateMachine.add(
