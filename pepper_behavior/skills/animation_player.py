@@ -7,8 +7,8 @@ class AnimationPlayerPepper(smach.State):
         self.wait = wait
         self.animationblock = animationblock
         if animationblock == 'greetings':
-            self.animation = ['animations/Stand/Gestures/Hey_1',
-                            'animations/Stand/Gestures/Hey_3',
+            self.animation = ['animations/Stand/Gestures/Hey_3',
+                            'animations/Stand/Gestures/Hey_1',
                             'animations/Stand/Gestures/Hey_4',
                             'animations/Stand/Gestures/Hey_6']
         elif animationblock == 'talking':

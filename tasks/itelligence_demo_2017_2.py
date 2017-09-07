@@ -68,8 +68,8 @@ def main():
 
         smach.StateMachine.add(
             'Animation',
-            AnimationPlayerPepper(controller=animation_pub, animationblock='greetings'),
-            transitions={'success': 'Welcome_Talk'}, remapping={'id': 'answer_id'})
+            AnimationPlayerPepper(controller=animation_pub,id=1, animationblock='greetings'),
+            transitions={'success': 'Welcome_Talk'})
 
         smach.StateMachine.add(
             'Welcome_Talk', Talk(controller=tc, text='Hallo, ich bin Pepper ! Herzlich willkommen auf der itelligence World '
