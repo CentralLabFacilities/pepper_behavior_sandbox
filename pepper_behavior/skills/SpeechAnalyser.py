@@ -4,9 +4,9 @@ import rospy
 
 class SpeechAnalyser(smach.State):
     def __init__(self, controller, wait=10):
-        self.question = ['Pepper wie geht es Dir',
-                         'Pepper woher kommst Du',
-                         'Pepper was kannst Du alles tun',
+        self.question = ['Pepper wie geht es dir',
+                         'Pepper woher kommst du',
+                         'Pepper was kannst du alles tun',
                          'Pepper was kann ich auf der itelligence World alles sehen']
         self.wait = wait
         self.controller = controller
@@ -21,7 +21,7 @@ class SpeechAnalyser(smach.State):
             if cmd:
                 print('Got msg %s' %cmd)
                 for i in range(0,3):
-                    print('Question %s' % self.question)
+                    print('Question %s' % self.question[i])
                     if cmd == self.question[i]:
                         userdata.msg_output = i
                         return 'success'
