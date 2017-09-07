@@ -3,7 +3,7 @@ import smach
 
 
 class MoveHeadPepper(smach.State):
-    def __init__(self, controller, _hv=None, _hh=None, wait=5, speed=0.5):
+    def __init__(self, controller, _hv=None, _hh=None, wait=5, speed=0.05):
         self.hv = _hv
         self.hh = _hh
         self.speed = speed
