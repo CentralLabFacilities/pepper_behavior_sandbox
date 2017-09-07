@@ -167,7 +167,7 @@ def main():
             smach.StateMachine.add(
                 'Animation',
                 AnimationPlayerPepper(controller=animation_pub),
-                transitions={'success': 'TalkWelcome'}, remapping={'id': 'iterationtext'})
+                transitions={'success': 'TalkWelcome'})
 
             smach.StateMachine.add(
                 'TalkWelcome', Talk(controller=tc),
