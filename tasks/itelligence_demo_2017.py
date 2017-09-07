@@ -165,7 +165,7 @@ def main():
                 transitions={'success': 'Point_demo'}, remapping={'id': 'iterationtext'})
 
             smach.StateMachine.add(
-                'Point_demo', LeftArmGesture(controller=lac, gesture='demo', wait=2),
+                'Point_demo', LeftArmGesture(controller=lac, gesture='demo', wait=4),
                 transitions={'success': 'Iterate',
                              'unknown_gesture': 'Iterate'})
 

@@ -10,7 +10,7 @@ class Talk(smach.State):
         if  self.textblock == 'greeting':
             self.text = ['Hallo, ich bin Pepper! Herzlich willkommen auf der itelligence World 2017! Ich bin ein',
                      'Herzlich willkommen auf der itelligence World 2017! Mein Name ist Pepper.',
-                     'Hallo, ich bin Pepper! Ich unterstuetze derzeit die Forschung am CITEC der Universitaet Bielefeld freue mich bei der itelligence World 2017 dabei sein zu duerfen.',
+                     'Hallo, ich bin Pepper! Ich unterstuetze derzeit die Forschung am CITEC der Universitaet Bielefeld und freue mich bei der itelligence World 2017 dabei sein zu duerfen.',
                      'Herzlich Willkommen, mein Name ist Pepper ich bin ein Roboter und mit mir wird zur Zeit am CITEC der Universitaet Bielefeld geforscht.']
         else:
             print('use second textblock')
