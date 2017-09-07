@@ -123,7 +123,7 @@ def main():
                 remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
 
             smach.StateMachine.add(
-                'Counter_text', Counter(numbers=4),
+                'Counter_text', Counter(numbers=3),
                 transitions={'success': 'LookToPerson', 'end': 'LookToPerson'},
                 remapping={'counter_input': 'iterationtext', 'counter_output': 'iterationtext'})
 
