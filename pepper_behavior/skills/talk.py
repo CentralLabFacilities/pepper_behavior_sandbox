@@ -32,6 +32,6 @@ class Talk(smach.State):
         elif self.say:
             talk = self.say
         else:
-            talk = self.text[userdata.text]
+            talk = self.text[userdata.id]
         result = self.talk.say_something(talk)
         return result
