@@ -17,13 +17,10 @@ class Talk(smach.State):
                 'Mir geht es sehr gut. Ich freue mich heute auf der itelligence World dabei sein zu duerfen.',
                 'Ich wurde von Softbank Robotics entwickelt und bin darauf trainiert in unterschiedlichen '
                 'Mensch-Maschine Szenarien zu unterstuetzen. Ich arbeite zurzeit am CITEC der Universitaet '
-                'Bielefeld, itelligence und NTT Data an neuen Mensch-Maschine Interaktionen.',
                 'Ich bin ein humanoider Roboter, der auf die Interaktion mit Menschen spezialisiert ist. Ich '
                 'erkenne Emotionen und kann auf die Emotionen von Menschen reagieren.',
                 'Wir zeigen Ihnen auf der itelligence World, wie smarte, innovative Loesungen Ihr Unternehmen fuer '
-                'die digitale Zukunft vorbereiten. An unseren Messestaenden hier im Conference Centers haben Sie '
-                'die Moeglichkeit, sich von Experten ueber die neuesten Technologien zu informieren. An unseren '
-                'Show Cases zeigen wir Ihnen, was heute bereits schon moeglich ist. ']
+                'die digitale Zukunft vorbereiten.']
         else:
             print('use second textblock')
             self.text = ['Wir haben dieses Jahr wieder eine Menge Demoszenarien zu Industrie 4.0 und Internet of Zhings '
