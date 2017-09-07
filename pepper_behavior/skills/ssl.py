@@ -6,7 +6,7 @@ import math
 class Ssl(smach.State):
     def __init__(self, sensor):
         self.sensor = sensor
-        smach.State.__init__(self, outcomes=['success', 'no_sound'], output_keys=['angle_horizontal'])
+        smach.State.__init__(self, outcomes=['success', 'no_sound'], input_keys=['input_angle_horizontal'], output_keys=['output_angle_horizontal'])
 
     def execute(self, userdata):
         angle = self.sensor.getData()
@@ -15,5 +15,5 @@ class Ssl(smach.State):
             return 'no_sound'
         else:
             degree = math.degrees(angle)
-            userdata.angle_horizontal = degree
+            userdata.output_angle_horizontal = userdata.input_angle_horizontal + degree
         return 'success'

@@ -209,7 +209,7 @@ def main():
 
             smach.StateMachine.add('SSL', Ssl(sensor=rs_ssl),
                                    transitions={'success': 'LookSSL', 'no_sound': 'Counter_look'},
-                                   remapping={'angle_horizontal': 'horizontal_direction'})
+                                   remapping={'input_angle_horizontal': 'horizontal_direction','output_angle_horizontal': 'horizontal_direction'})
 
             smach.StateMachine.add(
                 'LookSSL', MoveHeadPepper(controller=hc, _hv='up', wait=2, speed=0.25),
