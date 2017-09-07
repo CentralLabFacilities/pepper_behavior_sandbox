@@ -39,7 +39,7 @@ def main():
     sm = smach.StateMachine(outcomes=['exit'])
     sm.userdata.mode = 0
 
-    wait_timer_idle = 5
+    wait_timer_idle = 6
     wait_timer_attention = 6
     look_vertical = 'drive'
 
@@ -71,7 +71,7 @@ def main():
 
             smach.StateMachine.add(
                 'MoveHead_left_idle',
-                MoveHeadPepper(_hv=look_vertical, _hh='left', controller=hc, wait=wait_timer_idle),
+                MoveHeadPepper(_hv=look_vertical, _hh='left', controller=hc, wait=wait_timer_idle,speed=0.1),
                 transitions={'success': 'Counter_animation_idle'})
 
             smach.StateMachine.add(
@@ -86,7 +86,7 @@ def main():
 
             smach.StateMachine.add(
                 'MoveHead_center_idle',
-                MoveHeadPepper(_hv=look_vertical, _hh='center', controller=hc, wait=wait_timer_idle),
+                MoveHeadPepper(_hv=look_vertical, _hh='center', controller=hc, wait=wait_timer_idle,speed=0.1),
                 transitions={'success': 'Counter_animation_idle_2'})
 
             smach.StateMachine.add(
@@ -101,7 +101,7 @@ def main():
 
             smach.StateMachine.add(
                 'MoveHead_right_idle',
-                MoveHeadPepper(_hv=look_vertical, _hh='right', controller=hc, wait=wait_timer_idle),
+                MoveHeadPepper(_hv=look_vertical, _hh='right', controller=hc, wait=wait_timer_idle,speed=0.1),
                 transitions={'success': 'Counter_animation_idle_3'})
 
             smach.StateMachine.add(
@@ -184,7 +184,7 @@ def main():
                 transitions={'success': 'LookToPoint'}, remapping={'id': 'iterationtext'})
 
             smach.StateMachine.add(
-                'LookToPoint', MoveHeadPepper(controller=hc, _hh='right', _hv='up', wait=0),
+                'LookToPoint', MoveHeadPepper(controller=hc, _hh='right', _hv='up', wait=0,speed=0.1),
                 transitions={'success': 'Point_demo'})
 
             smach.StateMachine.add(
