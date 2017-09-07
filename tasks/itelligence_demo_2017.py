@@ -199,6 +199,10 @@ def main():
             sm_look.userdata.horizontal_direction = 0.0
 
             smach.StateMachine.add(
+                'pre_ssl', MoveHeadPepper(controller='center', _hv='up', wait=2, speed=0.05),
+                transitions={'success': 'Counter_look'})
+
+            smach.StateMachine.add(
                 'Counter_look', Counter(numbers=15),
                 transitions={'end': 'look_success', 'success': 'SSL'},
                 remapping={'counter_input': 'iteration', 'counter_output': 'iteration'})
