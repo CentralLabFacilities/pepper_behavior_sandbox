@@ -21,8 +21,9 @@ class SpeechAnalyser(smach.State):
             if cmd:
                 print('Got msg %s' %cmd)
                 for i in range(0,3):
+                    print('Question %s' % self.question)
                     if cmd == self.question[i]:
                         userdata.msg_output = i
                         return 'success'
         print('No cmd.')
-        return 'noc_cmd'
+        return 'no_cmd'
