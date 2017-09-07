@@ -39,6 +39,10 @@ def main():
     # Create a SMACH state machine
     sm = smach.StateMachine(outcomes=['exit'])
     sm.userdata.questions = 0
+    sm.userdata.vertical_angle = 0.0
+    sm.userdata.horizontal_angle = 0.0
+    sm.userdata.answer_id = 0.0
+
 
     # Open the container
     with sm:
