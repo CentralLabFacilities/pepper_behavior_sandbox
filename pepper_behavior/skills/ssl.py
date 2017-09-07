@@ -11,7 +11,7 @@ class Ssl(smach.State):
     def execute(self, userdata):
         angle = self.sensor.getData()
         if angle == None:
-            rospy.sleep(3)
+            rospy.sleep(2)
             return 'no_sound'
         else:
             degree = math.degrees(angle)

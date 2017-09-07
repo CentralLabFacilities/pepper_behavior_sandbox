@@ -13,6 +13,7 @@ class Talk(smach.State):
                      'Hello two',
                      'Hello three']
         else:
+            print('use second textblock')
             self.text = ['Wir haben dieses Jahr wieder eine Menge Demoszenarien zu Industrie 4.0 und Internet of Zhings '
                      'Werfen Sie nach der Key-Note doch einfach mal einen Blick in unsere Ausstellung.',
                      'explain one',

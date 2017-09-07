@@ -147,14 +147,10 @@ def main():
                 remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
             smach.StateMachine.add(
-                'Point_demo', LeftArmGesture(controller=lac, gesture='point_demo', wait=10),
-                transitions={'success': 'Point_demo_left',
-                             'unknown_gesture': 'TalkWelcome_demo'})
-
-            smach.StateMachine.add(
-                'Point_demo_left', LeftArmGesture(controller=lac, gesture='point_demo', wait=10),
+                'Point_demo', LeftArmGesture(controller=lac, gesture='demo', wait=2),
                 transitions={'success': 'TalkWelcome_demo',
                              'unknown_gesture': 'TalkWelcome_demo'})
+
 
 
             smach.StateMachine.add(
@@ -168,7 +164,7 @@ def main():
             sm_look.userdata.horizontal_direction = 0.0
 
             smach.StateMachine.add(
-                'Counter_look', Counter(numbers=10),
+                'Counter_look', Counter(numbers=15),
                 transitions={'end': 'look_success', 'success': 'SSL'},
                 remapping={'counter_input': 'iteration', 'counter_output': 'iteration'})
 
@@ -177,7 +173,7 @@ def main():
                                    remapping={'angle_horizontal': 'horizontal_direction'})
 
             smach.StateMachine.add(
-                'LookSSL', MoveHeadPepper(controller=hc, _hv='up', wait=3, speed=0.1),
+                'LookSSL', MoveHeadPepper(controller=hc, _hv='up', wait=2, speed=0.25),
                 transitions={'success': 'Counter_look'},
                 remapping={'head_horizontal': 'horizontal_direction'})
 
