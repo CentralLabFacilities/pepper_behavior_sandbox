@@ -3,7 +3,7 @@ import smach
 
 
 class AnimationPlayerPepper(smach.State):
-    def __init__(self, id, controller, wait=0, animationblock='greetings'):
+    def __init__(self, controller, id=None, wait=0, animationblock='greetings'):
         self.wait = wait
         self.animationblock = animationblock
         if animationblock == 'greetings':
