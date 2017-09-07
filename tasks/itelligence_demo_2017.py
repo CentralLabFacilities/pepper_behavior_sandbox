@@ -122,7 +122,7 @@ def main():
         smach.StateMachine.add('Idle_Statemaschine', sm_idle, transitions={'idle_success': 'Iterate'})
 
         with sm_attention:
-            sm_attention.userdata.iteration = 1
+            sm_attention.userdata.iteration = 0
             sm_attention.userdata.vertical_angle = 0.0
             sm_attention.userdata.horizontal_angle = 0.0
             sm_attention.userdata.iterationtext = 0
