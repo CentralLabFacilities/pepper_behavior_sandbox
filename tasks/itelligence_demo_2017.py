@@ -24,7 +24,7 @@ from pepper_behavior.sensors.ros_sub import RosSub
 
 
 def main():
-    simulation = False
+    simulation = True
     rospy.init_node('intelligence_pepper_state_machine')
     hc = HeadControlPepper()
     tc = TalkControllerPepper(sim=simulation)
@@ -93,6 +93,7 @@ def main():
             sm_attention.userdata.iteration = 1
             sm_attention.userdata.vertical_angle = 0.0
             sm_attention.userdata.horizontal_angle = 0.0
+            sm_attention.userdata.iterationtext = 0
 
             smach.StateMachine.add(
                 'Iterate', Iterate(iterationsteps=4),
@@ -117,9 +118,14 @@ def main():
 
             smach.StateMachine.add(
                 'CalculatePersonPosition', CalculatePersonPosition(controller=ps, max_distance=2.5),
-                transitions={'success': 'LookToPerson', 'repeat': 'CalculatePersonPosition',
+                transitions={'success': 'Counter_text', 'repeat': 'CalculatePersonPosition',
                              'no_person_found': 'Iterate'},
                 remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
+
+            smach.StateMachine.add(
+                'Counter_text', Counter(numbers=4),
+                transitions={'success': 'LookToPerson', 'end': 'LookToPerson'},
+                remapping={'counter_input': 'iterationtext', 'counter_output': 'iterationtext'})
 
             smach.StateMachine.add(
                 'LookToPerson', MoveHeadPepper(controller=hc, wait=1),
@@ -128,23 +134,20 @@ def main():
 
             smach.StateMachine.add(
                 'Animation',
-                AnimationPlayerPepper(controller=animation_pub, animation='animations/Stand/Gestures/Hey_1'),
-                transitions={'success': 'TalkWelcome'})
+                AnimationPlayerPepper(controller=animation_pub, id=0),
+                transitions={'success': 'TalkWelcome'}, remapping={'id': 'iterationtext'})
 
             smach.StateMachine.add(
-                'TalkWelcome', Talk(controller=tc, text='Hallo, ich bin Pepper! Herzlich willkommen auf der '
-                 'itelligence World 2017! Ich bin ein humanoider Roboter '
-                 'und arbeite zur Zeit am CITEC der Universitaet Bielefeld.'),
-                transitions={'success': 'LookToPerson_afterAnimation'})
+                'TalkWelcome', Talk(controller=tc, id=0),
+                transitions={'success': 'LookToPerson_afterAnimation'}, remapping={'id': 'iterationtext'})
 
             smach.StateMachine.add(
                 'LookToPerson_afterAnimation', MoveHeadPepper(controller=hc, wait=1),
                 transitions={'success': 'Point_demo'},
                 remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
-
             smach.StateMachine.add(
-                'Point_demo', LeftArmGesture(controller=lac, gesture='demo', wait=10),
+                'Point_demo', LeftArmGesture(controller=lac, gesture='point_demo', wait=10),
                 transitions={'success': 'Point_demo_left',
                              'unknown_gesture': 'TalkWelcome_demo'})
 
@@ -155,12 +158,8 @@ def main():
 
 
             smach.StateMachine.add(
-                'TalkWelcome_demo', Talk(controller=tc, text='Wir haben dieses'
-                 'Jahr wieder eine Menge Demoszenarien zu '
-                 'Industrie 4.0 und Internet of Zhings Werfen Sie nach der'
-                 'Key-Note doch einfach mal einen Blick in unsere '
-                 'Ausstellung.'),
-                transitions={'success': 'Iterate'})
+                'TalkWelcome_demo', Talk(controller=tc, id=4,textblock='explain'),
+                transitions={'success': 'Iterate'}, remapping={'id': 'iterationtext'})
 
         smach.StateMachine.add('Attention_Statemaschine', sm_attention, transitions={'attention_success': 'Iterate'})
 
