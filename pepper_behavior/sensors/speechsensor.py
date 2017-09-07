@@ -18,5 +18,4 @@ class SpeechSensor():
 
     def getCmd(self):
         self.returnval = self.text
-        self.clean(self)
         return self.returnval
