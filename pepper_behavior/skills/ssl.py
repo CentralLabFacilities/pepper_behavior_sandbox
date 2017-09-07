@@ -15,5 +15,10 @@ class Ssl(smach.State):
             return 'no_sound'
         else:
             degree = math.degrees(angle)
-            userdata.output_angle_horizontal = userdata.input_angle_horizontal + degree
+            normed = userdata.input_angle_horizontal + degree
+            if normed > 180:
+                normed = normed -360
+            elif normed < -180:
+                normed = normed + 360
+            userdata.output_angle_horizontal = normed
         return 'success'

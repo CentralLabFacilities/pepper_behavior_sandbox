@@ -10,7 +10,10 @@ class RosSub():
         print("Init RosSub Sensor with Scope %s and Datatype %s" % (self.scope, self.dataType))
 
     def callback(self, data):
+        self.data = None
         self.data = data.data
 
     def getData(self):
-        return self.data
+        self.returnval = self.data
+        self.data = 0.0
+        return self.returnval
