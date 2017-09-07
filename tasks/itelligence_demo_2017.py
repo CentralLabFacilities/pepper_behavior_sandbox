@@ -184,7 +184,7 @@ def main():
                 transitions={'success': 'LookToPoint'}, remapping={'id': 'iterationtext'})
 
             smach.StateMachine.add(
-                'LookToPoint', MoveHeadPepper(controller=hc, wait=0),
+                'LookToPoint', MoveHeadPepper(controller=hc, _hh='right', _hv='up', wait=0),
                 transitions={'success': 'Point_demo'})
 
             smach.StateMachine.add(
