@@ -166,7 +166,7 @@ def main():
 
             smach.StateMachine.add(
                 'Point_demo', LeftArmGesture(controller=lac, gesture='demo', wait=2),
-                transitions={'success': 'TalkWelcome_demo',
+                transitions={'success': 'Iterate',
                              'unknown_gesture': 'Iterate'})
 
         smach.StateMachine.add('Attention_Statemaschine', sm_attention, transitions={'attention_success': 'Iterate'})
