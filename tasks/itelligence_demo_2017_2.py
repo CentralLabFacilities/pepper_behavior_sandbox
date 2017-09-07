@@ -41,7 +41,7 @@ def main():
     sm.userdata.questions = 0
     sm.userdata.vertical_angle = 0.0
     sm.userdata.horizontal_angle = 0.0
-    sm.userdata.answer_id = 0.0
+    sm.userdata.answer_id = 0
 
 
     # Open the container
@@ -75,7 +75,7 @@ def main():
             'Welcome_Talk', Talk(controller=tc, text='Hallo, ich bin Pepper ! Herzlich willkommen auf der itelligence World '
                                                   '2017!'), transitions={'success': 'listen'})
 
-        smach.StateMachine.add('listen', SpeechAnalyser(controller=SpeechSensor,wait=10),
+        smach.StateMachine.add('listen', SpeechAnalyser(controller=speechsensor,wait=10),
                                transitions={'success':'Animation_talking', 'no_cmd':'CalculatePersonPosition_saveback'},
                                remapping={'msg_output': 'answer_id'})
 
