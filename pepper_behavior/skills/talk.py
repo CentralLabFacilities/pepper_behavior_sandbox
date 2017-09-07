@@ -3,7 +3,7 @@ import smach
 
 
 class Talk(smach.State):
-    def __init__(self, controller, id=None, text=None,textblock='greeting'):
+    def __init__(self, controller, id=None, text=None, textblock='greeting'):
         self.id = id
         self.textblock = textblock
         if  self.textblock:
