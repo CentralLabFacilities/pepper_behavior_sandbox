@@ -6,19 +6,23 @@ class Talk(smach.State):
     def __init__(self, controller, id=None, text=None, textblock='greeting'):
         self.id = id
         self.textblock = textblock
+        self.text = text
         if  self.textblock:
-            self.text = ['Hallo, ich bin Pepper! Herzlich willkommen auf der itelligence World 2017! Ich bin ein humanoider'
-                     ' Roboter und arbeite zur Zeit am CITEC der Universitaet Bielefeld.'
-                     'Hello one',
-                     'Hello two',
-                     'Hello three']
+            self.text = ['Hallo, ich bin Pepper! Herzlich willkommen auf der itelligence World 2017! Ich bin ein'
+                     ' Willkommen auf der itelligence World!.'
+                     'Herzlich willkommen auf der itelligence World 2017! Mein Name ist Pepper.',
+                     'Hallo, ich bin Pepper! Ich unterstütze derzeit die Forschung am CITEC der Universitae Bielefeld freue mich bei der itelligence World 2017 dabei sein zu dürfen.',
+                     'Roboter und mit mir wird zur Zeit am CITEC der Universitaet Bielefeld geforscht.']
         else:
             print('use second textblock')
             self.text = ['Wir haben dieses Jahr wieder eine Menge Demoszenarien zu Industrie 4.0 und Internet of Zhings '
                      'Werfen Sie nach der Key-Note doch einfach mal einen Blick in unsere Ausstellung.',
-                     'explain one',
-                     'explain two',
-                     'explain three']
+                     'Wir haben dieses Jahr wieder eine Menge Demoszenarien zu Industrie 4.0 und Internet of Zhings '
+                     'Werfen Sie nach der Key-Note doch einfach mal einen Blick in unsere Ausstellung.',
+                     'Wir haben dieses Jahr wieder eine Menge Demoszenarien zu Industrie 4.0 und Internet of Zhings '
+                     'Werfen Sie nach der Key-Note doch einfach mal einen Blick in unsere Ausstellung.',
+                     'Wir haben dieses Jahr wieder eine Menge Demoszenarien zu Industrie 4.0 und Internet of Zhings '
+                     'Werfen Sie nach der Key-Note doch einfach mal einen Blick in unsere Ausstellung.']
         self.say = text
         if self.id:
             input_k = []
