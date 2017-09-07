@@ -14,6 +14,7 @@ class CalculatePersonPosition(smach.State):
                              output_keys=['person_angle_vertical', 'person_angle_horizontal'])
 
     def execute(self, userdata):
+        self.person = None
         self.person = self.person_sensor.getDetectedPerson()
         self.pose = None
         self.dist = self.max_distance
