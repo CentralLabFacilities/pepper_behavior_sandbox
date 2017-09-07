@@ -4,10 +4,10 @@ import rospy
 
 class SpeechAnalyser(smach.State):
     def __init__(self, controller, wait=10):
-        self.question = ['Pepper, wie geht es Dir?',
-                         'Pepper, woher kommst Du?',
-                         'Pepper, was kannst Du alles tun?',
-                         'Pepper, was kann ich auf der itelligence World alles sehen?','']
+        self.question = ['Pepper wie geht es Dir',
+                         'Pepper woher kommst Du',
+                         'Pepper was kannst Du alles tun',
+                         'Pepper was kann ich auf der itelligence World alles sehen']
         self.wait = wait
         self.controller = controller
         smach.State.__init__(self, outcomes=['success', 'no_cmd'], output_keys=['msg_output'])
