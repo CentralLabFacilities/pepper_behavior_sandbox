@@ -138,7 +138,7 @@ def main():
                 transitions={'success': 'TalkWelcome'}, remapping={'id': 'iterationtext'})
 
             smach.StateMachine.add(
-                'TalkWelcome', Talk(controller=tc, id=0),
+                'TalkWelcome', Talk(controller=tc),
                 transitions={'success': 'LookToPerson_afterAnimation'}, remapping={'id': 'iterationtext'})
 
             smach.StateMachine.add(
@@ -158,7 +158,7 @@ def main():
 
 
             smach.StateMachine.add(
-                'TalkWelcome_demo', Talk(controller=tc, id=4,textblock='explain'),
+                'TalkWelcome_demo', Talk(controller=tc, textblock='explain'),
                 transitions={'success': 'Iterate'}, remapping={'id': 'iterationtext'})
 
         smach.StateMachine.add('Attention_Statemaschine', sm_attention, transitions={'attention_success': 'Iterate'})
