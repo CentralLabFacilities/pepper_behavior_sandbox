@@ -20,7 +20,7 @@ class SpeechAnalyser(smach.State):
             rospy.sleep(1)
             if cmd:
                 print('Got msg %s' %cmd)
-                for i in range(0,3):
+                for i in range(0,4):
                     print('Question %s' % self.question[i])
                     if cmd == self.question[i]:
                         userdata.msg_output = i
