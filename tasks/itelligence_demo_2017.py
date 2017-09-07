@@ -156,19 +156,18 @@ def main():
 
             smach.StateMachine.add(
                 'LookToPerson_afterAnimation', MoveHeadPepper(controller=hc, wait=1),
-                transitions={'success': 'Point_demo'},
+                transitions={'success': 'TalkWelcome_demo'},
                 remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
-
-            smach.StateMachine.add(
-                'Point_demo', LeftArmGesture(controller=lac, gesture='demo', wait=2),
-                transitions={'success': 'TalkWelcome_demo',
-                             'unknown_gesture': 'TalkWelcome_demo'})
-
 
 
             smach.StateMachine.add(
                 'TalkWelcome_demo', Talk(controller=tc, textblock='explain'),
-                transitions={'success': 'Iterate'}, remapping={'id': 'iterationtext'})
+                transitions={'success': 'Point_demo'}, remapping={'id': 'iterationtext'})
+
+            smach.StateMachine.add(
+                'Point_demo', LeftArmGesture(controller=lac, gesture='demo', wait=2),
+                transitions={'success': 'TalkWelcome_demo',
+                             'unknown_gesture': 'Iterate'})
 
         smach.StateMachine.add('Attention_Statemaschine', sm_attention, transitions={'attention_success': 'Iterate'})
 
