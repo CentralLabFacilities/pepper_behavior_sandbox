@@ -68,6 +68,7 @@ def main():
                 transitions={'success': 'MoveHead_left_idle', 'end': 'idle_success'},
                 remapping={'counter_input': 'iteration', 'counter_output': 'iteration'})
 
+
             smach.StateMachine.add(
                 'MoveHead_left_idle',
                 MoveHeadPepper(_hv=look_vertical, _hh='left', controller=hc, wait=wait_timer_idle),
@@ -86,14 +87,32 @@ def main():
             smach.StateMachine.add(
                 'MoveHead_center_idle',
                 MoveHeadPepper(_hv=look_vertical, _hh='center', controller=hc, wait=wait_timer_idle),
-                transitions={'success': 'MoveHead_right_idle'})
+                transitions={'success': 'Counter_animation_idle_2'})
 
+            smach.StateMachine.add(
+                'Counter_animation_idle_2', Counter(numbers=2),
+                transitions={'success': 'Animation_idle_2', 'end': 'Animation_idle_2'},
+                remapping={'counter_input': 'animationiterator', 'counter_output': 'animationiterator'})
 
+            smach.StateMachine.add(
+                'Animation_idle_2',
+                AnimationPlayerPepper(controller=animation_pub, animationblock='idle'),
+                transitions={'success': 'MoveHead_right_idle'}, remapping={'id': 'animationiterator'})
 
             smach.StateMachine.add(
                 'MoveHead_right_idle',
                 MoveHeadPepper(_hv=look_vertical, _hh='right', controller=hc, wait=wait_timer_idle),
-                transitions={'success': 'MoveHead_center_idle_2'})
+                transitions={'success': 'Counter_animation_idle_3'})
+
+            smach.StateMachine.add(
+                'Counter_animation_idle_3', Counter(numbers=2),
+                transitions={'success': 'Animation_idle_3', 'end': 'Animation_idle_3'},
+                remapping={'counter_input': 'animationiterator', 'counter_output': 'animationiterator'})
+
+            smach.StateMachine.add(
+                'Animation_idle_3',
+                AnimationPlayerPepper(controller=animation_pub, animationblock='idle'),
+                transitions={'success': 'MoveHead_center_idle_2'}, remapping={'id': 'animationiterator'})
 
             smach.StateMachine.add(
                 'MoveHead_center_idle_2',
