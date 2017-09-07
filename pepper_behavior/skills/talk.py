@@ -12,6 +12,18 @@ class Talk(smach.State):
                      'Herzlich willkommen auf der itelligence World 2017! Mein Name ist Pepper.',
                      'Hallo, ich bin Pepper! Ich unterstuetze derzeit die Forschung am CITEC der Universitaet Bielefeld und freue mich bei der itelligence World 2017 dabei sein zu duerfen.',
                      'Herzlich Willkommen, mein Name ist Pepper ich bin ein Roboter und mit mir wird zur Zeit am CITEC der Universitaet Bielefeld geforscht.']
+        elif self.textblock == 'answer':
+            self.text = [
+                'Mir geht es sehr gut. Ich freue mich heute auf der itelligence World dabei sein zu duerfen.',
+                'Ich wurde von Softbank Robotics entwickelt und bin darauf trainiert in unterschiedlichen '
+                'Mensch-Maschine Szenarien zu unterstuetzen. Ich arbeite zurzeit am CITEC der Universitaet '
+                'Bielefeld, itelligence und NTT Data an neuen Mensch-Maschine Interaktionen.',
+                'Ich bin ein humanoider Roboter, der auf die Interaktion mit Menschen spezialisiert ist. Ich '
+                'erkenne Emotionen und kann auf die Emotionen von Menschen reagieren.',
+                'Wir zeigen Ihnen auf der itelligence World, wie smarte, innovative Loesungen Ihr Unternehmen fuer '
+                'die digitale Zukunft vorbereiten. An unseren Messestaenden hier im Conference Centers haben Sie '
+                'die Moeglichkeit, sich von Experten ueber die neuesten Technologien zu informieren. An unseren '
+                'Show Cases zeigen wir Ihnen, was heute bereits schon moeglich ist. ']
         else:
             print('use second textblock')
             self.text = ['Wir haben dieses Jahr wieder eine Menge Demoszenarien zu Industrie 4.0 und Internet of Zhings '

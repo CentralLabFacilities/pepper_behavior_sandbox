@@ -30,7 +30,7 @@ setup(name="pepper_behavior_sandbox",
 
                                       "tests"]),
 
-      scripts=["tasks/itelligence_demo_2017.py","smach/pepper_smach_geniale_2017.py"],
+      scripts=["tasks/itelligence_demo_2017.py","smach/pepper_smach_geniale_2017.py","tasks/itelligence_demo_2017_2.py"],
 
       #package_data={'fsmtest': ['configuration/*']},
 
