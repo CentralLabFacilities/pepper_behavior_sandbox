@@ -8,8 +8,8 @@ class Talk(smach.State):
         self.textblock = textblock
         self.text = text
         if  self.textblock == 'greeting':
-            self.text = ['Hallo, ich bin Pepper! Herzlich willkommen auf der itelligence World 2017! Ich bin ein'
-                     ' Willkommen auf der itelligence World!.'
+            self.text = ['Hallo, ich bin Pepper! Herzlich willkommen auf der itelligence World 2017! Ich bin ein',
+                     ' Willkommen auf der itelligence World!.',
                      'Herzlich willkommen auf der itelligence World 2017! Mein Name ist Pepper.',
                      'Hallo, ich bin Pepper! Ich unterstütze derzeit die Forschung am CITEC der Universitae Bielefeld freue mich bei der itelligence World 2017 dabei sein zu dürfen.',
                      'Roboter und mit mir wird zur Zeit am CITEC der Universitaet Bielefeld geforscht.']
