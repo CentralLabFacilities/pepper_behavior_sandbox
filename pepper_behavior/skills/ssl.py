@@ -20,5 +20,10 @@ class Ssl(smach.State):
                 normed = normed -360
             elif normed < -180:
                 normed = normed + 360
+            if normed > 70:
+                normed = 70
+            if normed < -70:
+                normed = -70
+
             userdata.output_angle_horizontal = normed
         return 'success'
