@@ -6,7 +6,7 @@ class SpeechAnalyser(smach.State):
     def __init__(self, controller, wait=10):
         self.question = ['Pepper wie geht es dir',
                          'Pepper woher kommst du',
-                         'Pepper was kannst du alles tun',
+                         'Pepper was kannst du alles',
                          'Pepper was kann ich auf der itelligence World alles sehen']
         self.wait = wait
         self.controller = controller
