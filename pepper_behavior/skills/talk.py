@@ -16,7 +16,7 @@ class Talk(smach.State):
             self.text = [
                 'Mir geht es sehr gut. Ich freue mich heute auf der itelligence World dabei sein zu duerfen.',
                 'Ich wurde von Softbank Robotics entwickelt und bin darauf trainiert in unterschiedlichen '
-                'Mensch-Maschine Szenarien zu unterstuetzen. Ich arbeite zurzeit am CITEC der Universitaet '
+                'Mensch-Maschine Szenarien zu unterstuetzen. Ich arbeite zurzeit am CITEC der Universitaet ',
                 'Ich bin ein humanoider Roboter, der auf die Interaktion mit Menschen spezialisiert ist. Ich '
                 'erkenne Emotionen und kann auf die Emotionen von Menschen reagieren.',
                 'Wir zeigen Ihnen auf der itelligence World, wie smarte, innovative Loesungen Ihr Unternehmen fuer '
