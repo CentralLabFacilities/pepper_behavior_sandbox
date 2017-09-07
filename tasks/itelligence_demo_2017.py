@@ -71,7 +71,7 @@ def main():
             smach.StateMachine.add(
                 'MoveHead_left_idle',
                 MoveHeadPepper(_hv=look_vertical, _hh='left', controller=hc, wait=wait_timer_idle),
-                transitions={'success': 'MoveHead_center_idle'})
+                transitions={'success': 'Counter_animation_idle'})
 
             smach.StateMachine.add(
                 'Counter_animation_idle', Counter(numbers=2),
