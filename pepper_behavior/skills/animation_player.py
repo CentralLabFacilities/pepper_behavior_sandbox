@@ -3,12 +3,19 @@ import smach
 
 
 class AnimationPlayerPepper(smach.State):
-    def __init__(self, id, controller, wait=0):
+    def __init__(self, id, controller, wait=0, animationblock='greetings'):
         self.wait = wait
-        self.animation = ['animations/Stand/Gestures/Hey_1',
-                          'animations/Stand/Gestures/Hey_3',
-                          'animations/Stand/Gestures/Hey_4',
-                          'animations/Stand/Gestures/Hey_6']
+        self.animationblock = animationblock
+        if animationblock == 'greetings':
+            self.animation = ['animations/Stand/Gestures/Hey_1',
+                            'animations/Stand/Gestures/Hey_3',
+                            'animations/Stand/Gestures/Hey_4',
+                            'animations/Stand/Gestures/Hey_6']
+        else:
+            self.animation = ['animations/Stand/Gestures/Thinking_1',
+                              'animations/Stand/Gestures/Thinking_3',
+                              'animations/Stand/Gestures/Thinking_4',
+                              'animations/Stand/Gestures/Thinking_6']
         self.id = id
         if self.id:
             input_k = []

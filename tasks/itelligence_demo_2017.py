@@ -41,7 +41,7 @@ def main():
 
     wait_timer_idle = 5
     wait_timer_attention = 4
-    look_vertical = 'up'
+    look_vertical = 'drive'
 
     # Open the container
     with sm:
@@ -61,6 +61,7 @@ def main():
 
         with sm_idle:
             sm_idle.userdata.iteration = 0
+            sm_idle.userdata.animationiterator = 0
 
             smach.StateMachine.add(
                 'Counter_idle', Counter(numbers=1),
@@ -73,9 +74,21 @@ def main():
                 transitions={'success': 'MoveHead_center_idle'})
 
             smach.StateMachine.add(
+                'Counter_animation_idle', Counter(numbers=2),
+                transitions={'success': 'Animation_idle', 'end': 'Animation_idle'},
+                remapping={'counter_input': 'animationiterator', 'counter_output': 'animationiterator'})
+
+            smach.StateMachine.add(
+                'Animation_idle',
+                AnimationPlayerPepper(controller=animation_pub, animationblock='idle'),
+                transitions={'success': 'MoveHead_center_idle'}, remapping={'id': 'animationiterator'})
+
+            smach.StateMachine.add(
                 'MoveHead_center_idle',
                 MoveHeadPepper(_hv=look_vertical, _hh='center', controller=hc, wait=wait_timer_idle),
                 transitions={'success': 'MoveHead_right_idle'})
+
+
 
             smach.StateMachine.add(
                 'MoveHead_right_idle',
@@ -134,7 +147,7 @@ def main():
 
             smach.StateMachine.add(
                 'Animation',
-                AnimationPlayerPepper(controller=animation_pub, id=0),
+                AnimationPlayerPepper(controller=animation_pub),
                 transitions={'success': 'TalkWelcome'}, remapping={'id': 'iterationtext'})
 
             smach.StateMachine.add(

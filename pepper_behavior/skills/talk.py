@@ -11,18 +11,18 @@ class Talk(smach.State):
             self.text = ['Hallo, ich bin Pepper! Herzlich willkommen auf der itelligence World 2017! Ich bin ein',
                      ' Willkommen auf der itelligence World!.',
                      'Herzlich willkommen auf der itelligence World 2017! Mein Name ist Pepper.',
-                     'Hallo, ich bin Pepper! Ich unterstütze derzeit die Forschung am CITEC der Universitae Bielefeld freue mich bei der itelligence World 2017 dabei sein zu dürfen.',
-                     'Roboter und mit mir wird zur Zeit am CITEC der Universitaet Bielefeld geforscht.']
+                     'Hallo, ich bin Pepper! Ich unterstuetze derzeit die Forschung am CITEC der Universitaet Bielefeld freue mich bei der itelligence World 2017 dabei sein zu duerfen.',
+                     'Herzlich Willkommen, mein Name ist Pepper ich bin ein Roboter und mit mir wird zur Zeit am CITEC der Universitaet Bielefeld geforscht.']
         else:
             print('use second textblock')
             self.text = ['Wir haben dieses Jahr wieder eine Menge Demoszenarien zu Industrie 4.0 und Internet of Zhings '
-                     'Werfen Sie nach der Key-Note doch einfach mal einen Blick in unsere Ausstellung.',
+                     'Werfen Sie nach der Key-Note doch einfach mal einen Blick in unsere Ausstellung. Weitere Infos sehen sie hier.',
                      'Wir haben dieses Jahr wieder eine Menge Demoszenarien zu Industrie 4.0 und Internet of Zhings '
-                     'Werfen Sie nach der Key-Note doch einfach mal einen Blick in unsere Ausstellung.',
+                     'Werfen Sie nach der Key-Note doch einfach mal einen Blick in unsere Ausstellung. Weitere Infos sehen sie hier',
                      'Wir haben dieses Jahr wieder eine Menge Demoszenarien zu Industrie 4.0 und Internet of Zhings '
-                     'Werfen Sie nach der Key-Note doch einfach mal einen Blick in unsere Ausstellung.',
+                     'Werfen Sie nach der Key-Note doch einfach mal einen Blick in unsere Ausstellung. Weitere Infos sehen sie hier',
                      'Wir haben dieses Jahr wieder eine Menge Demoszenarien zu Industrie 4.0 und Internet of Zhings '
-                     'Werfen Sie nach der Key-Note doch einfach mal einen Blick in unsere Ausstellung.']
+                     'Werfen Sie nach der Key-Note doch einfach mal einen Blick in unsere Ausstellung. Weitere Infos sehen sie hier']
         self.say = text
         if self.id:
             input_k = []
