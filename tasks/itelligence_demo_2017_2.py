@@ -160,7 +160,7 @@ def main():
 
         smach.StateMachine.add(
             'Animation_answer',
-            AnimationPlayerPepper(controller=animation_pub, id=1, animationblock='stuff'),
+            AnimationPlayerPepper(controller=animation_pub, animation='animations/Stand/Gestures/ShowTablet_2'),
             transitions={'success': 'Question_Talk'})
 
 

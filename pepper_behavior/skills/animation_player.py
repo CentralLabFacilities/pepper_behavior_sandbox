@@ -3,9 +3,10 @@ import smach
 
 
 class AnimationPlayerPepper(smach.State):
-    def __init__(self, controller, id=None, wait=0, animationblock='greetings'):
+    def __init__(self, controller, id=None, wait=0, animationblock='greetings', animation=None):
         self.wait = wait
         self.animationblock = animationblock
+        self.animation = animation
         if animationblock == 'greetings':
             self.animation = ['animations/Stand/Gestures/Hey_3',
                             'animations/Stand/Gestures/Hey_1',
@@ -22,7 +23,7 @@ class AnimationPlayerPepper(smach.State):
                               'animations/Stand/Gestures/Thinking_4',
                               'animations/Stand/Gestures/Thinking_6']
         self.id = id
-        if self.id:
+        if self.id or self.animation:
             input_k = []
         else:
             input_k = ['id']
@@ -31,7 +32,10 @@ class AnimationPlayerPepper(smach.State):
 
     def execute(self, userdata):
         if self.id:
+            print("Animation: %s " % self.animation[userdata.id])
             self.pub.publish(self.animation[self.id])
+        elif self.animation:
+            self.pub.publish(self.animation)
         else:
             print("Animation: %s " % self.animation[userdata.id])
             self.pub.publish(self.animation[userdata.id])
