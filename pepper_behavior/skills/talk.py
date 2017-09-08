@@ -14,21 +14,21 @@ class Talk(smach.State):
                      'Herzlich Willkommen, mein Name ist Pepper ich bin ein sozialer Roboter und mit mir wird zur Zeit am ceitaek der Universitaet Bielefeld geforscht.']
         elif self.textblock == 'answer':
             self.text = [
-                'Mir geht es sehr gut. Ich freue mich heute auf der Messe dabei sein zu duerfen.',
-                'Ich wurde von Softbaenk Robotics entwickelt und bin darauf trainiert in unterschiedlichen.'
+                'Mir geht es sehr gut. Ich freue mich heute dabei zu sein.',
+                'Ich wurde von Softbaenk Robotics entwickelt und bin darauf trainiert in unterschiedlichen '
                 'Mensch-Maschine Szenarien zu unterstuetzen. Ich arbeite zurzeit am ceitaek der Universitaet Bielefeld. ',
-                'Ich bin ein sozialer Roboter, der auf die Interaktion mit Menschen speciahlisiert ist.',
+                'Ich bin ein sozialer Roboter, der auf die Interaktion mit Menschen spezialisiert ist.',
                 'Wir zeigen Ihnen auf der Messe, wie smarte, innovative Loesungen Ihr Unternehmen fuer '
                 'die digitale Zukunft vorbereiten.']
         else:
             self.text = ['Wir haben dieses Jahr wieder eine Menge Demoszenarien.'
-                     'Werfen Sie nach den Vortraegen doch einfach mal einen Blick in unsere Ausstellung. Weitere Infos sehen sie hier.',
+                     'Werfen Sie nach den Vortraegen doch einfach mal einen Blick in die Ausstellung. Weitere Infos sehen sie hier.',
                      'Wir haben dieses Jahr wieder eine Menge Demoszenarien. '
-                     'Werfen Sie nach den Vortraegen doch einfach mal einen Blick in unsere Ausstellung. Weitere Infos sehen sie hier',
+                     'Werfen Sie nach den Vortraegen doch einfach mal einen Blick in die Ausstellung. Weitere Infos sehen sie hier',
                      'Wir haben dieses Jahr wieder eine Menge Demoszenarien. '
-                     'Werfen Sie nach den Vortraegen doch einfach mal einen Blick in unsere Ausstellung. Weitere Infos sehen sie hier',
+                     'Werfen Sie nach den Vortraegen doch einfach mal einen Blick in die Ausstellung. Weitere Infos sehen sie hier',
                      'Wir haben dieses Jahr wieder eine Menge Demoszenarien. '
-                     'Werfen Sie nach den Vortraegen doch einfach mal einen Blick in unsere Ausstellung. Weitere Infos sehen sie hier']
+                     'Werfen Sie nach den Vortraegen doch einfach mal einen Blick in die Ausstellung. Weitere Infos sehen sie hier']
         self.say = text
         if self.id:
             input_k = []

@@ -159,8 +159,7 @@ def main():
                                transitions={'success': 'Question_Talk'})
 
         smach.StateMachine.add(
-            'Question_Talk', Talk(controller=tc, text='Wie gefaellt Ihnen die Messe mit Ihren '
-                                                      'Vortraegen, Workshops und der Ausstellung? Waehlen Sie das entsprechende Gesicht auf meinem Bildschirm aus.'),
+            'Question_Talk', Talk(controller=tc, text='Wie gefaellt Ihnen die Messe? Waehlen Sie das entsprechende Gesicht auf meinem Bildschirm aus.'),
             transitions={'success': 'listen_question'})
 
         smach.StateMachine.add('listen_question', SpeechAnalyser(controller=speechsensor, wait=10),
