@@ -31,9 +31,9 @@ class AnimationPlayerPepper(smach.State):
 
     def execute(self, userdata):
         if self.id:
-            self.pub.publish_animation(self.animation[self.id])
+            self.pub.publish(self.animation[self.id])
         else:
             print("Animation: %s " % self.animation[userdata.id])
-            self.pub.publish_animation(self.animation[userdata.id])
+            self.pub.publish(self.animation[userdata.id])
         rospy.sleep(self.wait)
         return 'success'

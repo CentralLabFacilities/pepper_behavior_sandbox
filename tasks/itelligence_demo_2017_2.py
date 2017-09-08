@@ -14,6 +14,7 @@ from pepper_behavior.skills.talk import Talk
 from pepper_behavior.skills.ssl import Ssl
 from pepper_behavior.skills.point import LeftArmGesture
 from pepper_behavior.skills.SpeechAnalyser import SpeechAnalyser
+from pepper_behavior.skills.state_publisher import StatePublisher
 
 from pepper_behavior.actuators.head_control import HeadControlPepper
 from pepper_behavior.actuators.talk import TalkControllerPepper
@@ -33,6 +34,7 @@ def main():
     tc = TalkControllerPepper(sim=simulation)
     ps = PersonSensor()
     animation_pub = RosStringPub('/pepper/animation_player')
+    st = RosStringPub('/pepper/smach/state')
 
     rospy.sleep(1)
 
@@ -49,6 +51,8 @@ def main():
         smach.StateMachine.add(
             'Init_Talk', Talk(controller=tc, text='Demo startet.'),
             transitions={'success': 'MoveHead_init'})
+
+        smach.StateMachine.add('Init_state', StatePublisher(st, 'init'), transitions={'success': 'MoveHead_init'})
 
         smach.StateMachine.add(
             'MoveHead_init',
@@ -75,6 +79,8 @@ def main():
             'Welcome_Talk', Talk(controller=tc, text='Hallo, ich bin Pepper ! Herzlich willkommen auf der itelligence World '
                                                   '2017!'), transitions={'success': 'listen'})
 
+        smach.StateMachine.add('listen_state', StatePublisher(st, 'listen_mode'), transitions={'success': 'listen'})
+
         smach.StateMachine.add('listen', SpeechAnalyser(controller=speechsensor,wait=10),
                                transitions={'success':'Animation_talking', 'no_cmd':'CalculatePersonPosition_saveback'},
                                remapping={'msg_output': 'answer_id'})
@@ -85,6 +91,7 @@ def main():
                          'no_person_found': 'MoveHead_init'},
             remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
 
+        smach.StateMachine.add('answer_state', StatePublisher(st, 'answer_mode'), transitions={'success': 'MoveHead_init'})
 
         smach.StateMachine.add(
             'Animation_talking',

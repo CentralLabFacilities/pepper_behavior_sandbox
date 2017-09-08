@@ -15,7 +15,6 @@ class TalkControllerPepper:
         rospy.loginfo("Connected to Speech Client.")
 
     def say_something(self, _text):
-        print("say")
         tts_goal = SpeechWithFeedbackGoal()
         tts_goal.say = _text
 

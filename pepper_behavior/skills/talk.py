@@ -22,7 +22,6 @@ class Talk(smach.State):
                 'Wir zeigen Ihnen auf der eitellijnz\\eos=1\\ woerld 2017, wie smarte, innovative Loesungen Ihr Unternehmen fuer '
                 'die digitale Zukunft vorbereiten.']
         else:
-            print('use second textblock')
             self.text = ['Wir haben dieses Jahr wieder eine Menge Demoszenarien zu Industrie 4.0 und Internet of Zhings. '
                      'Werfen Sie nach der Key-Node doch einfach mal einen Blick in unsere Ausstellung. Weitere Infos sehen sie hier.',
                      'Wir haben dieses Jahr wieder eine Menge Demoszenarien zu Industrie 4.0 und Internet of Zhings. '

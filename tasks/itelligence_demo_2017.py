@@ -13,6 +13,7 @@ from pepper_behavior.skills.move_head import MoveHeadPepper
 from pepper_behavior.skills.talk import Talk
 from pepper_behavior.skills.ssl import Ssl
 from pepper_behavior.skills.point import LeftArmGesture
+from pepper_behavior.skills.state_publisher import StatePublisher
 
 from pepper_behavior.actuators.head_control import HeadControlPepper
 from pepper_behavior.actuators.talk import TalkControllerPepper
@@ -32,6 +33,7 @@ def main():
     lac = LeftArmControlPepper()
     rs_ssl = RosSub(dataType=Float64, scope='/pepper_robot/ssl/angle')
     animation_pub = RosStringPub('/pepper/animation_player')
+    st = RosStringPub('/pepper/smach/state')
 
     rospy.sleep(1)
 
@@ -47,7 +49,9 @@ def main():
     with sm:
         smach.StateMachine.add(
             'Init_Talk', Talk(controller=tc, text='Demo startet.'),
-            transitions={'success': 'Iterate'})
+            transitions={'success': 'Init_state'})
+
+        smach.StateMachine.add('Init_state', StatePublisher(st,'init'),transitions={'success': 'Iterate'})
 
         smach.StateMachine.add(
             'Iterate', Iterate(iterationsteps=3),
@@ -62,6 +66,8 @@ def main():
         with sm_idle:
             sm_idle.userdata.iteration = 0
             sm_idle.userdata.animationiterator = 0
+
+            smach.StateMachine.add('idle_state', StatePublisher(st, 'idle_mode'), transitions={'success': 'Counter_idle'})
 
             smach.StateMachine.add(
                 'Counter_idle', Counter(numbers=1),
@@ -126,6 +132,8 @@ def main():
             sm_attention.userdata.vertical_angle = 0.0
             sm_attention.userdata.horizontal_angle = 0.0
             sm_attention.userdata.iterationtext = 0
+
+            smach.StateMachine.add('attention_state', StatePublisher(st, 'attention_mode'), transitions={'success': 'Iterate'})
 
             smach.StateMachine.add(
                 'Iterate', Iterate(iterationsteps=4),
@@ -202,6 +210,8 @@ def main():
         with sm_look:
             sm_look.userdata.iteration = 0
             sm_look.userdata.horizontal_direction = 0.0
+
+            smach.StateMachine.add('look_state', StatePublisher(st, 'look_mode'), transitions={'success': 'pre_ssl'})
 
             smach.StateMachine.add(
                 'pre_ssl', MoveHeadPepper(controller=hc,_hh='center', _hv='up', wait=2, speed=0.05),

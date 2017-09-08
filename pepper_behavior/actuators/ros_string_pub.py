@@ -8,6 +8,6 @@ class RosStringPub:
         self.pub = rospy.Publisher(scope, String, queue_size=1)
         rospy.loginfo("Connected to %s." % scope)
 
-    def publish_animation(self, animation):
-        result = self.pub.publish(animation)
+    def publish(self, string):
+        result = self.pub.publish(string)
         return result
