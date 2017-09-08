@@ -99,8 +99,8 @@ def main():
 
         smach.StateMachine.add(
             'CalculatePersonPosition_saveback', CalculatePersonPosition(controller=ps, max_distance=1.5),
-            transitions={'success': 'LookToPerson_saveback', 'repeat': 'MoveHead_init',
-                         'no_person_found': 'MoveHead_init'},
+            transitions={'success': 'LookToPerson_saveback', 'repeat': 'CalculatePersonPosition_saveback',
+                         'no_person_found': 'search_state'},
             remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
 
         smach.StateMachine.add(
@@ -108,7 +108,9 @@ def main():
             transitions={'success': 'listen'},
             remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
-        smach.StateMachine.add('answer_state', StatePublisher(st, 'answer_mode'), transitions={'success': 'LookToPerson_saveback'})
+        smach.StateMachine.add('search_state', StatePublisher(st, 'search_mode'), transitions={'success': 'MoveHead_init'})
+
+        smach.StateMachine.add('answer_state', StatePublisher(st, 'answer_mode'), transitions={'success': 'CalculatePersonPosition_answer'})
 
         smach.StateMachine.add(
             'CalculatePersonPosition_answer', CalculatePersonPosition(controller=ps, max_distance=1.5),
@@ -118,7 +120,7 @@ def main():
 
         smach.StateMachine.add(
             'LookToPerson_answer', MoveHeadPepper(controller=hc, wait=1),
-            transitions={'success': 'listen'},
+            transitions={'success': 'Animation_talking'},
             remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
         smach.StateMachine.add(
