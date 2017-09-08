@@ -6,7 +6,7 @@ class AnimationPlayerPepper(smach.State):
     def __init__(self, controller, id=None, wait=0, animationblock='greetings', animation=None):
         self.wait = wait
         self.animationblock = animationblock
-        self.animation = animation
+        self.animationtxt = animation
         if animationblock == 'greetings':
             self.animation = ['animations/Stand/Gestures/Hey_3',
                             'animations/Stand/Gestures/Hey_1',
@@ -34,7 +34,7 @@ class AnimationPlayerPepper(smach.State):
         if self.id:
             self.pub.publish(self.animation[self.id])
         elif self.animation:
-            self.pub.publish(self.animation)
+            self.pub.publish(self.animationtxt)
         else:
             print("Animation: %s " % self.animation[userdata.id])
             self.pub.publish(self.animation[userdata.id])

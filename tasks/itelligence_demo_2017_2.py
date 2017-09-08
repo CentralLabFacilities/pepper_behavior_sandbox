@@ -54,7 +54,7 @@ def main():
             'Init_Talk', Talk(controller=tc, text='Demo startet.'),
             transitions={'success': 'Init_state'})
 
-        smach.StateMachine.add('Init_state', StatePublisher(st, 'init', colorcontroller=cc, color='FaceLeds:blue'),
+        smach.StateMachine.add('Init_state', StatePublisher(st, 'init', colorcontroller=cc, color='FaceLeds:cyan'),
                                transitions={'success': 'MoveHead_init'})
 
         smach.StateMachine.add(
@@ -82,7 +82,7 @@ def main():
             'Welcome_Talk', Talk(controller=tc, text='Hallo, ich bin Pepper ! Herzlich willkommen auf der Messe.'),
             transitions={'success': 'listen_state'})
 
-        smach.StateMachine.add('listen_state', StatePublisher(st, 'listen_mode', colorcontroller=cc, color='FaceLeds:green'),
+        smach.StateMachine.add('listen_state', StatePublisher(st, 'listen_mode', colorcontroller=cc, color='FaceLeds:cyan'),
                                transitions={'success': 'CalculatePersonPosition_save'})
 
         smach.StateMachine.add(
@@ -120,7 +120,7 @@ def main():
             transitions={'success': 'listen'},
             remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
-        smach.StateMachine.add('search_state', StatePublisher(st, 'search_mode', colorcontroller=cc, color='FaceLeds:blue'),
+        smach.StateMachine.add('search_state', StatePublisher(st, 'search_mode', colorcontroller=cc, color='FaceLeds:cyan'),
                                transitions={'success': 'Counter_answers_reset'})
 
         smach.StateMachine.add(
@@ -129,7 +129,7 @@ def main():
             remapping={'counter_input': 'answer_counter', 'counter_output': 'answer_counter'})
 
 
-        smach.StateMachine.add('answer_state', StatePublisher(st, 'answer_mode', colorcontroller=cc, color='FaceLeds:yellow'),
+        smach.StateMachine.add('answer_state', StatePublisher(st, 'answer_mode', colorcontroller=cc, color='FaceLeds:cyan'),
                                transitions={'success': 'CalculatePersonPosition_answer'})
 
         smach.StateMachine.add(
@@ -155,7 +155,7 @@ def main():
             Talk(controller=tc, textblock='answer'), transitions={'success': 'listen_state'},
             remapping={'id': 'answer_id'})
 
-        smach.StateMachine.add('question_state', StatePublisher(st, 'question_mode', colorcontroller=cc, color='FaceLeds:white'),
+        smach.StateMachine.add('question_state', StatePublisher(st, 'question_mode', colorcontroller=cc, color='FaceLeds:cyan'),
                                transitions={'success': 'Animation_answer'})
 
         smach.StateMachine.add(
