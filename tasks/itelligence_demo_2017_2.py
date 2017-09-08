@@ -77,10 +77,21 @@ def main():
             transitions={'success': 'Welcome_Talk'})
 
         smach.StateMachine.add(
-            'Welcome_Talk', Talk(controller=tc, text='Hallo, ich bin Pepper ! Herzlich willkommen auf der itelligence World '
-                                                  '2017!'), transitions={'success': 'listen_state'})
+            'Welcome_Talk', Talk(controller=tc, text='Hallo, ich bin Pepper ! Herzlich willkommen auf der '
+                                                     'Eitellijnz \\eos=1\\Woerld 2017.'), transitions={'success': 'listen_state'})
 
-        smach.StateMachine.add('listen_state', StatePublisher(st, 'listen_mode'), transitions={'success': 'listen'})
+        smach.StateMachine.add('listen_state', StatePublisher(st, 'listen_mode'), transitions={'success': 'CalculatePersonPosition_save'})
+
+        smach.StateMachine.add(
+            'CalculatePersonPosition_save', CalculatePersonPosition(controller=ps, max_distance=1.5),
+            transitions={'success': 'LookToPerson_save', 'repeat': 'LookToPerson_save',
+                         'no_person_found': 'LookToPerson_save'},
+            remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
+
+        smach.StateMachine.add(
+            'LookToPerson_save', MoveHeadPepper(controller=hc, wait=1),
+            transitions={'success': 'listen'},
+            remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
         smach.StateMachine.add('listen', SpeechAnalyser(controller=speechsensor,wait=10),
                                transitions={'success':'answer_state', 'no_cmd':'CalculatePersonPosition_saveback'},
