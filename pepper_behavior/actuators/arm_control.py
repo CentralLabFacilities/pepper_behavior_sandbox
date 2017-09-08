@@ -10,14 +10,10 @@ class LeftArmControlPepper:
         rospy.loginfo("Connected to Arm Control.")
 
     def set_arm(self, gesture):
-        if gesture == 'test':
-            self.position.joint_names = ['RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll', 'RWristYaw', 'RHand']
-            self.position.joint_angles = [math.radians(3.6), math.radians(-57.0), math.radians(66.0), math.radians(-20.9),
-                                      math.radians(31.1), 0.95]
-        elif gesture == 'demo':
-            self.position.joint_names = ['RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll', 'RWristYaw', 'RHand']
+        if gesture == 'demo':
+            self.position.joint_names = ['RShoulderPitch', 'RShoulderRoll', 'RElbowYaw', 'RElbowRoll', 'RWristYaw']
             self.position.joint_angles = [math.radians(3.6), math.radians(-57.0), math.radians(66.0), math.radians(20.9),
-                                      math.radians(31.1), 0.95]
+                                      math.radians(31.1)]
         else:
             return 'unknown_gesture'
         self.position.speed = 0.1
