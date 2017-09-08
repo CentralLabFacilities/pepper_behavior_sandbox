@@ -8,18 +8,18 @@ class Talk(smach.State):
         self.textblock = textblock
         self.text = text
         if  self.textblock == 'greeting':
-            self.text = ['Herzlich Willkommen, mein Name ist Pepper ich bin ein Roboter und mit mir wird zur Zeit am CITEC der Universitaet Bielefeld geforscht.',
-                     'Herzlich willkommen auf der \\readmode=word\\eitellijnz\\readmoed=sent\\woerld 2017! Mein Name ist Pepper.',
-                     'Hallo, ich bin Pepper! Ich unterstuetze derzeit die Forschung am CITEC der Universitaet Bielefeld und freue mich bei der \\readmode=word\\eitellijnz\\readmoed=sent\\woerld 2017 dabei sein zu duerfen.',
-                     'Herzlich Willkommen, mein Name ist Pepper ich bin ein Roboter und mit mir wird zur Zeit am CITEC der Universitaet Bielefeld geforscht.']
+            self.text = ['Herzlich Willkommen, mein Name ist Pepper ich bin ein Roboter und mit mir wird zur Zeit am ceitaek der Universitaet Bielefeld geforscht.',
+                     'Herzlich willkommen auf der \\readmode=word\\eitellijnz\\readmoed=sent\\ woerld 2017! Mein Name ist Pepper.',
+                     'Hallo, ich bin Pepper! Ich unterstuetze derzeit die Forschung am ceitaek der Universitaet Bielefeld und freue mich bei der \\readmode=word\\eitellijnz\\readmoed=sent\\ woerld 2017 dabei sein zu duerfen.',
+                     'Herzlich Willkommen, mein Name ist Pepper ich bin ein Roboter und mit mir wird zur Zeit am ceitaek der Universitaet Bielefeld geforscht.']
         elif self.textblock == 'answer':
             self.text = [
-                'Mir geht es sehr gut. Ich freue mich heute auf der \\readmode=word\\eitellijnz\\readmoed=sent\\woerld dabei sein zu duerfen.',
+                'Mir geht es sehr gut. Ich freue mich heute auf der \\readmode=word\\eitellijnz\\readmoed=sent\\ woerld dabei sein zu duerfen.',
                 'Ich wurde von Softbank Robotics entwickelt und bin darauf trainiert in unterschiedlichen '
-                'Mensch-Maschine Szenarien zu unterstuetzen. Ich arbeite zurzeit am CITEC der Universitaet ',
+                'Mensch-Maschine Szenarien zu unterstuetzen. Ich arbeite zurzeit am ceitaek der Universitaet ',
                 'Ich bin ein humanoider Roboter, der auf die Interaktion mit Menschen spezialisiert ist. Ich '
                 'erkenne Emotionen und kann auf die Emotionen von Menschen reagieren.',
-                'Wir zeigen Ihnen auf der \\readmode=word\\eitellijnz\\readmoed=sent\\woerld, wie smarte, innovative Loesungen Ihr Unternehmen fuer '
+                'Wir zeigen Ihnen auf der \\readmode=word\\eitellijnz\\readmoed=sent\\ woerld, wie smarte, innovative Loesungen Ihr Unternehmen fuer '
                 'die digitale Zukunft vorbereiten.']
         else:
             print('use second textblock')
