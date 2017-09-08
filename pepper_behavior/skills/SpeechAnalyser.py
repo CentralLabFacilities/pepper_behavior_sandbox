@@ -8,9 +8,9 @@ class SpeechAnalyser(smach.State):
         self.question = ['Pepper wie geht es dir',
                          'Pepper woher kommst du',
                          'Pepper was kannst du alles',
-                         'Pepper was kann ich auf der itelligence World alles sehen'
-                         'Wieso ist c eine schoene sprache'
-                         'wieviele bits hat ein byte'
+                         'Pepper was kann ich auf der itelligence World alles sehen',
+                         'Wieso ist c eine schoene sprache',
+                         'wieviele bits hat ein byte',
                          'wie lauten die drei gesetze der robotik']
         self.wait = wait
         self.controller = controller
