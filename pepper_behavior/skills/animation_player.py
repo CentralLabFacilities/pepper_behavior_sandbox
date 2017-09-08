@@ -32,7 +32,6 @@ class AnimationPlayerPepper(smach.State):
 
     def execute(self, userdata):
         if self.id:
-            print("Animation: %s " % self.animation[userdata.id])
             self.pub.publish(self.animation[self.id])
         elif self.animation:
             self.pub.publish(self.animation)
