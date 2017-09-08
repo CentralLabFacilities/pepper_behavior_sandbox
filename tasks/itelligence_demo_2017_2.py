@@ -99,7 +99,7 @@ def main():
 
         smach.StateMachine.add(
             'CalculatePersonPosition_saveback', CalculatePersonPosition(controller=ps, max_distance=1.5),
-            transitions={'success': 'LookToPerson_saveback', 'repeat': 'CalculatePersonPosition_saveback',
+            transitions={'success': 'LookToPerson_saveback', 'repeat': 'MoveHead_init',
                          'no_person_found': 'MoveHead_init'},
             remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
 
