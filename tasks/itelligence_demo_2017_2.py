@@ -87,10 +87,15 @@ def main():
                                remapping={'msg_output': 'answer_id'})
 
         smach.StateMachine.add(
-            'CalculatePersonPosition_saveback', CalculatePersonPosition(controller=ps, max_distance=1.0),
-            transitions={'success': 'listen', 'repeat': 'CalculatePersonPosition_saveback',
+            'CalculatePersonPosition_saveback', CalculatePersonPosition(controller=ps, max_distance=1.5),
+            transitions={'success': 'LookToPerson_saveback', 'repeat': 'CalculatePersonPosition_saveback',
                          'no_person_found': 'MoveHead_init'},
             remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
+
+        smach.StateMachine.add(
+            'LookToPerson_saveback', MoveHeadPepper(controller=hc, wait=1),
+            transitions={'success': 'listen'},
+            remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
         smach.StateMachine.add('answer_state', StatePublisher(st, 'answer_mode'), transitions={'success': 'MoveHead_init'})
 
