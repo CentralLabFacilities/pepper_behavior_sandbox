@@ -33,9 +33,9 @@ def main():
     hc = HeadControlPepper()
     tc = TalkControllerPepper(sim=simulation)
     ps = PersonSensor()
-    animation_pub = RosStringPub('/pepper/animation_player')
+    animation_pub = RosStringPub('/pepper_robot/animation_player')
     st = RosStringPub('/pepper_robot/smach/state')
-    cc = RosStringPub('/pepper_robot/eye/color')
+    cc = RosStringPub('/pepper_robot/leds')
 
     rospy.sleep(1)
 
@@ -54,7 +54,7 @@ def main():
             'Init_Talk', Talk(controller=tc, text='Demo startet.'),
             transitions={'success': 'Init_state'})
 
-        smach.StateMachine.add('Init_state', StatePublisher(st, 'init', colorcontroller=cc, color='blue'),
+        smach.StateMachine.add('Init_state', StatePublisher(st, 'init', colorcontroller=cc, color='FaceLeds:blue'),
                                transitions={'success': 'MoveHead_init'})
 
         smach.StateMachine.add(
@@ -83,7 +83,7 @@ def main():
                                                      'Eitellijnz \\eos=1\\Woerld 2017.'),
             transitions={'success': 'listen_state'})
 
-        smach.StateMachine.add('listen_state', StatePublisher(st, 'listen_mode', colorcontroller=cc, color='green'),
+        smach.StateMachine.add('listen_state', StatePublisher(st, 'listen_mode', colorcontroller=cc, color='FaceLeds:green'),
                                transitions={'success': 'CalculatePersonPosition_save'})
 
         smach.StateMachine.add(
@@ -121,10 +121,16 @@ def main():
             transitions={'success': 'listen'},
             remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
-        smach.StateMachine.add('search_state', StatePublisher(st, 'search_mode', colorcontroller=cc, color='blue'),
-                               transitions={'success': 'MoveHead_init'})
+        smach.StateMachine.add('search_state', StatePublisher(st, 'search_mode', colorcontroller=cc, color='FaceLeds:blue'),
+                               transitions={'success': 'Counter_answers_reset'})
 
-        smach.StateMachine.add('answer_state', StatePublisher(st, 'answer_mode', colorcontroller=cc, color='yellow'),
+        smach.StateMachine.add(
+            'Counter_answers_reset', Counter(numbers=3,reset=True),
+            transitions={'success': 'MoveHead_init', 'end': 'MoveHead_init'},
+            remapping={'counter_input': 'answer_counter', 'counter_output': 'answer_counter'})
+
+
+        smach.StateMachine.add('answer_state', StatePublisher(st, 'answer_mode', colorcontroller=cc, color='FaceLeds:yellow'),
                                transitions={'success': 'CalculatePersonPosition_answer'})
 
         smach.StateMachine.add(
@@ -150,7 +156,7 @@ def main():
             Talk(controller=tc, textblock='answer'), transitions={'success': 'listen_state'},
             remapping={'id': 'answer_id'})
 
-        smach.StateMachine.add('question_state', StatePublisher(st, 'question_mode', colorcontroller=cc, color='white'),
+        smach.StateMachine.add('question_state', StatePublisher(st, 'question_mode', colorcontroller=cc, color='FaceLeds:white'),
                                transitions={'success': 'Question_Talk'})
 
         smach.StateMachine.add(
@@ -164,7 +170,12 @@ def main():
 
         smach.StateMachine.add(
             'Question_Talk_answer', Talk(controller=tc, text='Vielen Dank fuer ihre Antwort. Ich beantworte gerne weitere Fragen.'),
-            transitions={'success': 'listen_state'})
+            transitions={'success': 'Counter_answers_reset_2'})
+
+        smach.StateMachine.add(
+            'Counter_answers_reset_2', Counter(numbers=3, reset=True),
+            transitions={'success': 'listen_state', 'end': 'listen_state'},
+            remapping={'counter_input': 'answer_counter', 'counter_output': 'answer_counter'})
 
     # Introspection viewer
     sis = smach_ros.IntrospectionServer('server_name', sm, '/ITELLIGENCE')
