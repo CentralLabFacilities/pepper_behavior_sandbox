@@ -5,12 +5,16 @@ import math
 
 
 class CalculatePersonPosition(smach.State):
-    def __init__(self, controller, max_distance=2.5):
+    def __init__(self, controller, max_distance=2.5, onlyhorizontal = False):
         self.person_sensor = controller
         self.max_distance = max_distance
         self.counter = 0
         self.tf = tf.TransformListener()
-        smach.State.__init__(self, outcomes=['success', 'repeat', 'no_person_found'],
+        input = []
+        self.onlyhorizontal = onlyhorizontal
+        if onlyhorizontal:
+            input = ['old_vertical']
+        smach.State.__init__(self, input_keys=input, outcomes=['success', 'repeat', 'no_person_found'],
                              output_keys=['person_angle_vertical', 'person_angle_horizontal'])
 
     def execute(self, userdata):
@@ -35,7 +39,10 @@ class CalculatePersonPosition(smach.State):
         if self.pose:
             (vertical, horizontal) = rotation(self.pose)
             self.counter = 0
-            userdata.person_angle_vertical = vertical
+            if self.onlyhorizontal:
+                userdata.person_angle_vertical = userdata.old_vertical
+            else:
+                userdata.person_angle_vertical = vertical
             userdata.person_angle_horizontal = horizontal
             return 'success'
         elif self.counter > 5:

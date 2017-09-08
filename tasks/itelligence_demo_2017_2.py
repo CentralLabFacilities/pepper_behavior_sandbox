@@ -83,10 +83,10 @@ def main():
         smach.StateMachine.add('listen_state', StatePublisher(st, 'listen_mode'), transitions={'success': 'CalculatePersonPosition_save'})
 
         smach.StateMachine.add(
-            'CalculatePersonPosition_save', CalculatePersonPosition(controller=ps, max_distance=1.5),
+            'CalculatePersonPosition_save', CalculatePersonPosition(controller=ps, max_distance=1.5,onlyhorizontal=True),
             transitions={'success': 'LookToPerson_save', 'repeat': 'LookToPerson_save',
                          'no_person_found': 'LookToPerson_save'},
-            remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
+            remapping={'old_vertical':'vertical_angle','person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
 
         smach.StateMachine.add(
             'LookToPerson_save', MoveHeadPepper(controller=hc, wait=0),
@@ -98,10 +98,10 @@ def main():
                                remapping={'msg_output': 'answer_id'})
 
         smach.StateMachine.add(
-            'CalculatePersonPosition_saveback', CalculatePersonPosition(controller=ps, max_distance=1.5),
+            'CalculatePersonPosition_saveback', CalculatePersonPosition(controller=ps, max_distance=1.5,onlyhorizontal=True),
             transitions={'success': 'LookToPerson_saveback', 'repeat': 'CalculatePersonPosition_saveback',
                          'no_person_found': 'search_state'},
-            remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
+            remapping={'old_vertical':'vertical_angle','person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
 
         smach.StateMachine.add(
             'LookToPerson_saveback', MoveHeadPepper(controller=hc, wait=0),
@@ -113,10 +113,10 @@ def main():
         smach.StateMachine.add('answer_state', StatePublisher(st, 'answer_mode'), transitions={'success': 'CalculatePersonPosition_answer'})
 
         smach.StateMachine.add(
-            'CalculatePersonPosition_answer', CalculatePersonPosition(controller=ps, max_distance=1.5),
+            'CalculatePersonPosition_answer', CalculatePersonPosition(controller=ps, max_distance=1.5,onlyhorizontal=True),
             transitions={'success': 'LookToPerson_answer', 'repeat': 'LookToPerson_answer',
                          'no_person_found': 'LookToPerson_answer'},
-            remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
+            remapping={'old_vertical':'vertical_angle','person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
 
         smach.StateMachine.add(
             'LookToPerson_answer', MoveHeadPepper(controller=hc, wait=0),
