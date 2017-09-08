@@ -169,12 +169,18 @@ def main():
             transitions={'success': 'listen_question'})
 
         smach.StateMachine.add('listen_question', SpeechAnalyser(controller=speechsensor, wait=10),
-                               transitions={'success': 'Question_Talk_answer', 'reset':'search_state', 'no_cmd': 'CalculatePersonPosition_saveback'},
+                               transitions={'success': 'Animation_answer_end', 'reset':'search_state', 'no_cmd': 'CalculatePersonPosition_saveback'},
                                remapping={'msg_output': 'useless'})
+
+        smach.StateMachine.add(
+            'Animation_answer_end',
+            AnimationPlayerPepper(controller=animation_pub, animation='animations/Stand/Gestures/Thinking_4'),
+            transitions={'success': 'Question_Talk_answer'})
 
         smach.StateMachine.add(
             'Question_Talk_answer', Talk(controller=tc, text='Vielen Dank fuer ihre Antwort. Ich beantworte gerne weitere Fragen.'),
             transitions={'success': 'Counter_answers_reset_2'})
+
 
         smach.StateMachine.add(
             'Counter_answers_reset_2', Counter(numbers=3, reset=True),
