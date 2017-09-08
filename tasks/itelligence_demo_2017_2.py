@@ -34,7 +34,7 @@ def main():
     tc = TalkControllerPepper(sim=simulation)
     ps = PersonSensor()
     animation_pub = RosStringPub('/pepper/animation_player')
-    st = RosStringPub('/pepper/smach/state')
+    st = RosStringPub('/pepper_robot/smach/state')
 
     rospy.sleep(1)
 
