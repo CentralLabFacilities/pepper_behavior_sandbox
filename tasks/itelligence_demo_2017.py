@@ -47,7 +47,12 @@ def main():
     with sm:
         smach.StateMachine.add(
             'Init_Talk', Talk(controller=tc, text='Demo startet.'),
-            transitions={'success': 'Iterate'})
+            transitions={'success': 'Point_test'})
+
+        smach.StateMachine.add(
+            'Point_test', LeftArmGesture(controller=lac, gesture='point_demo', wait=6),
+            transitions={'success': 'Iterate',
+                         'unknown_gesture': 'Iterate'})
 
         smach.StateMachine.add(
             'Iterate', Iterate(iterationsteps=3),
