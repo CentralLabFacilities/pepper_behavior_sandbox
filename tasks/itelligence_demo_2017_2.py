@@ -89,7 +89,7 @@ def main():
             remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
 
         smach.StateMachine.add(
-            'LookToPerson_save', MoveHeadPepper(controller=hc, wait=1),
+            'LookToPerson_save', MoveHeadPepper(controller=hc, wait=0),
             transitions={'success': 'listen'},
             remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
@@ -104,7 +104,7 @@ def main():
             remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
 
         smach.StateMachine.add(
-            'LookToPerson_saveback', MoveHeadPepper(controller=hc, wait=1),
+            'LookToPerson_saveback', MoveHeadPepper(controller=hc, wait=0),
             transitions={'success': 'listen'},
             remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
@@ -119,7 +119,7 @@ def main():
             remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
 
         smach.StateMachine.add(
-            'LookToPerson_answer', MoveHeadPepper(controller=hc, wait=1),
+            'LookToPerson_answer', MoveHeadPepper(controller=hc, wait=0),
             transitions={'success': 'Animation_talking'},
             remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 

@@ -29,7 +29,6 @@ class CalculatePersonPosition(smach.State):
                     self.pose = p.pose
                 except Exception:
                     print("Exception")
-                    rospy.sleep(2)
                     return 'repeat'
             if dist > self.max_distance and self.max_distance == self.dist:
                 print('Detected person to far away. Distance: %s ' % dist)
@@ -43,7 +42,7 @@ class CalculatePersonPosition(smach.State):
             self.counter = 0
             return 'no_person_found'
         else:
-            rospy.sleep(2)
+            rospy.sleep(1)
             self.counter = self.counter + 1
             return 'repeat'
 
