@@ -11,7 +11,7 @@ class LeftArmControlPepper:
 
     def set_arm(self, gesture):
         if gesture == 'test':
-            self.position.joint_names = ['LShoulderPitch', 'LShoulderRoll', 'LElbowYaw', 'LElbowRoll', 'LWristYaw']
+            self.position.joint_names = ['LShoulderPitch', 'LShoulderRoll', 'LElbowYaw', 'LElbowRoll', 'LWristYaw', 'RHand']
             self.position.joint_angles = [math.radians(3.6), math.radians(-57.0), math.radians(66.0), math.radians(-20.9),
                                       math.radians(31.1), 0.95]
         elif gesture == 'demo':
