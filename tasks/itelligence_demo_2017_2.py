@@ -156,7 +156,13 @@ def main():
             remapping={'id': 'answer_id'})
 
         smach.StateMachine.add('question_state', StatePublisher(st, 'question_mode', colorcontroller=cc, color='FaceLeds:white'),
-                               transitions={'success': 'Question_Talk'})
+                               transitions={'success': 'Animation_answer'})
+
+        smach.StateMachine.add(
+            'Animation_answer',
+            AnimationPlayerPepper(controller=animation_pub, id=1, animationblock='stuff'),
+            transitions={'success': 'Question_Talk'})
+
 
         smach.StateMachine.add(
             'Question_Talk', Talk(controller=tc, text='Wie gefaellt Ihnen die Messe? Waehlen Sie das entsprechende Gesicht auf meinem Bildschirm aus.'),
