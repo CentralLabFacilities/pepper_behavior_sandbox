@@ -17,8 +17,7 @@ class Talk(smach.State):
                 'Mir geht es sehr gut. Ich freue mich heute auf der eitellijnz\\eos=1\\ woerld 2017 dabei sein zu duerfen.',
                 'Ich wurde von Softbaenk Robotics entwickelt und bin darauf trainiert in unterschiedlichen.'
                 'Mensch-Maschine Szenarien zu unterstuetzen. Ich arbeite zurzeit am ceitaek der Universitaet Bielefeld. ',
-                'Ich bin ein sozialer Roboter, der auf die Interaktion mit Menschen speciahlisiert ist. Ich '
-                'erkenne Emotionen und kann auf die Emotionen von Menschen reagieren.',
+                'Ich bin ein sozialer Roboter, der auf die Interaktion mit Menschen speciahlisiert ist.',
                 'Wir zeigen Ihnen auf der eitellijnz\\eos=1\\ woerld 2017, wie smarte, innovative Loesungen Ihr Unternehmen fuer '
                 'die digitale Zukunft vorbereiten.']
         else:
