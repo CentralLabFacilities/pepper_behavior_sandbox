@@ -23,7 +23,7 @@ class AnimationPlayerPepper(smach.State):
                               'animations/Stand/Gestures/Thinking_4',
                               'animations/Stand/Gestures/Thinking_6']
         self.id = id
-        if self.id or self.animation:
+        if self.id or self.animationtxt:
             input_k = []
         else:
             input_k = ['id']
