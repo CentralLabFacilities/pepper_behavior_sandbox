@@ -23,12 +23,16 @@ class Iterate(smach.State):
 
 
 class Counter(smach.State):
-    def __init__(self, numbers):
+    def __init__(self, numbers, reset=False):
+        self.reset = reset
         self.diff_outputs = numbers
         out = ['success', 'end']
         smach.State.__init__(self, outcomes=out, input_keys=['counter_input'], output_keys=['counter_output'])
 
     def execute(self, userdata):
+        if self.reset == True:
+            userdata.counter_output = 0
+            return 'success'
         nextmode = userdata.counter_input + 1
         if nextmode > self.diff_outputs:
             nextmode = 0

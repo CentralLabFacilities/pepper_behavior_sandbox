@@ -35,6 +35,7 @@ def main():
     ps = PersonSensor()
     animation_pub = RosStringPub('/pepper/animation_player')
     st = RosStringPub('/pepper_robot/smach/state')
+    cc = RosStringPub('/pepper_robot/eye/color')
 
     rospy.sleep(1)
 
@@ -45,7 +46,7 @@ def main():
     sm.userdata.horizontal_angle = 0.0
     sm.userdata.answer_id = 0
     sm.userdata.answer_counter = 0
-
+    sm.userdata.useless = 0
 
     # Open the container
     with sm:
@@ -53,7 +54,8 @@ def main():
             'Init_Talk', Talk(controller=tc, text='Demo startet.'),
             transitions={'success': 'Init_state'})
 
-        smach.StateMachine.add('Init_state', StatePublisher(st, 'init'), transitions={'success': 'MoveHead_init'})
+        smach.StateMachine.add('Init_state', StatePublisher(st, 'init', colorcontroller=cc, color='blue'),
+                               transitions={'success': 'MoveHead_init'})
 
         smach.StateMachine.add(
             'MoveHead_init',
@@ -73,50 +75,65 @@ def main():
 
         smach.StateMachine.add(
             'Animation',
-            AnimationPlayerPepper(controller=animation_pub,id=1, animationblock='greetings'),
+            AnimationPlayerPepper(controller=animation_pub, id=1, animationblock='greetings'),
             transitions={'success': 'Welcome_Talk'})
 
         smach.StateMachine.add(
             'Welcome_Talk', Talk(controller=tc, text='Hallo, ich bin Pepper ! Herzlich willkommen auf der '
-                                                     'Eitellijnz \\eos=1\\Woerld 2017.'), transitions={'success': 'listen_state'})
+                                                     'Eitellijnz \\eos=1\\Woerld 2017.'),
+            transitions={'success': 'listen_state'})
 
-        smach.StateMachine.add('listen_state', StatePublisher(st, 'listen_mode'), transitions={'success': 'CalculatePersonPosition_save'})
+        smach.StateMachine.add('listen_state', StatePublisher(st, 'listen_mode', colorcontroller=cc, color='green'),
+                               transitions={'success': 'CalculatePersonPosition_save'})
 
         smach.StateMachine.add(
-            'CalculatePersonPosition_save', CalculatePersonPosition(controller=ps, max_distance=1.5,onlyhorizontal=True),
+            'CalculatePersonPosition_save',
+            CalculatePersonPosition(controller=ps, max_distance=1.5, onlyhorizontal=True),
             transitions={'success': 'LookToPerson_save', 'repeat': 'LookToPerson_save',
                          'no_person_found': 'LookToPerson_save'},
-            remapping={'old_vertical':'vertical_angle','person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
+            remapping={'old_vertical': 'vertical_angle', 'person_angle_vertical': 'vertical_angle',
+                       'person_angle_horizontal': 'horizontal_angle'})
 
         smach.StateMachine.add(
             'LookToPerson_save', MoveHeadPepper(controller=hc, wait=0),
-            transitions={'success': 'listen'},
+            transitions={'success': 'Counter_answers'},
             remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
-        smach.StateMachine.add('listen', SpeechAnalyser(controller=speechsensor,wait=10),
-                               transitions={'success':'answer_state', 'no_cmd':'CalculatePersonPosition_saveback'},
+        smach.StateMachine.add(
+            'Counter_answers', Counter(numbers=3),
+            transitions={'success': 'listen', 'end': 'question_state'},
+            remapping={'counter_input': 'answer_counter', 'counter_output': 'answer_counter'})
+
+        smach.StateMachine.add('listen', SpeechAnalyser(controller=speechsensor, wait=10),
+                               transitions={'success': 'answer_state', 'reset':'search_state', 'no_cmd': 'CalculatePersonPosition_saveback'},
                                remapping={'msg_output': 'answer_id'})
 
         smach.StateMachine.add(
-            'CalculatePersonPosition_saveback', CalculatePersonPosition(controller=ps, max_distance=1.5,onlyhorizontal=True),
+            'CalculatePersonPosition_saveback',
+            CalculatePersonPosition(controller=ps, max_distance=1.5, onlyhorizontal=True),
             transitions={'success': 'LookToPerson_saveback', 'repeat': 'CalculatePersonPosition_saveback',
                          'no_person_found': 'search_state'},
-            remapping={'old_vertical':'vertical_angle','person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
+            remapping={'old_vertical': 'vertical_angle', 'person_angle_vertical': 'vertical_angle',
+                       'person_angle_horizontal': 'horizontal_angle'})
 
         smach.StateMachine.add(
             'LookToPerson_saveback', MoveHeadPepper(controller=hc, wait=0),
             transitions={'success': 'listen'},
             remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
-        smach.StateMachine.add('search_state', StatePublisher(st, 'search_mode'), transitions={'success': 'MoveHead_init'})
+        smach.StateMachine.add('search_state', StatePublisher(st, 'search_mode', colorcontroller=cc, color='blue'),
+                               transitions={'success': 'MoveHead_init'})
 
-        smach.StateMachine.add('answer_state', StatePublisher(st, 'answer_mode'), transitions={'success': 'CalculatePersonPosition_answer'})
+        smach.StateMachine.add('answer_state', StatePublisher(st, 'answer_mode', colorcontroller=cc, color='yellow'),
+                               transitions={'success': 'CalculatePersonPosition_answer'})
 
         smach.StateMachine.add(
-            'CalculatePersonPosition_answer', CalculatePersonPosition(controller=ps, max_distance=1.5,onlyhorizontal=True),
+            'CalculatePersonPosition_answer',
+            CalculatePersonPosition(controller=ps, max_distance=1.5, onlyhorizontal=True),
             transitions={'success': 'LookToPerson_answer', 'repeat': 'LookToPerson_answer',
                          'no_person_found': 'LookToPerson_answer'},
-            remapping={'old_vertical':'vertical_angle','person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
+            remapping={'old_vertical': 'vertical_angle', 'person_angle_vertical': 'vertical_angle',
+                       'person_angle_horizontal': 'horizontal_angle'})
 
         smach.StateMachine.add(
             'LookToPerson_answer', MoveHeadPepper(controller=hc, wait=0),
@@ -130,9 +147,24 @@ def main():
 
         smach.StateMachine.add(
             'Answer_Question',
-            Talk(controller=tc,textblock='answer'), transitions={'success': 'listen_state'},
+            Talk(controller=tc, textblock='answer'), transitions={'success': 'listen_state'},
             remapping={'id': 'answer_id'})
 
+        smach.StateMachine.add('question_state', StatePublisher(st, 'question_mode', colorcontroller=cc, color='white'),
+                               transitions={'success': 'Question_Talk'})
+
+        smach.StateMachine.add(
+            'Question_Talk', Talk(controller=tc, text='Wie gefaellt Ihnen die Eitellijnz \\eos=1\\Woerld mit Ihren '
+                                                      'Vortraegen, Workshops und der Ausstellung? Waehlen Sie das entsprechende Gesicht auf meinem Tablet aus.'),
+            transitions={'success': 'listen_question'})
+
+        smach.StateMachine.add('listen_question', SpeechAnalyser(controller=speechsensor, wait=10),
+                               transitions={'success': 'Question_Talk_answer', 'reset':'search_state', 'no_cmd': 'CalculatePersonPosition_saveback'},
+                               remapping={'msg_output': 'useless'})
+
+        smach.StateMachine.add(
+            'Question_Talk_answer', Talk(controller=tc, text='Vielen Dank fuer ihre Antwort. Ich beantworte gerne weitere Fragen.'),
+            transitions={'success': 'listen_state'})
 
     # Introspection viewer
     sis = smach_ros.IntrospectionServer('server_name', sm, '/ITELLIGENCE')

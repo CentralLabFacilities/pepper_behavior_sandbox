@@ -33,7 +33,8 @@ def main():
     lac = LeftArmControlPepper()
     rs_ssl = RosSub(dataType=Float64, scope='/pepper_robot/ssl/angle')
     animation_pub = RosStringPub('/pepper/animation_player')
-    st = RosStringPub('/pepper/smach/state')
+    st = RosStringPub('/pepper_robot/smach/state')
+    cc = RosStringPub('/pepper_robot/eye/color')
 
     rospy.sleep(1)
 
@@ -67,7 +68,7 @@ def main():
             sm_idle.userdata.iteration = 0
             sm_idle.userdata.animationiterator = 0
 
-            smach.StateMachine.add('idle_state', StatePublisher(st, 'idle_mode'), transitions={'success': 'Counter_idle'})
+            smach.StateMachine.add('idle_state', StatePublisher(st, 'idle_mode',colorcontroller=cc,color='green'), transitions={'success': 'Counter_idle'})
 
             smach.StateMachine.add(
                 'Counter_idle', Counter(numbers=1),
@@ -133,7 +134,7 @@ def main():
             sm_attention.userdata.horizontal_angle = 0.0
             sm_attention.userdata.iterationtext = 0
 
-            smach.StateMachine.add('attention_state', StatePublisher(st, 'attention_mode'), transitions={'success': 'Iterate'})
+            smach.StateMachine.add('attention_state', StatePublisher(st, 'attention_mode',colorcontroller=cc,color='blue'), transitions={'success': 'Iterate'})
 
             smach.StateMachine.add(
                 'Iterate', Iterate(iterationsteps=4),
@@ -217,7 +218,7 @@ def main():
             sm_look.userdata.iteration = 0
             sm_look.userdata.horizontal_direction = 0.0
 
-            smach.StateMachine.add('look_state', StatePublisher(st, 'look_mode'), transitions={'success': 'pre_ssl'})
+            smach.StateMachine.add('look_state', StatePublisher(st, 'look_mode',colorcontroller=cc,color='yellow'), transitions={'success': 'pre_ssl'})
 
             smach.StateMachine.add(
                 'pre_ssl', MoveHeadPepper(controller=hc,_hh='center', _hv='up', wait=2, speed=0.05),

@@ -4,13 +4,14 @@ import rospy
 
 class SpeechAnalyser(smach.State):
     def __init__(self, controller, wait=10):
+        self.reset = 'Roboter setze dich zurueck'
         self.question = ['Pepper wie geht es dir',
                          'Pepper woher kommst du',
                          'Pepper was kannst du alles',
                          'Pepper was kann ich auf der itelligence World alles sehen']
         self.wait = wait
         self.controller = controller
-        smach.State.__init__(self, outcomes=['success', 'no_cmd'], output_keys=['msg_output'])
+        smach.State.__init__(self, outcomes=['success', 'no_cmd', 'reset'], output_keys=['msg_output'])
 
     def execute(self, userdata):
         self.controller.clean()
@@ -20,6 +21,8 @@ class SpeechAnalyser(smach.State):
             rospy.sleep(1)
             if cmd:
                 print('Got msg %s' %cmd)
+                if cmd == self.reset:
+                    return 'reset'
                 for i in range(0,4):
                     print('Question %s' % self.question[i])
                     if cmd == self.question[i]:
