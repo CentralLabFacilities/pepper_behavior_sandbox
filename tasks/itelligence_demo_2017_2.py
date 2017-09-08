@@ -117,7 +117,7 @@ def main():
 
         smach.StateMachine.add(
             'Answer_Question',
-            Talk(controller=tc,textblock='answer'), transitions={'success': 'listen'},
+            Talk(controller=tc,textblock='answer'), transitions={'success': 'LookToPerson_save'},
             remapping={'id': 'answer_id'})
 
 
