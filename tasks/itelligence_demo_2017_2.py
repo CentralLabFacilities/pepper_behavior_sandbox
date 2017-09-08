@@ -51,7 +51,7 @@ def main():
     with sm:
         smach.StateMachine.add(
             'Init_Talk', Talk(controller=tc, text='Demo startet.'),
-            transitions={'success': 'MoveHead_init'})
+            transitions={'success': 'Init_state'})
 
         smach.StateMachine.add('Init_state', StatePublisher(st, 'init'), transitions={'success': 'MoveHead_init'})
 
@@ -78,12 +78,12 @@ def main():
 
         smach.StateMachine.add(
             'Welcome_Talk', Talk(controller=tc, text='Hallo, ich bin Pepper ! Herzlich willkommen auf der itelligence World '
-                                                  '2017!'), transitions={'success': 'listen'})
+                                                  '2017!'), transitions={'success': 'listen_state'})
 
         smach.StateMachine.add('listen_state', StatePublisher(st, 'listen_mode'), transitions={'success': 'listen'})
 
         smach.StateMachine.add('listen', SpeechAnalyser(controller=speechsensor,wait=10),
-                               transitions={'success':'Animation_talking', 'no_cmd':'CalculatePersonPosition_saveback'},
+                               transitions={'success':'answer_state', 'no_cmd':'CalculatePersonPosition_saveback'},
                                remapping={'msg_output': 'answer_id'})
 
         smach.StateMachine.add(
@@ -97,7 +97,7 @@ def main():
             transitions={'success': 'listen'},
             remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
-        smach.StateMachine.add('answer_state', StatePublisher(st, 'answer_mode'), transitions={'success': 'MoveHead_init'})
+        smach.StateMachine.add('answer_state', StatePublisher(st, 'answer_mode'), transitions={'success': 'Animation_talking'})
 
         smach.StateMachine.add(
             'Animation_talking',
