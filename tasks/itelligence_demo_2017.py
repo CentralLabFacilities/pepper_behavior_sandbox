@@ -50,22 +50,12 @@ def main():
             transitions={'success': 'Point_test_demo'})
 
         smach.StateMachine.add(
-            'Point_test_demo', LeftArmGesture(controller=lac, gesture='demo', wait=6),
+            'Point_test_demo', LeftArmGesture(controller=lac, gesture='test', wait=10),
             transitions={'success': 'Point_test_demo_1',
                          'unknown_gesture': 'unknown'})
 
         smach.StateMachine.add(
-            'Point_test_demo_1', LeftArmGesture(controller=lac, gesture='demo_1', wait=6),
-            transitions={'success': 'Point_test_point_demo',
-                         'unknown_gesture': 'unknown'})
-
-        smach.StateMachine.add(
-            'Point_test_point_demo', LeftArmGesture(controller=lac, gesture='point_demo', wait=6),
-            transitions={'success': 'Point_test_point_demo_1',
-                         'unknown_gesture': 'unknown'})
-
-        smach.StateMachine.add(
-            'Point_test_point_demo_1', LeftArmGesture(controller=lac, gesture='point_demo_1', wait=6),
+            'Point_test_demo_1', LeftArmGesture(controller=lac, gesture='demo', wait=10),
             transitions={'success': 'Init_Talk',
                          'unknown_gesture': 'unknown'})
 
