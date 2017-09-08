@@ -9,26 +9,26 @@ class Talk(smach.State):
         self.text = text
         if  self.textblock == 'greeting':
             self.text = ['Herzlich Willkommen, mein Name ist Pepper ich bin ein sozialer Roboter und mit mir wird zur Zeit am ceitaek der Universitaet Bielefeld geforscht.',
-                     'Herzlich willkommen auf der Eitellijnz \\eos=1\\Woerld 2017. Mein Name ist Pepper.',
-                     'Hallo, ich bin Pepper! Ich unterstuetze derzeit die Forschung am ceitaek der Universitaet Bielefeld und freue mich bei der eitellijnz\\eos=1\\ woerld 2017 dabei zu sein.',
+                     'Herzlich willkommen auf der Messe. Mein Name ist Pepper.',
+                     'Hallo, ich bin Pepper! Ich unterstuetze derzeit die Forschung am ceitaek der Universitaet Bielefeld und freue mich bei der Messe dabei zu sein.',
                      'Herzlich Willkommen, mein Name ist Pepper ich bin ein sozialer Roboter und mit mir wird zur Zeit am ceitaek der Universitaet Bielefeld geforscht.']
         elif self.textblock == 'answer':
             self.text = [
-                'Mir geht es sehr gut. Ich freue mich heute auf der eitellijnz\\eos=1\\ woerld 2017 dabei sein zu duerfen.',
+                'Mir geht es sehr gut. Ich freue mich heute auf der Messe dabei sein zu duerfen.',
                 'Ich wurde von Softbaenk Robotics entwickelt und bin darauf trainiert in unterschiedlichen.'
                 'Mensch-Maschine Szenarien zu unterstuetzen. Ich arbeite zurzeit am ceitaek der Universitaet Bielefeld. ',
                 'Ich bin ein sozialer Roboter, der auf die Interaktion mit Menschen speciahlisiert ist.',
-                'Wir zeigen Ihnen auf der eitellijnz\\eos=1\\ woerld 2017, wie smarte, innovative Loesungen Ihr Unternehmen fuer '
+                'Wir zeigen Ihnen auf der Messe, wie smarte, innovative Loesungen Ihr Unternehmen fuer '
                 'die digitale Zukunft vorbereiten.']
         else:
-            self.text = ['Wir haben dieses Jahr wieder eine Menge Demoszenarien zu Industrie 4.0 und Internet of Zhings. '
-                     'Werfen Sie nach der Key-Node doch einfach mal einen Blick in unsere Ausstellung. Weitere Infos sehen sie hier.',
-                     'Wir haben dieses Jahr wieder eine Menge Demoszenarien zu Industrie 4.0 und Internet of Zhings. '
-                     'Werfen Sie nach der Key-Node doch einfach mal einen Blick in unsere Ausstellung. Weitere Infos sehen sie hier',
-                     'Wir haben dieses Jahr wieder eine Menge Demoszenarien zu Industrie 4.0 und Internet of Zhings. '
-                     'Werfen Sie nach der Key-Node doch einfach mal einen Blick in unsere Ausstellung. Weitere Infos sehen sie hier',
-                     'Wir haben dieses Jahr wieder eine Menge Demoszenarien zu Industrie 4.0 und Internet of Zhings. '
-                     'Werfen Sie nach der Key-Node doch einfach mal einen Blick in unsere Ausstellung. Weitere Infos sehen sie hier']
+            self.text = ['Wir haben dieses Jahr wieder eine Menge Demoszenarien.'
+                     'Werfen Sie nach den Vortraegen doch einfach mal einen Blick in unsere Ausstellung. Weitere Infos sehen sie hier.',
+                     'Wir haben dieses Jahr wieder eine Menge Demoszenarien. '
+                     'Werfen Sie nach den Vortraegen doch einfach mal einen Blick in unsere Ausstellung. Weitere Infos sehen sie hier',
+                     'Wir haben dieses Jahr wieder eine Menge Demoszenarien. '
+                     'Werfen Sie nach den Vortraegen doch einfach mal einen Blick in unsere Ausstellung. Weitere Infos sehen sie hier',
+                     'Wir haben dieses Jahr wieder eine Menge Demoszenarien. '
+                     'Werfen Sie nach den Vortraegen doch einfach mal einen Blick in unsere Ausstellung. Weitere Infos sehen sie hier']
         self.say = text
         if self.id:
             input_k = []

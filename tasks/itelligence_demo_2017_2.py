@@ -79,8 +79,7 @@ def main():
             transitions={'success': 'Welcome_Talk'})
 
         smach.StateMachine.add(
-            'Welcome_Talk', Talk(controller=tc, text='Hallo, ich bin Pepper ! Herzlich willkommen auf der '
-                                                     'Eitellijnz \\eos=1\\Woerld 2017.'),
+            'Welcome_Talk', Talk(controller=tc, text='Hallo, ich bin Pepper ! Herzlich willkommen auf der Messe.'),
             transitions={'success': 'listen_state'})
 
         smach.StateMachine.add('listen_state', StatePublisher(st, 'listen_mode', colorcontroller=cc, color='FaceLeds:green'),
@@ -160,8 +159,8 @@ def main():
                                transitions={'success': 'Question_Talk'})
 
         smach.StateMachine.add(
-            'Question_Talk', Talk(controller=tc, text='Wie gefaellt Ihnen die Eitellijnz \\eos=1\\Woerld mit Ihren '
-                                                      'Vortraegen, Workshops und der Ausstellung? Waehlen Sie das entsprechende Gesicht auf meinem Tablet aus.'),
+            'Question_Talk', Talk(controller=tc, text='Wie gefaellt Ihnen die Messe mit Ihren '
+                                                      'Vortraegen, Workshops und der Ausstellung? Waehlen Sie das entsprechende Gesicht auf meinem Bildschirm aus.'),
             transitions={'success': 'listen_question'})
 
         smach.StateMachine.add('listen_question', SpeechAnalyser(controller=speechsensor, wait=10),
