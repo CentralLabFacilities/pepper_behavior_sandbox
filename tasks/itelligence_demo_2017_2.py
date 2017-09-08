@@ -44,6 +44,7 @@ def main():
     sm.userdata.vertical_angle = 0.0
     sm.userdata.horizontal_angle = 0.0
     sm.userdata.answer_id = 0
+    sm.userdata.answer_counter = 0
 
 
     # Open the container
