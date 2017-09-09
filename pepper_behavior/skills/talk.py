@@ -8,7 +8,7 @@ class Talk(smach.State):
         self.textblock = textblock
         self.text = text
         if  self.textblock == 'greeting':
-            self.text = ['Herzlich Willkommen, mein Name ist Pepper mit mir wird zur Zeit am ceitaek der Universitaet Bielefeld geforscht.',
+            self.text = ['Herzlich Willkommen, mein Name ist Pepper. Mit mir wird zur Zeit am ceitaek der Universitaet Bielefeld geforscht.',
                      'Herzlich willkommen auf der Messe. Mein Name ist Pepper.',
                      'Hallo zusammen, ich bin Pepper! Ich freue mich bei der Messe dabei zu sein.',
                      'Hallo zusammen, ich bin Pepper! Ich unterstuetze derzeit die Forschung am ceitaek der Universitaet Bielefeld.',
