@@ -68,7 +68,7 @@ def rotation(pose):
     print(y)
     print(z)
     horizontal = math.degrees(math.atan2(y, x))
-    vertical = math.degrees(math.atan2(z, x))
+    vertical = math.degrees(math.atan2(-z, x))
     print(horizontal)
     print(vertical)
     return (vertical, horizontal)
