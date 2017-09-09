@@ -43,7 +43,7 @@ def main():
     sm.userdata.mode = 0
 
     wait_timer_idle = 6
-    wait_timer_attention = 6
+    wait_timer_attention = 2
     look_vertical = 'drive'
 
     # Open the container
