@@ -62,7 +62,7 @@ def distance(trans):
 def rotation(pose):
     print ("orientation")
     x = pose.position.x+ 0.0133
-    y = pose.position.y + 0.039
+    y = pose.position.y + 0.139
     z = pose.position.z - 0.288 + 0.2
     print(x)
     print(y)
