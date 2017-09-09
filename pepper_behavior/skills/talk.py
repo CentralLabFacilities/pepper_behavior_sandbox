@@ -7,12 +7,12 @@ class Talk(smach.State):
         self.id = id
         self.textblock = textblock
         self.text = text
-        if  self.textblock == 'greeting':
-            self.text = ['Herzlich Willkommen, mein Name ist Pepper. Mit mir wird zur Zeit am ceitaek der Universitaet Bielefeld geforscht.',
-                     'Herzlich willkommen auf der Messe. Mein Name ist Pepper.',
-                     'Hallo zusammen, ich bin Pepper! Ich freue mich bei der Messe dabei zu sein.',
-                     'Hallo zusammen, ich bin Pepper! Ich unterstuetze derzeit die Forschung am ceitaek der Universitaet Bielefeld.',
-                     'Herzlich Willkommen, mein Name ist Pepper ich bin ein Roboter vom ceitaek der Universitaet Bielefeld.']
+        if self.textblock == 'greeting':
+            self.text = ['Hi! Ich bin Pepper. Mit mir wird zur Zeit am ceitaek der Universitaet Bielefeld geforscht.',
+                         'Willkommen auf der Messe. Mein Name ist Pepper.',
+                         'Hallo zusammen, ich bin Pepper! Ich freue mich hier zu sein.',
+                         'Hallo Leute! Ich unterstuetze derzeit die Forschung am ceitaek der Uni Bielefeld.',
+                         'Herzlich Willkommen, mein Name ist Pepper ich bin ein Roboter vom ceitaek der Uni Bielefeld.']
         elif self.textblock == 'answer':
             self.text = [
                 'Mir geht es sehr gut. Ich freue mich heute dabei zu sein.',
@@ -20,16 +20,16 @@ class Talk(smach.State):
                 'Ich bin ein sozialer Roboter, der auf die Interaktion mit Menschen spezialisiert ist.',
                 'Wir zeigen Ihnen auf der Messe, wie smarte, innovative Loesungen Ihr Unternehmen fuer '
                 'die digitale Zukunft vorbereiten.',
-		'Ich habe Sie leider nicht verstanden.',
-		'Ich habe Sie leider nicht verstanden.',
-		'Ich habe Sie leider nicht verstanden.',
-		'Ich habe Sie leider nicht verstanden.']
+                'Ich habe Sie leider nicht verstanden.',
+                'Ich habe Sie leider nicht verstanden.',
+                'Ich habe Sie leider nicht verstanden.',
+                'Ich habe Sie leider nicht verstanden.']
         else:
-            self.text = ['Es gibt dieses Jahr wieder eine Menge Demos. Weitere Infos sehen Sie dort.',
-                     'Werfen Sie nach den Vortraegen doch einfach mal einen Blick in die Ausstellung. Schauen Sie doch dort.',
-		     'Unterhalten Sie sich nach den Vortraegen doch mit mir in der Ausstellung. Weitere Infos gibt es hier.',
-                     'Wir haben dieses Jahr wieder eine Menge Demos. Fuer weitere Informationen in diese Richtung.',
-                     'Unterhalten Sie sich nach den Vortraegen doch mit mir in der Ausstellung. Weitere Demos sehen sie dort.']
+            self.text = ['Fuer Demos schauen Sie dort. Ich mach mal weiter.',
+                         'Werfen Sie nach den Vortraegen einen Blick in die Ausstellung. Genau dort. Ich gucke jetzt weiter nach Gaesten.',
+                         'Reden Sie nachher mit mir nachher in der Ausstellung. Dort.',
+                         'Wir haben dieses Jahr wieder eine Menge Demos. In diese Richtung. So, weiter.',
+                         'Unterhalten Sie sich nach den Vortraegen doch mit mir in der Ausstellung. Dahinten. Bis nachher.']
         self.say = text
         if self.id:
             input_k = []
