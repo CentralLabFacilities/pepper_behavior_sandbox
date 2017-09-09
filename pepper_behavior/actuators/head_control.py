@@ -19,9 +19,9 @@ class HeadControlPepper:
         horizontal_option = {'left': 45.0, 'center': 0.0, 'right': -45.0, 'half_left': 30.0, 'half_right': -30.0,
                              'strong_left': 60.0, 'strong_right': -60.0}
         horizontal_parameter = horizontal_option.get(horizontal, horizontal)
-	if vertical_parameter < -10: 
-		print("Vertical < -10, %s", vertical_parameter)
-		vertical_parameter = - 10
+	if vertical_parameter < -25: 
+		print("Vertical < -25, %s", vertical_parameter)
+		vertical_parameter = - 25
 		vertical = 10
 	if vertical_parameter > 25:
 		print("Vertical > 25, %s", vertical_parameter)
