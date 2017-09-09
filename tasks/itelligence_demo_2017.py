@@ -147,22 +147,22 @@ def main():
 
             smach.StateMachine.add(
                 'MoveBase_end',
-                MoveHeadPepper( controller=turn_pub, angle=25),
+                TurnWithoutMovebase( controller=turn_pub, angle=25),
                 transitions={'success': 'attention_success'})
 
             smach.StateMachine.add(
                 'MoveBase_left',
-                MoveHeadPepper( controller=turn_pub, angle=25),
+                TurnWithoutMovebase( controller=turn_pub, angle=25),
                 transitions={'success': 'MoveHead_left'})
 
             smach.StateMachine.add(
                 'MoveBase_center',
-                MoveHeadPepper( controller=turn_pub, angle=-25),
+                TurnWithoutMovebase( controller=turn_pub, angle=-25),
                 transitions={'success': 'MoveHead_center'})
 
             smach.StateMachine.add(
                 'MoveBase_right',
-                MoveHeadPepper( controller=turn_pub, angle=-25),
+                TurnWithoutMovebase( controller=turn_pub, angle=-25),
                 transitions={'success': 'MoveHead_right'})	    
 
             smach.StateMachine.add(
