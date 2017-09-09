@@ -11,7 +11,7 @@ class TurnWithoutMovebase(smach.State):
         smach.State.__init__(self, outcomes=['success'])
 
     def execute(self, userdata):
-	msg = '0:0:' + str(math.radians(angle))
+	msg = '0:0:' + str(math.radians(self.angle))
 	self.controller.publish(msg)
         return 'success'
 
