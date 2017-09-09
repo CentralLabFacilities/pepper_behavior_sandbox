@@ -14,11 +14,13 @@ from pepper_behavior.skills.talk import Talk
 from pepper_behavior.skills.ssl import Ssl
 from pepper_behavior.skills.point import LeftArmGesture
 from pepper_behavior.skills.state_publisher import StatePublisher
+from pepper_behavior.skills.turn_base_without import TurnWithoutMovebase
 
 from pepper_behavior.actuators.head_control import HeadControlPepper
 from pepper_behavior.actuators.talk import TalkControllerPepper
 from pepper_behavior.actuators.ros_string_pub import RosStringPub
 from pepper_behavior.actuators.arm_control import LeftArmControlPepper
+
 
 from pepper_behavior.sensors.person_sensor import PersonSensor
 from pepper_behavior.sensors.ros_sub import RosSub
@@ -35,6 +37,7 @@ def main():
     animation_pub = RosStringPub('/pepper_robot/animation_player')
     st = RosStringPub('/pepper_robot/smach/state')
     cc = RosStringPub('/pepper_robot/leds')
+    turn_pub = RosStringPub('/pepper_robot/drivedirect')
 
     rospy.sleep(1)
 
@@ -138,9 +141,29 @@ def main():
 
             smach.StateMachine.add(
                 'Iterate', Iterate(iterationsteps=4),
-                transitions={'success_0': 'attention_success', 'success_1': 'MoveHead_left',
-                             'success_2': 'MoveHead_center', 'success_3': 'MoveHead_right'},
+                transitions={'success_0': 'MoveBase_end', 'success_1': 'MoveBase_left',
+                             'success_2': 'MoveBase_center', 'success_3': 'MoveBase_right'},
                 remapping={'iterate_input': 'iteration', 'iterate_output': 'iteration'})
+
+            smach.StateMachine.add(
+                'MoveBase_end',
+                MoveHeadPepper( controller=turn_pub, angle=25),
+                transitions={'success': 'attention_success'})
+
+            smach.StateMachine.add(
+                'MoveBase_left',
+                MoveHeadPepper( controller=turn_pub, angle=25),
+                transitions={'success': 'MoveHead_left'})
+
+            smach.StateMachine.add(
+                'MoveBase_center',
+                MoveHeadPepper( controller=turn_pub, angle=-25),
+                transitions={'success': 'MoveHead_center'})
+
+            smach.StateMachine.add(
+                'MoveBase_right',
+                MoveHeadPepper( controller=turn_pub, angle=-25),
+                transitions={'success': 'MoveHead_right'})	    
 
             smach.StateMachine.add(
                 'MoveHead_left',
