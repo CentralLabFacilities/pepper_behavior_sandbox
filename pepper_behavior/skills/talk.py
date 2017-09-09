@@ -19,7 +19,11 @@ class Talk(smach.State):
                 'Ich wurde von Softbaenk Robotics entwickelt ich werde zurzeit am ceitaek der Universitaet Bielefeld weiter entwickelt. ',
                 'Ich bin ein sozialer Roboter, der auf die Interaktion mit Menschen spezialisiert ist.',
                 'Wir zeigen Ihnen auf der Messe, wie smarte, innovative Loesungen Ihr Unternehmen fuer '
-                'die digitale Zukunft vorbereiten.']
+                'die digitale Zukunft vorbereiten.',
+		'Ich habe Sie leider nicht verstanden.',
+		'Ich habe Sie leider nicht verstanden.',
+		'Ich habe Sie leider nicht verstanden.',
+		'Ich habe Sie leider nicht verstanden.']
         else:
             self.text = ['Es gibt dieses Jahr wieder eine Menge Demos. Weitere Infos sehen sie hier.',
                      'Werfen Sie nach den Vortraegen doch einfach mal einen Blick in die Ausstellung. Weitere Infos sehen sie hier.',

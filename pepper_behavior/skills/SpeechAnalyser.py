@@ -9,9 +9,9 @@ class SpeechAnalyser(smach.State):
                          'Pepper woher kommst du',
                          'Pepper was kannst du alles',
                          'Pepper was kann ich auf der itelligence World alles sehen',
-                         'Wieso ist c eine schoene sprache',
-                         'wieviele bits hat ein byte',
-                         'wie lauten die drei gesetze der robotik']
+                         'Pepper die Messe gefaellt mir sehr gut',
+                         'Pepper ich finde die Messe in Ordnung',
+                         'Pepper die Messe geht so']
         self.wait = wait
         self.controller = controller
         smach.State.__init__(self, outcomes=['success', 'no_cmd', 'reset'], output_keys=['msg_output'])

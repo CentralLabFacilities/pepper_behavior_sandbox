@@ -18,6 +18,11 @@ class AnimationPlayerPepper(smach.State):
                               'animations/Stand/Gestures/Explain_2',
                               'animations/Stand/Gestures/Explain_3',
                               'animations/Stand/Gestures/Explain_6',
+                              'animations/Stand/Gestures/Explain_4',
+			      'animations/Stand/Gestures/Explain_1',
+                              'animations/Stand/Gestures/Explain_2',
+                              'animations/Stand/Gestures/Explain_3',
+                              'animations/Stand/Gestures/Explain_6',
                               'animations/Stand/Gestures/Explain_4']
         else:
             self.animation = ['animations/Stand/Gestures/Thinking_1',
