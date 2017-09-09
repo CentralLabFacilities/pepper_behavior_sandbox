@@ -25,11 +25,11 @@ class Talk(smach.State):
 		'Ich habe Sie leider nicht verstanden.',
 		'Ich habe Sie leider nicht verstanden.']
         else:
-            self.text = ['Es gibt dieses Jahr wieder eine Menge Demos. Weitere Infos sehen sie hier.',
-                     'Werfen Sie nach den Vortraegen doch einfach mal einen Blick in die Ausstellung. Weitere Infos sehen sie hier.',
-		     'Unterhalten Sie sich nach den Vortraegen doch mit mir in der Ausstellung. Weitere Demos sehen sie hier.',
-                     'Wir haben dieses Jahr wieder eine Menge Demos. Weitere Infos sehen sie hier.',
-                     'Unterhalten Sie sich nach den Vortraegen doch mit mir in der Ausstellung. Weitere Demos sehen sie hier.']
+            self.text = ['Es gibt dieses Jahr wieder eine Menge Demos. Weitere Infos sehen Sie dort.',
+                     'Werfen Sie nach den Vortraegen doch einfach mal einen Blick in die Ausstellung. Schauen Sie doch dort.',
+		     'Unterhalten Sie sich nach den Vortraegen doch mit mir in der Ausstellung. Weitere Infos gibt es hier.',
+                     'Wir haben dieses Jahr wieder eine Menge Demos. Fuer weitere Informationen in diese Richtung.',
+                     'Unterhalten Sie sich nach den Vortraegen doch mit mir in der Ausstellung. Weitere Demos sehen sie dort.']
         self.say = text
         if self.id:
             input_k = []
