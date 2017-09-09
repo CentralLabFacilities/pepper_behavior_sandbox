@@ -11,17 +11,20 @@ class AnimationPlayerPepper(smach.State):
             self.animation = ['animations/Stand/Gestures/Hey_3',
                             'animations/Stand/Gestures/Hey_1',
                             'animations/Stand/Gestures/Hey_4',
-                            'animations/Stand/Gestures/Hey_6']
+                            'animations/Stand/Gestures/Hey_6',
+			    'animations/Stand/Gestures/Hey_1']
         elif animationblock == 'talking':
             self.animation = ['animations/Stand/Gestures/Explain_1',
                               'animations/Stand/Gestures/Explain_2',
                               'animations/Stand/Gestures/Explain_3',
+                              'animations/Stand/Gestures/Explain_6',
                               'animations/Stand/Gestures/Explain_4']
         else:
             self.animation = ['animations/Stand/Gestures/Thinking_1',
                               'animations/Stand/Gestures/Thinking_3',
                               'animations/Stand/Gestures/Thinking_4',
-                              'animations/Stand/Gestures/Thinking_6']
+			      'animations/Stand/Gestures/Thinking_6',
+                              'animations/Stand/Gestures/Thinking_1']
         self.id = id
         if self.id or self.animationtxt:
             input_k = []
