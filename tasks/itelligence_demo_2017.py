@@ -164,7 +164,7 @@ def main():
                 remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
 
             smach.StateMachine.add(
-                'Counter_text', Counter(numbers=2),
+                'Counter_text', Counter(numbers=4),
                 transitions={'success': 'LookToPerson', 'end': 'LookToPerson'},
                 remapping={'counter_input': 'iterationtext', 'counter_output': 'iterationtext'})
 
@@ -218,7 +218,7 @@ def main():
             sm_look.userdata.iteration = 0
             sm_look.userdata.horizontal_direction = 0.0
 
-            smach.StateMachine.add('look_state', StatePublisher(st, 'look_mode',colorcontroller=cc,color='FaceLeds:cyan'), transitions={'success': 'pre_ssl'})
+            smach.StateMachine.add('look_state', StatePublisher(st, 'look_mode',colorcontroller=cc,color='FaceLeds:yellow'), transitions={'success': 'pre_ssl'})
 
             smach.StateMachine.add(
                 'pre_ssl', MoveHeadPepper(controller=hc,_hh='center', _hv='up', wait=2, speed=0.05),
