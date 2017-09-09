@@ -144,17 +144,17 @@ def main():
 
             smach.StateMachine.add(
                 'MoveHead_left',
-                MoveHeadPepper(_hv='up', _hh='left', controller=hc, wait=wait_timer_attention),
+                MoveHeadPepper(_hv='up', _hh='left', controller=hc, wait=wait_timer_attention, speed=0.1),
                 transitions={'success': 'CalculatePersonPosition'})
 
             smach.StateMachine.add(
                 'MoveHead_center',
-                MoveHeadPepper(_hv='up', _hh='center', controller=hc, wait=wait_timer_attention),
+                MoveHeadPepper(_hv='up', _hh='center', controller=hc, wait=wait_timer_attention, speed=0.1),
                 transitions={'success': 'CalculatePersonPosition'})
 
             smach.StateMachine.add(
                 'MoveHead_right',
-                MoveHeadPepper(_hv='up', _hh='right', controller=hc, wait=wait_timer_attention),
+                MoveHeadPepper(_hv='up', _hh='right', controller=hc, wait=wait_timer_attention, speed=0.1),
                 transitions={'success': 'CalculatePersonPosition'})
 
             smach.StateMachine.add(
@@ -169,7 +169,7 @@ def main():
                 remapping={'counter_input': 'iterationtext', 'counter_output': 'iterationtext'})
 
             smach.StateMachine.add(
-                'LookToPerson', MoveHeadPepper(controller=hc, wait=3),
+                'LookToPerson', MoveHeadPepper(controller=hc, wait=1.5, speed=0.1),
                 transitions={'success': 'Animation'},
                 remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
@@ -189,7 +189,7 @@ def main():
                 remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
 
             smach.StateMachine.add(
-                'LookToPerson_afterAnimation', MoveHeadPepper(controller=hc, wait=2),
+                'LookToPerson_afterAnimation', MoveHeadPepper(controller=hc, wait=1, speed=0.1),
                 transitions={'success': 'Animation_talking'},
                 remapping={'head_vertical': 'vertical_angle', 'head_horizontal': 'horizontal_angle'})
 
@@ -208,7 +208,7 @@ def main():
                 transitions={'success': 'Point_demo'})
 
             smach.StateMachine.add(
-                'Point_demo', LeftArmGesture(controller=lac, gesture='demo', wait=6),
+                'Point_demo', LeftArmGesture(controller=lac, gesture='demo', wait=5),
                 transitions={'success': 'Iterate',
                              'unknown_gesture': 'Iterate'})
 
