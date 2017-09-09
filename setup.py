@@ -30,11 +30,7 @@ setup(name="pepper_behavior_sandbox",
 
                                       "tests"]),
 
-      scripts=["tasks/itelligence_demo_2017.py","smach/pepper_smach_geniale_2017.py","tasks/itelligence_demo_2017_2.py"],
-
-      #package_data={'fsmtest': ['configuration/*']},
-
-      #include_package_data=True,
+      scripts=["tasks/itelligence_demo_2017.py","smach/pepper_smach_geniale_2017.py", "tasks/itelligence_demo_2017_2.py"],
 
       keywords=['Behavior'],
 
@@ -57,13 +53,6 @@ setup(name="pepper_behavior_sandbox",
                    'Programming Language :: Python',
 
                    'Topic :: Text Processing :: Markup :: XML'],
-
-      #install_requires=[],
-
-
-      #tests_require=['logilab-common==0.63.0', 'pylint==1.4.4', 'setuptools-lint'],
-
-      # Workaround for: http://bugs.python.org/issue856103
 
       zip_safe=False
 
