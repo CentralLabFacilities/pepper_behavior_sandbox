@@ -43,7 +43,7 @@ def main():
     sm.userdata.mode = 0
 
     wait_timer_idle = 6
-    wait_timer_attention = 2
+    wait_timer_attention = 3
     look_vertical = 'drive'
 
     # Open the container
@@ -144,7 +144,7 @@ def main():
 
             smach.StateMachine.add(
                 'MoveHead_left',
-                MoveHeadPepper(_hv='up', _hh='left', controller=hc, wait=wait_timer_attention, speed=0.1),
+                MoveHeadPepper(_hv='up', _hh='left', controller=hc, wait=4, speed=0.1),
                 transitions={'success': 'CalculatePersonPosition'})
 
             smach.StateMachine.add(
