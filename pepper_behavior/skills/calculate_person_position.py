@@ -5,7 +5,7 @@ import math
 
 
 class CalculatePersonPosition(smach.State):
-    def __init__(self, controller, max_distance=2.5, onlyhorizontal = False):
+    def __init__(self, controller, max_distance=2.5, onlyhorizontal=False):
         self.person_sensor = controller
         self.max_distance = max_distance
         self.counter = 0
@@ -19,8 +19,8 @@ class CalculatePersonPosition(smach.State):
 
     def execute(self, userdata):
         self.person = None
-	self.person_sensor.clearPerson()
-	rospy.sleep(1)
+        self.person_sensor.clearPerson()
+        # rospy.sleep(1)
         self.person = self.person_sensor.getDetectedPerson()
         self.pose = None
         self.dist = self.max_distance
@@ -29,7 +29,8 @@ class CalculatePersonPosition(smach.State):
             dist = distance(pose.pose.position)
             if dist < self.dist:
                 try:
-                    self.tf.waitForTransform('base_link', 'CameraDepth_optical_frame', rospy.Time.now(), rospy.Duration(4.0))
+                    self.tf.waitForTransform('base_link', 'CameraDepth_optical_frame', rospy.Time.now(),
+                                             rospy.Duration(4.0))
                     p = self.tf.transformPose("base_link", pose)
                     self.dist = dist
                     self.pose = p.pose
@@ -62,8 +63,8 @@ def distance(trans):
 
 def rotation(pose):
     print ("orientation")
-    x = pose.position.x+ 0.0133
-    y = pose.position.y 
+    x = pose.position.x + 0.0133
+    y = pose.position.y
     z = pose.position.z - 0.288 + 0.2
     print(x)
     print(y)

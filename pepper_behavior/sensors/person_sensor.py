@@ -15,9 +15,9 @@ class PersonSensor():
             self.people.append(p)
 
     def getDetectedPerson(self):
-        self.returnval = self.people
+        returnval = self.people
         self.people = []
-        return self.returnval
+        return returnval
 
     def clearPerson(self):
         self.people = []
