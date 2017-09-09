@@ -18,3 +18,7 @@ class PersonSensor():
         self.returnval = self.people
         self.people = []
         return self.returnval
+
+    def clearPerson(self):
+        self.people = []
+

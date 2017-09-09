@@ -19,6 +19,8 @@ class CalculatePersonPosition(smach.State):
 
     def execute(self, userdata):
         self.person = None
+	self.person_sensor.clearPerson()
+	rospy.sleep(1)
         self.person = self.person_sensor.getDetectedPerson()
         self.pose = None
         self.dist = self.max_distance
@@ -49,7 +51,6 @@ class CalculatePersonPosition(smach.State):
             self.counter = 0
             return 'no_person_found'
         else:
-            rospy.sleep(1)
             self.counter = self.counter + 1
             return 'repeat'
 
