@@ -16,6 +16,6 @@ class LeftArmControlPepper:
                                       math.radians(31.1)]
         else:
             return 'unknown_gesture'
-        self.position.speed = 0.5
+        self.position.speed = 0.35
         self.arm_pub.publish(self.position)
         return 'success'
