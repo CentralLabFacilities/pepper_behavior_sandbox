@@ -57,7 +57,7 @@ def main():
         smach.StateMachine.add('Init_state', StatePublisher(st,'init'),transitions={'success': 'Iterate'})
 
         smach.StateMachine.add(
-            'Iterate', Iterate(iterationsteps=3),
+            'Iterate', Iterate(iterationsteps=2),
             # transitions={'success_0': 'Idle_Statemaschine', 'success_1': 'Attention_Statemaschine',
             #              'success_2': 'Look_Statemaschine'},
             transitions={'success_0': 'Idle_Statemaschine', 'success_1': 'Attention_Statemaschine'},
