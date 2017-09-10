@@ -81,7 +81,7 @@ class RejectSpeech(smach.State):
 
 
 def main():
-    rospy.init_node('geniale_pepper_state_machine')
+    rospy.init_node('pepper_reject_speech_state_machine')
     ds = DataSensors()
     da = DataAcutators()
     # Create a SMACH state machine
@@ -92,7 +92,7 @@ def main():
     with sm:
         # Add states to the container
         smach.StateMachine.add('REJECT', RejectSpeech(ds, da),
-                               transitions={'finished': 'REJECT', 'none': 'REJECT', })
+                               transitions={'finished': 'REJECT', 'none': 'REJECT'})
 
     # Introspection viewer
     sis = smach_ros.IntrospectionServer('server_name', sm, '/REJECT_SPEECH')
