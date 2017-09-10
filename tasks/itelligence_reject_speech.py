@@ -42,6 +42,7 @@ class DataSensors:
 
     def context_callback(self, data):
         self.current_context = data.data.strip()
+        rospy.loginfo(self.current_context)
 
 
 class RejectSpeech(smach.State):
@@ -89,7 +90,7 @@ def main():
     da = DataAcutators()
     # Create a SMACH state machine
     sm = smach.StateMachine(outcomes=['exit'])
-    sm.userdata.go_to_goal = ""
+    sm.userdata.text = ""
 
     # Open the container
     with sm:
