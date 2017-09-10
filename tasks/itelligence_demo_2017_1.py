@@ -182,7 +182,7 @@ def main():
                 transitions={'success': 'CalculatePersonPosition'})
 
             smach.StateMachine.add(
-                'CalculatePersonPosition', CalculatePersonPosition(controller=ps, sensor=id, max_distance=2.5),
+                'CalculatePersonPosition', CalculatePersonPosition(controller=ps, controller_2=tc, sensor=id, max_distance=2.5),
                 transitions={'success': 'Counter_text', 'repeat': 'CalculatePersonPosition',
                              'no_person_found': 'Iterate', 'known': 'Iterate'},
                 remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
@@ -207,7 +207,7 @@ def main():
                 transitions={'success': 'CalculatePersonPosition_recalc'}, remapping={'id': 'iterationtext'})
 
             smach.StateMachine.add(
-                'CalculatePersonPosition_recalc', CalculatePersonPosition(controller=ps, sensor=id, max_distance=2.5),
+                'CalculatePersonPosition_recalc', CalculatePersonPosition(controller=ps, controller_2=tc, sensor=id, max_distance=2.5),
                 transitions={'success': 'LookToPerson_afterAnimation', 'repeat': 'LookToPerson_afterAnimation',
                              'no_person_found': 'LookToPerson_afterAnimation', 'known': 'LookToPerson_afterAnimation'},
                 remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})

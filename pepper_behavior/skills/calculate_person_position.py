@@ -5,10 +5,11 @@ import math
 
 
 class CalculatePersonPosition(smach.State):
-    def __init__(self, controller, sensor=None, max_distance=2.5, onlyhorizontal=False):
+    def __init__(self, controller, controller_2=None, sensor=None, max_distance=2.5, onlyhorizontal=False):
         self.person_sensor = controller
         self.max_distance = max_distance
         self.person_id = sensor
+        self.talk_known = controller_2
         self.counter = 0
         # https://answers.ros.org/question/10777/service-exception-using-tf-listener-in-rospy
         self.tf = tf.TransformListener()
@@ -51,11 +52,13 @@ class CalculatePersonPosition(smach.State):
             else:
                 userdata.person_angle_vertical = vertical
             userdata.person_angle_horizontal = horizontal
-            if self.dist < 1.5 and self.transformid is not None:
+            if self.dist < 1.8 and self.transformid is not None:
                 try:
                     known, name = self.person_id.identify(self.transformid)
                     if known:
                         rospy.loginfo("Person is known, iterating")
+                        if self.talk_known is not None:
+                            self.talk_known.say_something("Oh, ich denke Dich habe ich schon begruesst")
                         return 'known'
                     else:
                         return 'success'
