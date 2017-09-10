@@ -38,8 +38,8 @@ class CalculatePersonPosition(smach.State):
                     self.dist = dist
                     self.pose = p.pose
                     self.transformid = p.transformid
-                except Exception:
-                    print("Exception")
+                except Exception, e:
+                    print("Exception %s" % e)
                     return 'repeat'
             if dist > self.max_distance and self.max_distance == self.dist:
                 print('Detected person to far away. Distance: %s ' % dist)
