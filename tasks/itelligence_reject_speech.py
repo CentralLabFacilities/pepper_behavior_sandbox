@@ -6,16 +6,10 @@ import smach
 import smach_ros
 import actionlib
 from std_msgs.msg import String, Bool
-from math import radians, degrees
-from people_msgs.msg import Person, People
-from visualization_msgs.msg import Marker, MarkerArray
-from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
-from geometry_msgs.msg import PoseWithCovarianceStamped, Quaternion
-from tf.transformations import quaternion_from_euler, euler_from_quaternion
 from naoqi_bridge_msgs.msg import SpeechWithFeedbackAction, SpeechWithFeedbackActionGoal, SpeechWithFeedbackGoal
 
 
-class DataAcutators:
+class DataActuators:
     def __init__(self):
         self.speech_as = actionlib.SimpleActionClient('/naoqi_tts_feedback', SpeechWithFeedbackAction)
         self.speech_as.wait_for_server()
@@ -54,6 +48,7 @@ class RejectSpeech(smach.State):
     def execute(self, userdata):
         rospy.loginfo('Entering State RejectSpeech')
         while self.ds.current_context == "":
+            rospy.loginfo("Sleeping")
             time.sleep(0.1)
         if self.ds.current_context == "Pepper hier her":
             rospy.loginfo(self.ds.current_context)
@@ -87,7 +82,7 @@ class RejectSpeech(smach.State):
 def main():
     rospy.init_node('pepper_reject_speech_state_machine')
     ds = DataSensors()
-    da = DataAcutators()
+    da = DataActuators()
     # Create a SMACH state machine
     sm = smach.StateMachine(outcomes=['exit'])
     sm.userdata.text = ""
