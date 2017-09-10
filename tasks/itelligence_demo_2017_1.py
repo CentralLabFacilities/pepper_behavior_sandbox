@@ -23,6 +23,7 @@ from pepper_behavior.actuators.arm_control import LeftArmControlPepper
 
 
 from pepper_behavior.sensors.person_sensor import PersonSensor
+from pepper_behavior.sensors.id_sensor import IdSensor
 from pepper_behavior.sensors.ros_sub import RosSub
 
 
@@ -32,6 +33,7 @@ def main():
     hc = HeadControlPepper()
     tc = TalkControllerPepper(sim=simulation)
     ps = PersonSensor()
+    id = IdSensor()
     lac = LeftArmControlPepper()
     rs_ssl = RosSub(dataType=Float64, scope='/pepper_robot/ssl/angle')
     animation_pub = RosStringPub('/pepper_robot/animation_player')
@@ -180,9 +182,9 @@ def main():
                 transitions={'success': 'CalculatePersonPosition'})
 
             smach.StateMachine.add(
-                'CalculatePersonPosition', CalculatePersonPosition(controller=ps, max_distance=2.5),
+                'CalculatePersonPosition', CalculatePersonPosition(controller=ps, sensor=id, max_distance=2.5),
                 transitions={'success': 'Counter_text', 'repeat': 'CalculatePersonPosition',
-                             'no_person_found': 'Iterate'},
+                             'no_person_found': 'Iterate', 'known': 'Iterate'},
                 remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
 
             smach.StateMachine.add(
@@ -205,9 +207,9 @@ def main():
                 transitions={'success': 'CalculatePersonPosition_recalc'}, remapping={'id': 'iterationtext'})
 
             smach.StateMachine.add(
-                'CalculatePersonPosition_recalc', CalculatePersonPosition(controller=ps, max_distance=2.5),
+                'CalculatePersonPosition_recalc', CalculatePersonPosition(controller=ps, sensor=id, max_distance=2.5),
                 transitions={'success': 'LookToPerson_afterAnimation', 'repeat': 'LookToPerson_afterAnimation',
-                             'no_person_found': 'LookToPerson_afterAnimation'},
+                             'no_person_found': 'LookToPerson_afterAnimation', 'known': 'LookToPerson_afterAnimation'},
                 remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
 
             smach.StateMachine.add(

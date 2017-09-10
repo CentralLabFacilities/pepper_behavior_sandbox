@@ -5,9 +5,10 @@ import math
 
 
 class CalculatePersonPosition(smach.State):
-    def __init__(self, controller, max_distance=2.5, onlyhorizontal=False):
+    def __init__(self, controller, sensor=None, max_distance=2.5, onlyhorizontal=False):
         self.person_sensor = controller
         self.max_distance = max_distance
+        self.person_id = sensor
         self.counter = 0
         # https://answers.ros.org/question/10777/service-exception-using-tf-listener-in-rospy
         self.tf = tf.TransformListener()
@@ -15,7 +16,7 @@ class CalculatePersonPosition(smach.State):
         self.onlyhorizontal = onlyhorizontal
         if onlyhorizontal:
             input = ['old_vertical']
-        smach.State.__init__(self, input_keys=input, outcomes=['success', 'repeat', 'no_person_found'],
+        smach.State.__init__(self, input_keys=input, outcomes=['success', 'repeat', 'no_person_found', 'known'],
                              output_keys=['person_angle_vertical', 'person_angle_horizontal'])
 
     def execute(self, userdata):
@@ -24,6 +25,7 @@ class CalculatePersonPosition(smach.State):
         rospy.sleep(0.1)
         self.person = self.person_sensor.getDetectedPerson()
         self.pose = None
+        self.transformid = None
         self.dist = self.max_distance
         for p in self.person:
             pose = p.pose
@@ -35,6 +37,7 @@ class CalculatePersonPosition(smach.State):
                     p = self.tf.transformPose("base_link", pose)
                     self.dist = dist
                     self.pose = p.pose
+                    self.transformid = p.transformid
                 except Exception:
                     print("Exception")
                     return 'repeat'
@@ -48,6 +51,13 @@ class CalculatePersonPosition(smach.State):
             else:
                 userdata.person_angle_vertical = vertical
             userdata.person_angle_horizontal = horizontal
+            if self.dist < 1.5 and self.transformid is not None:
+                known, name = self.person_id.identify(self.transformid)
+                if known:
+                    rospy.loginfo("Person is known, iterating")
+                    return 'known'
+                else:
+                    return 'success'
             return 'success'
         elif self.counter > 5:
             self.counter = 0
