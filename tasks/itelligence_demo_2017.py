@@ -59,8 +59,9 @@ def main():
 
         smach.StateMachine.add(
             'Iterate', Iterate(iterationsteps=3),
-            transitions={'success_0': 'Idle_Statemaschine', 'success_1': 'Attention_Statemaschine',
-                         'success_2': 'Look_Statemaschine'},
+            # transitions={'success_0': 'Idle_Statemaschine', 'success_1': 'Attention_Statemaschine',
+            #              'success_2': 'Look_Statemaschine'},
+            transitions={'success_0': 'Idle_Statemaschine', 'success_1': 'Attention_Statemaschine'},
             remapping={'iterate_input': 'mode', 'iterate_output': 'mode'})
 
         sm_idle = smach.StateMachine(outcomes=['idle_success'])
