@@ -58,21 +58,25 @@ class RejectSpeech(smach.State):
         if self.ds.current_context == "Pepper hier her":
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
+            self.ds.say_something("NEIN")
             userdata.text = "Pepper hier her"
             return 'finished'
         elif self.ds.current_context == "Pepper tanz doch mal":
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
+            self.ds.say_something("NEIN")
             userdata.text = "finished"
             return 'finished'
         elif self.ds.current_context == "Pepper guck doch mal":
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
+            self.ds.say_something("NEIN")
             userdata.text = "Pepper guck doch mal"
             return 'finished'
         elif self.ds.current_context == "Pepper was kannst du noch":
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
+            self.ds.say_something("NEIN")
             userdata.text = "Pepper was kannst du noch"
             return 'finished'
         rospy.logwarn('No valid command')
