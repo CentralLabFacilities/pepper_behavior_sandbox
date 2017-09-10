@@ -52,12 +52,15 @@ class CalculatePersonPosition(smach.State):
                 userdata.person_angle_vertical = vertical
             userdata.person_angle_horizontal = horizontal
             if self.dist < 1.5 and self.transformid is not None:
-                known, name = self.person_id.identify(self.transformid)
-                if known:
-                    rospy.loginfo("Person is known, iterating")
-                    return 'known'
-                else:
-                    return 'success'
+                try:
+                    known, name = self.person_id.identify(self.transformid)
+                    if known:
+                        rospy.loginfo("Person is known, iterating")
+                        return 'known'
+                    else:
+                        return 'success'
+                except Exception, e:
+                    rospy.logwarn("Something went wront while identifying a person")
             return 'success'
         elif self.counter > 5:
             self.counter = 0
