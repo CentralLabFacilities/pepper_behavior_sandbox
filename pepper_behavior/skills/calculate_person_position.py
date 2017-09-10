@@ -2,6 +2,7 @@ import smach
 import rospy
 import tf
 import math
+import random
 
 
 class CalculatePersonPosition(smach.State):
@@ -10,6 +11,11 @@ class CalculatePersonPosition(smach.State):
         self.max_distance = max_distance
         self.person_id = sensor
         self.talk_known = controller_2
+        self.talks =  ['Oh, ich denke Dich habe ich schon begruesst',
+                       'Dich kenne ich schon, ich mache weiter',
+                       'Oh schoen dich wieder zu sehen, bis gleich.',
+                       'Wen haben wir denn da, dich kenne ich. Gleich gehen die Vortraege los!',
+                       'Hallo noch mal. Wie waere es wenn uns uns nachher unterhalten?']
         self.counter = 0
         # https://answers.ros.org/question/10777/service-exception-using-tf-listener-in-rospy
         self.tf = tf.TransformListener()
@@ -58,7 +64,7 @@ class CalculatePersonPosition(smach.State):
                     if known:
                         rospy.loginfo("Person is known, iterating")
                         if self.talk_known is not None:
-                            self.talk_known.say_something("Oh, ich denke Dich habe ich schon begruesst")
+                            self.talk_known.say_something(random.choice(self.talks))
                         return 'known'
                     else:
                         return 'success'
