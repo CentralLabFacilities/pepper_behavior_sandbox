@@ -52,26 +52,32 @@ class RejectSpeech(smach.State):
         if self.ds.current_context == "Pepper hier her":
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
-            self.da.say_something("NEIN")
+            self.da.say_something("Sorry, ich muss Leute begruessen.")
             userdata.text = "Pepper hier her"
             return 'finished'
         elif self.ds.current_context == "Pepper tanz doch mal":
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
-            self.da.say_something("NEIN")
+            self.da.say_something("Die Uni ist doch keine Tanzschule!")
             userdata.text = "finished"
             return 'finished'
         elif self.ds.current_context == "Pepper guck doch mal":
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
-            self.da.say_something("NEIN")
+            self.da.say_something("Ich kann leider noch keine zwei Dinge zur selben Zeit tun")
             userdata.text = "Pepper guck doch mal"
             return 'finished'
         elif self.ds.current_context == "Pepper was kannst du noch":
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
-            self.da.say_something("NEIN")
+            self.da.say_something("Ich habe gerade eine Aufgabe, ich kann noch nicht zwei Dinge gleichzeitig")
             userdata.text = "Pepper was kannst du noch"
+            return 'finished'
+        elif self.ds.current_context == "Pepper schau doch mal":
+            rospy.loginfo(self.ds.current_context)
+            self.ds.reset_context()
+            self.da.say_something("Ich habe gerade eine Aufgabe, ich kann noch nicht zwei Dinge gleichzeitig")
+            userdata.text = "Pepper schau doch mal"
             return 'finished'
         rospy.logwarn('No valid command')
         self.ds.reset_context()
