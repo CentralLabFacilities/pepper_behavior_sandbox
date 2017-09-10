@@ -20,7 +20,7 @@ class CalculatePersonPosition(smach.State):
     def execute(self, userdata):
         self.person = None
         self.person_sensor.clearPerson()
-        rospy.sleep(0.2)
+        rospy.sleep(0.1)
         self.person = self.person_sensor.getDetectedPerson()
         self.pose = None
         self.dist = self.max_distance
