@@ -57,10 +57,9 @@ def main():
         smach.StateMachine.add('Init_state', StatePublisher(st,'init'),transitions={'success': 'Iterate'})
 
         smach.StateMachine.add(
-            'Iterate', Iterate(iterationsteps=2),
-            # transitions={'success_0': 'Idle_Statemaschine', 'success_1': 'Attention_Statemaschine',
-            #              'success_2': 'Look_Statemaschine'},
-            transitions={'success_0': 'Idle_Statemaschine', 'success_1': 'Attention_Statemaschine'},
+            'Iterate', Iterate(iterationsteps=3),
+            transitions={'success_0': 'Idle_Statemaschine', 'success_1': 'Attention_Statemaschine',
+                         'success_2': 'Idle_Statemaschine'},
             remapping={'iterate_input': 'mode', 'iterate_output': 'mode'})
 
         sm_idle = smach.StateMachine(outcomes=['idle_success'])
@@ -141,9 +140,8 @@ def main():
 
             smach.StateMachine.add(
                 'Iterate', Iterate(iterationsteps=4),
-                # transitions={'success_0': 'MoveBase_end', 'success_1': 'MoveBase_left',
-                #              'success_2': 'MoveBase_center', 'success_3': 'MoveBase_right'},
-                transitions={'success_0': 'MoveBase_end', 'success_1': 'MoveBase_left', 'success_3': 'MoveBase_right'},
+                transitions={'success_0': 'MoveBase_end', 'success_1': 'MoveBase_left',
+                             'success_2': 'MoveBase_center', 'success_3': 'MoveBase_right'},
                 remapping={'iterate_input': 'iteration', 'iterate_output': 'iteration'})
 
             smach.StateMachine.add(
