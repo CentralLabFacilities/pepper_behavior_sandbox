@@ -52,8 +52,7 @@ def main():
     # Open the container
     with sm:
         smach.StateMachine.add(
-            'Init_Talk', Talk(controller=tc, text='Demo startet.'),
-            transitions={'success': 'Init_state'})
+            'Init_Talk', Talk(controller=tc, text='Demo startet.'), transitions={'success': 'Init_state'})
 
         smach.StateMachine.add('Init_state', StatePublisher(st,'init'),transitions={'success': 'Iterate'})
 
@@ -142,8 +141,9 @@ def main():
 
             smach.StateMachine.add(
                 'Iterate', Iterate(iterationsteps=4),
-                transitions={'success_0': 'MoveBase_end', 'success_1': 'MoveBase_left',
-                             'success_2': 'MoveBase_center', 'success_3': 'MoveBase_right'},
+                # transitions={'success_0': 'MoveBase_end', 'success_1': 'MoveBase_left',
+                #              'success_2': 'MoveBase_center', 'success_3': 'MoveBase_right'},
+                transitions={'success_0': 'MoveBase_end', 'success_1': 'MoveBase_left', 'success_3': 'MoveBase_right'},
                 remapping={'iterate_input': 'iteration', 'iterate_output': 'iteration'})
 
             smach.StateMachine.add(
@@ -164,7 +164,7 @@ def main():
             smach.StateMachine.add(
                 'MoveBase_right',
                 TurnWithoutMovebase( controller=turn_pub, angle=-25),
-                transitions={'success': 'MoveHead_right'})	    
+                transitions={'success': 'MoveHead_right'})
 
             smach.StateMachine.add(
                 'MoveHead_left',
