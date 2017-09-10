@@ -28,7 +28,7 @@ class DataActuators:
 
 class DataSensors:
     def __init__(self):
-        self.speech_rec_context = rospy.Subscriber("/pepper_robot/speechrec/context", String, self.context_callback)
+        self.speech_sub = rospy.Subscriber("/pepper_robot/speechrec/context", String, self.context_callback)
         self.current_context = ""
 
     def reset_context(self):
@@ -48,7 +48,6 @@ class RejectSpeech(smach.State):
     def execute(self, userdata):
         rospy.loginfo('Entering State RejectSpeech')
         while self.ds.current_context == "":
-            rospy.loginfo("Sleeping")
             time.sleep(0.1)
         if self.ds.current_context == "Pepper hier her":
             rospy.loginfo(self.ds.current_context)
@@ -80,7 +79,7 @@ class RejectSpeech(smach.State):
 
 
 def main():
-    rospy.init_node('pepper_reject_speech_state_machine')
+    rospy.init_node('pepper_reject_speech')
     ds = DataSensors()
     da = DataActuators()
     # Create a SMACH state machine
