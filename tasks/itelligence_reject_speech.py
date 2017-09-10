@@ -55,7 +55,7 @@ class RejectSpeech(smach.State):
             self.da.say_something("Sorry, ich muss Leute begruessen.")
             userdata.text = "Pepper hier her"
             return 'finished'
-        elif self.ds.current_context == "Pepper tanz doch mal":
+        elif self.ds.current_context == "Pepper kannst du tanzen":
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             self.da.say_something("Die Uni ist doch keine Tanzschule!")
