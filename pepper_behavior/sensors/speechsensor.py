@@ -1,6 +1,5 @@
 import rospy
 from std_msgs.msg import String
-from clf_perception_vision.msg import ExtendedPeople
 
 
 class SpeechSensor():
