@@ -188,7 +188,7 @@ def main():
             remapping={'counter_input': 'answer_counter', 'counter_output': 'answer_counter'})
 
     # Introspection viewer
-    sis = smach_ros.IntrospectionServer('server_name', sm, '/ITELLIGENCE')
+    sis = smach_ros.IntrospectionServer('server_name', sm, '/ITELLIGENCE_2')
     sis.start()
 
     # Execute SMACH plan

@@ -65,7 +65,7 @@ def main():
 
         sm_idle = smach.StateMachine(outcomes=['idle_success'])
         sm_attention = smach.StateMachine(outcomes=['attention_success'])
-        sm_look = smach.StateMachine(outcomes=['look_success'])
+        # sm_look = smach.StateMachine(outcomes=['look_success'])
 
         with sm_idle:
             sm_idle.userdata.iteration = 0
@@ -237,34 +237,34 @@ def main():
 
         smach.StateMachine.add('Attention_Statemaschine', sm_attention, transitions={'attention_success': 'Iterate'})
 
-        with sm_look:
-            sm_look.userdata.iteration = 0
-            sm_look.userdata.horizontal_direction = 0.0
-
-            smach.StateMachine.add('look_state', StatePublisher(st, 'look_mode',colorcontroller=cc,color='FaceLeds:yellow'), transitions={'success': 'pre_ssl'})
-
-            smach.StateMachine.add(
-                'pre_ssl', MoveHeadPepper(controller=hc,_hh='center', _hv='up', wait=2, speed=0.05),
-                transitions={'success': 'Counter_look'})
-
-            smach.StateMachine.add(
-                'Counter_look', Counter(numbers=15),
-                transitions={'end': 'look_success', 'success': 'SSL'},
-                remapping={'counter_input': 'iteration', 'counter_output': 'iteration'})
-
-            smach.StateMachine.add('SSL', Ssl(sensor=rs_ssl),
-                                   transitions={'success': 'LookSSL', 'no_sound': 'Counter_look'},
-                                   remapping={'input_angle_horizontal': 'horizontal_direction','output_angle_horizontal': 'horizontal_direction'})
-
-            smach.StateMachine.add(
-                'LookSSL', MoveHeadPepper(controller=hc, _hv='up', wait=2, speed=0.25),
-                transitions={'success': 'Counter_look'},
-                remapping={'head_horizontal': 'horizontal_direction'})
-
-        smach.StateMachine.add('Look_Statemaschine', sm_look, transitions={'look_success': 'Iterate'})
+        # with sm_look:
+        #     sm_look.userdata.iteration = 0
+        #     sm_look.userdata.horizontal_direction = 0.0
+        #
+        #     smach.StateMachine.add('look_state', StatePublisher(st, 'look_mode',colorcontroller=cc,color='FaceLeds:yellow'), transitions={'success': 'pre_ssl'})
+        #
+        #     smach.StateMachine.add(
+        #         'pre_ssl', MoveHeadPepper(controller=hc,_hh='center', _hv='up', wait=2, speed=0.05),
+        #         transitions={'success': 'Counter_look'})
+        #
+        #     smach.StateMachine.add(
+        #         'Counter_look', Counter(numbers=15),
+        #         transitions={'end': 'look_success', 'success': 'SSL'},
+        #         remapping={'counter_input': 'iteration', 'counter_output': 'iteration'})
+        #
+        #     smach.StateMachine.add('SSL', Ssl(sensor=rs_ssl),
+        #                            transitions={'success': 'LookSSL', 'no_sound': 'Counter_look'},
+        #                            remapping={'input_angle_horizontal': 'horizontal_direction','output_angle_horizontal': 'horizontal_direction'})
+        #
+        #     smach.StateMachine.add(
+        #         'LookSSL', MoveHeadPepper(controller=hc, _hv='up', wait=2, speed=0.25),
+        #         transitions={'success': 'Counter_look'},
+        #         remapping={'head_horizontal': 'horizontal_direction'})
+        #
+        # smach.StateMachine.add('Look_Statemaschine', sm_look, transitions={'look_success': 'Iterate'})
 
     # Introspection viewer
-    sis = smach_ros.IntrospectionServer('server_name', sm, '/ITELLIGENCE')
+    sis = smach_ros.IntrospectionServer('server_name', sm, '/ITELLIGENCE_1')
     sis.start()
 
     # Execute SMACH plan
