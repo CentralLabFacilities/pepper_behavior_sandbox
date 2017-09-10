@@ -200,15 +200,15 @@ def main():
                 AnimationPlayerPepper(controller=animation_pub),
                 transitions={'success': 'TalkWelcome'}, remapping={'id': 'iterationtext'})
 
-            # smach.StateMachine.add(
-            #     'TalkWelcome', Talk(controller=tc),
-            #     transitions={'success': 'CalculatePersonPosition_recalc'}, remapping={'id': 'iterationtext'})
-            #
-            # smach.StateMachine.add(
-            #     'CalculatePersonPosition_recalc', CalculatePersonPosition(controller=ps, max_distance=2.5),
-            #     transitions={'success': 'LookToPerson_afterAnimation', 'repeat': 'LookToPerson_afterAnimation',
-            #                  'no_person_found': 'LookToPerson_afterAnimation'},
-            #     remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
+            smach.StateMachine.add(
+                'TalkWelcome', Talk(controller=tc),
+                transitions={'success': 'CalculatePersonPosition_recalc'}, remapping={'id': 'iterationtext'})
+
+            smach.StateMachine.add(
+                'CalculatePersonPosition_recalc', CalculatePersonPosition(controller=ps, max_distance=2.5),
+                transitions={'success': 'LookToPerson_afterAnimation', 'repeat': 'LookToPerson_afterAnimation',
+                             'no_person_found': 'LookToPerson_afterAnimation'},
+                remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
 
             smach.StateMachine.add(
                 'LookToPerson_afterAnimation', MoveHeadPepper(controller=hc, wait=1, speed=0.1),

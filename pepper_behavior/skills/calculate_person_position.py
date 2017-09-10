@@ -9,7 +9,10 @@ class CalculatePersonPosition(smach.State):
         self.person_sensor = controller
         self.max_distance = max_distance
         self.counter = 0
-        self.tf = tf.TransformListener()
+        try:
+            self.tf = tf.TransformListener()
+        except Exception, e:
+            rospy.logwarning("TF Error")
         input = []
         self.onlyhorizontal = onlyhorizontal
         if onlyhorizontal:
