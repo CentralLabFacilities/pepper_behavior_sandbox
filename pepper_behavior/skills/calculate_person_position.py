@@ -34,9 +34,9 @@ class CalculatePersonPosition(smach.State):
                 try:
                     self.tf.waitForTransform('base_link', 'CameraDepth_optical_frame', rospy.Time.now(),
                                              rospy.Duration(4.0))
-                    p = self.tf.transformPose("base_link", pose)
+                    po = self.tf.transformPose("base_link", pose)
                     self.dist = dist
-                    self.pose = p.pose
+                    self.pose = po.pose
                     self.transformid = p.transformid
                 except Exception, e:
                     print("Exception %s" % e)
