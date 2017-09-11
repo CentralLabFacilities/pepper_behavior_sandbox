@@ -38,8 +38,12 @@ class CalculatePersonPosition(smach.State):
         for p in self.person:
             pose = p.pose
             dist = distance(pose.pose.position)
-            print("Frame_id pose: %s" % pose.header.frame_id)
-            print("Baselink exists: %s" % self.tf.frameExists('base_link'))
+            rospy.logwarn
+
+            if not self.tf.frameExists('base_link'):
+                rospy.logwarn('Base_link does not exist!')
+            if not self.tf.frameExists(pose.header.frame_id):
+                rospy.logwarn('%s does not exist!' % str(pose.header.frame_id))
             if dist < self.dist and self.tf.frameExists(pose.header.frame_id) and self.tf.frameExists('base_link'):
                 try:
                     print(p.pose)
