@@ -39,7 +39,7 @@ class CalculatePersonPosition(smach.State):
             pose = p.pose
             dist = distance(pose.pose.position)
             print("Frame_id pose: %s" % pose.header.frame_id)
-            if dist < self.dist and self.tf.frameExists(pose.frame_id):
+            if dist < self.dist and self.tf.frameExists(pose.header.frame_id):
                 try:
                     print(p.pose)
                     self.tf.waitForTransform('base_link', 'CameraDepth_optical_frame', rospy.Time.now(),
