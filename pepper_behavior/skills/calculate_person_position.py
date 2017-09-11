@@ -6,11 +6,12 @@ import random
 
 
 class CalculatePersonPosition(smach.State):
-    def __init__(self, controller, controller_2=None, sensor=None, max_distance=2.5, onlyhorizontal=False):
+    def __init__(self, controller, controller_2=None, sensor=None, max_distance=2.5, onlyhorizontal=False, knownperson=True):
         self.person_sensor = controller
         self.max_distance = max_distance
         self.person_id = sensor
         self.talk_known = controller_2
+        self.ignoreknownperson = knownperson
         self.talks =  ['Oh, ich denke Dich habe ich schon begruesst',
                        'Dich kenne ich schon, ich mache weiter',
                        'Oh schoen dich wieder zu sehen, bis gleich.',
@@ -61,7 +62,7 @@ class CalculatePersonPosition(smach.State):
             if self.dist < 1.8 and self.transformid is not None:
                 try:
                     known, name = self.person_id.identify(self.transformid)
-                    if known:
+                    if known and self.ignoreknownperson:
                         rospy.loginfo("Person is known, iterating")
                         if self.talk_known is not None:
                             self.talk_known.say_something(random.choice(self.talks))
