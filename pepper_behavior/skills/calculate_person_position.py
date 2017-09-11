@@ -40,6 +40,7 @@ class CalculatePersonPosition(smach.State):
             dist = distance(pose.pose.position)
             if dist < self.dist:
                 try:
+                    print(p.pose)
                     self.tf.waitForTransform('base_link', 'CameraDepth_optical_frame', rospy.Time.now(),
                                              rospy.Duration(4.0))
                     po = self.tf.transformPose("base_link", pose)
