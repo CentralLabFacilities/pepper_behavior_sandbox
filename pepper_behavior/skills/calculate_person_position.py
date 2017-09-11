@@ -16,7 +16,7 @@ class CalculatePersonPosition(smach.State):
                        'Dich kenne ich schon, ich mache weiter',
                        'Oh schoen dich wieder zu sehen, bis gleich.',
                        'Wen haben wir denn da, dich kenne ich. Gleich gehen die Vortraege los!',
-                       'Hallo noch mal. Wie waere es wenn uns nachher unterhalten?']
+                       'Hallo noch mal. Wie waere es wenn wir uns nachher unterhalten?']
         self.counter = 0
         # https://answers.ros.org/question/10777/service-exception-using-tf-listener-in-rospy
         self.tf = tf.TransformListener()

@@ -167,17 +167,17 @@ def main():
 
             smach.StateMachine.add(
                 'MoveHead_left',
-                MoveHeadPepper(_hv='up', _hh='left', controller=hc, wait=4, speed=0.1),
+                MoveHeadPepper(_hv='back', _hh='left', controller=hc, wait=4, speed=0.1),
                 transitions={'success': 'CalculatePersonPosition'})
 
             smach.StateMachine.add(
                 'MoveHead_center',
-                MoveHeadPepper(_hv='up', _hh='center', controller=hc, wait=wait_timer_attention, speed=0.1),
+                MoveHeadPepper(_hv='back', _hh='center', controller=hc, wait=wait_timer_attention, speed=0.1),
                 transitions={'success': 'CalculatePersonPosition'})
 
             smach.StateMachine.add(
                 'MoveHead_right',
-                MoveHeadPepper(_hv='up', _hh='right', controller=hc, wait=wait_timer_attention, speed=0.1),
+                MoveHeadPepper(_hv='back', _hh='right', controller=hc, wait=wait_timer_attention, speed=0.1),
                 transitions={'success': 'CalculatePersonPosition'})
 
             smach.StateMachine.add(
