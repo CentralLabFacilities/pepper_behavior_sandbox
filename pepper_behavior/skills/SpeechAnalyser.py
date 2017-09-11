@@ -9,7 +9,7 @@ class SpeechAnalyser(smach.State):
                          'Pepper woher kommst du',
                          'Pepper was kannst du alles',
                          'Pepper was kann ich auf der itelligence World alles sehen',
-                         'Pepper die Messe gefaellt mir sehr gut',
+                         'Pepper die Messe gefällt mir sehr gut',
                          'Pepper ich finde die Messe in Ordnung',
                          'Pepper die Messe geht so']
         self.wait = wait

@@ -12,11 +12,11 @@ class CalculatePersonPosition(smach.State):
         self.person_id = sensor
         self.talk_known = controller_2
         self.ignoreknownperson = knownperson
-        self.talks =  ['Oh, ich denke Dich habe ich schon begruesst',
+        self.talks =  ['Oh, ich denke Dich habe ich schon begrüsst',
                        'Dich kenne ich schon, ich mache weiter',
-                       'Oh schoen dich wieder zu sehen, bis gleich.',
-                       'Wen haben wir denn da, dich kenne ich. Gleich gehen die Vortraege los!',
-                       'Hallo noch mal. Wie waere es wenn wir uns nachher unterhalten?']
+                       'Oh schön dich wieder zu sehen, bis gleich.',
+                       'Wen haben wir denn da, dich kenne ich. Gleich gehen die Vorträge los!',
+                       'Hallo noch mal. Wie wäre es wenn wir uns nachher unterhalten?']
         self.counter = 0
         # https://answers.ros.org/question/10777/service-exception-using-tf-listener-in-rospy
         self.tf = tf.TransformListener()
