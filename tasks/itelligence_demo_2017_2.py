@@ -24,6 +24,8 @@ from pepper_behavior.actuators.arm_control import LeftArmControlPepper
 from pepper_behavior.sensors.person_sensor import PersonSensor
 from pepper_behavior.sensors.ros_sub import RosSub
 from pepper_behavior.sensors.speechsensor import SpeechSensor
+from pepper_behavior.sensors.id_sensor import IdSensor
+
 
 
 def main():
@@ -36,6 +38,8 @@ def main():
     animation_pub = RosStringPub('/pepper_robot/animation_player')
     st = RosStringPub('/pepper_robot/smach/state')
     cc = RosStringPub('/pepper_robot/leds')
+    id = IdSensor()
+
 
     rospy.sleep(1)
 
@@ -63,7 +67,7 @@ def main():
             transitions={'success': 'CalculatePersonPosition'})
 
         smach.StateMachine.add(
-            'CalculatePersonPosition', CalculatePersonPosition(controller=ps, max_distance=1.5),
+            'CalculatePersonPosition', CalculatePersonPosition(controller=ps, max_distance=1.5, sensor=id,),
             transitions={'success': 'LookToPerson', 'repeat': 'CalculatePersonPosition',
                          'no_person_found': 'MoveHead_init', 'known': 'MoveHead_init'},
             remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
