@@ -59,13 +59,13 @@ def main():
 
         smach.StateMachine.add(
             'MoveHead_init',
-            MoveHeadPepper(_hv='up', _hh='center', controller=hc, wait=5, speed=0.1),
+            MoveHeadPepper(_hv='up', _hh='center', controller=hc, wait=4, speed=0.1),
             transitions={'success': 'CalculatePersonPosition'})
 
         smach.StateMachine.add(
-            'CalculatePersonPosition', CalculatePersonPosition(controller=ps, max_distance=2.5, knownperson=False),
+            'CalculatePersonPosition', CalculatePersonPosition(controller=ps, max_distance=1.5),
             transitions={'success': 'LookToPerson', 'repeat': 'CalculatePersonPosition',
-                         'no_person_found': 'MoveHead_init', 'known': 'LookToPerson'},
+                         'no_person_found': 'MoveHead_init', 'known': 'MoveHead_init'},
             remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
 
         smach.StateMachine.add(
