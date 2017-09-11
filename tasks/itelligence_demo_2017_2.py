@@ -67,7 +67,7 @@ def main():
             transitions={'success': 'CalculatePersonPosition'})
 
         smach.StateMachine.add(
-            'CalculatePersonPosition', CalculatePersonPosition(controller=ps, max_distance=1.5, sensor=id,),
+            'CalculatePersonPosition', CalculatePersonPosition(controller=ps, max_distance=1.5, sensor=id),
             transitions={'success': 'LookToPerson', 'repeat': 'CalculatePersonPosition',
                          'no_person_found': 'MoveHead_init', 'known': 'MoveHead_init'},
             remapping={'person_angle_vertical': 'vertical_angle', 'person_angle_horizontal': 'horizontal_angle'})
