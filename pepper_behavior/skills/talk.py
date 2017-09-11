@@ -16,7 +16,7 @@ class Talk(smach.State):
         elif self.textblock == 'answer':
             self.text = [
                 'Mir geht es sehr gut. Ich freue mich heute dabei zu sein.',
-                'Ich wurde von Softbänk Robotics gebaut. Zur Zeit werde ich am ceitaek der Universität Bielefeld weiter entwickelt.',
+                'Ich wurde von Softbank Robotics gebaut. Zur Zeit werde ich am ceitaek der Universität Bielefeld weiter entwickelt.',
                 'Ich bin ein sozialer Roboter, der auf die Interaktion mit Menschen spezialisiert ist.',
                 'Wir zeigen Ihnen auf der Messe, wie smarte, innovative Lösungen Ihr Unternehmen für '
                 'die digitale Zukunft vorbereiten.',
