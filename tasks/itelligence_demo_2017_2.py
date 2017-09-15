@@ -63,7 +63,7 @@ def main():
 
         smach.StateMachine.add(
             'MoveHead_init',
-            MoveHeadPepper(_hv='up', _hh='center', controller=hc, wait=4, speed=0.1),
+            MoveHeadPepper(_hv='back', _hh='center', controller=hc, wait=4, speed=0.1),
             transitions={'success': 'CalculatePersonPosition'})
 
         smach.StateMachine.add(
