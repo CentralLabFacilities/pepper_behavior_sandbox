@@ -10,6 +10,7 @@ from math import radians, degrees
 from people_msgs.msg import Person, People
 from visualization_msgs.msg import Marker, MarkerArray
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
+from clf_perception_vision.msg import ExtendedPeople, ExtendedPersonStamped
 from geometry_msgs.msg import PoseWithCovarianceStamped, Quaternion
 from tf.transformations import quaternion_from_euler, euler_from_quaternion
 from naoqi_bridge_msgs.msg import SpeechWithFeedbackAction, SpeechWithFeedbackActionGoal, SpeechWithFeedbackGoal
@@ -23,7 +24,7 @@ class DataAcutators:
         self.current_goal = MoveBaseGoal()
         self.nav_as = actionlib.SimpleActionClient('/move_base', MoveBaseAction)
         self.speech_as = actionlib.SimpleActionClient('/naoqi_tts_feedback', SpeechWithFeedbackAction)
-        self.head_pub = rospy.Publisher('/pepper_robot/set/head/tilt', String, queue_size=1)
+        self.head_pub = rospy.Publisher('/pepper_robot/head/tilt', String, queue_size=1)
         self.obj_compute = rospy.Publisher('/clf_detect_objects_surb/compute', Bool, queue_size=1)
         self.people_compute = rospy.Publisher('/clf_detect_dlib_faces/compute', Bool, queue_size=1)
         rospy.loginfo("Connecting to /move_base...")
@@ -106,7 +107,7 @@ class DataAcutators:
 class DataSensors:
     def __init__(self):
         self.speech_rec_context = rospy.Subscriber("/pepper_robot/speechrec/context", String, self.context_callback)
-        self.people_sensor = rospy.Subscriber("/clf_detect_dlib_faces/people", People, self.people_callback)
+        self.people_sensor = rospy.Subscriber("/clf_perception_vision/people/raw", ExtendedPeople, self.people_callback)
         self.speech_rec_context = rospy.Subscriber("/clf_detect_objects_surb/objects", MarkerArray,
                                                    self.object_callback)
         self.current_context = ""
@@ -132,7 +133,7 @@ class DataSensors:
 
     def people_callback(self, data):
         self.reset_people()
-        for p in data.people:
+        for p in data.persons:
             self.current_people.append(p.name)
 
 
@@ -291,11 +292,11 @@ class WhoIs(smach.State):
         else:
             many = "I see " + str(len(people))
             self.da.say_something(many)
-            for o in people:
-                one = "One person is "
-                age = "The age is "
-                self.da.say_something(one + str(o).split(':')[0])
-                self.da.say_something(age + str(o).split(':')[1])
+            # for o in people:
+            #    one = "One person is "
+            #    age = "The age is "
+            #    self.da.say_something(one + str(o).split(':')[0])
+            #    self.da.say_something(age + str(o).split(':')[1])
         self.ds.reset_people()
         self.da.compute_people(False)
         return 'whois'
