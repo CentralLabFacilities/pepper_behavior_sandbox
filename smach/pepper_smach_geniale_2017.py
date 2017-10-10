@@ -18,9 +18,9 @@ from naoqi_bridge_msgs.msg import SpeechWithFeedbackAction, SpeechWithFeedbackAc
 
 class DataAcutators:
     def __init__(self):
-        self.down = '25.0'
-        self.drive = '15.0'
-        self.normal = '0.0'
+        self.down = '25.0:0.0'
+        self.drive = '15.0:0.0'
+        self.normal = '0.0:0.0'
         self.current_goal = MoveBaseGoal()
         self.nav_as = actionlib.SimpleActionClient('/move_base', MoveBaseAction)
         self.speech_as = actionlib.SimpleActionClient('/naoqi_tts_feedback', SpeechWithFeedbackAction)
