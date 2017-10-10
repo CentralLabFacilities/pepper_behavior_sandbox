@@ -67,7 +67,7 @@ class DataAcutators:
             return str(5)
             self.set_head_normal()
         self.set_head_normal()
-        return 3
+        return "3"
 
     def set_nav_goal(self, x, y, q0, q1, q2, q3):
         try:
