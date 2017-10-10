@@ -24,7 +24,7 @@ class DataAcutators:
         self.current_goal = MoveBaseGoal()
         self.nav_as = actionlib.SimpleActionClient('/move_base', MoveBaseAction)
         self.speech_as = actionlib.SimpleActionClient('/naoqi_tts_feedback', SpeechWithFeedbackAction)
-        self.head_pub = rospy.Publisher('/pepper_robot/head/tilt', String, queue_size=1)
+        self.head_pub = rospy.Publisher('/pepper_robot/head/pose', String, queue_size=1)
         self.obj_compute = rospy.Publisher('/clf_detect_objects_surb/compute', Bool, queue_size=1)
         self.people_compute = rospy.Publisher('/clf_detect_dlib_faces/compute', Bool, queue_size=1)
         self.dd = rospy.Publisher('/pepper_robot/drivedirect', String, queue_size=1)
