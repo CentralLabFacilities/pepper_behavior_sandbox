@@ -27,6 +27,7 @@ class DataAcutators:
         self.head_pub = rospy.Publisher('/pepper_robot/head/tilt', String, queue_size=1)
         self.obj_compute = rospy.Publisher('/clf_detect_objects_surb/compute', Bool, queue_size=1)
         self.people_compute = rospy.Publisher('/clf_detect_dlib_faces/compute', Bool, queue_size=1)
+        self.dd = rospy.Publisher('/pepper_robot/drivedirect', String, queue_size=1)
         rospy.loginfo("Connecting to /move_base...")
         self.nav_as.wait_for_server()
         rospy.loginfo("Connected.")
@@ -55,21 +56,12 @@ class DataAcutators:
     def look_closer(self):
         try:
             self.set_head_drive()
-            if self.current_goal.target_pose.pose.position.x < 0:
-                self.current_goal.target_pose.pose.position.x = self.current_goal.target_pose.pose.position.x+0.15
-            else:
-                self.current_goal.target_pose.pose.position.x = self.current_goal.target_pose.pose.position.x-0.15
-            mb_goal = self.current_goal
-            self.nav_as.send_goal(mb_goal)
-            rospy.loginfo("Waiting for result...")
-            self.nav_as.wait_for_result()
-            result = str(self.nav_as.get_state())
-            # 3 is SUCCESS, 4 is ABORTED (couldnt get there), 5 REJECTED (the goal is not attainable)
+            self.dd.publish("0.15:0.0:0.0")
         except Exception, e:
             return str(5)
             self.set_head_normal()
         self.set_head_normal()
-        return result
+        return 3
 
     def set_nav_goal(self, x, y, q0, q1, q2, q3):
         try:
@@ -155,7 +147,7 @@ class WaitForCommand(smach.State):
 
     def execute(self, userdata):
         rospy.loginfo('Entering State WaitForCommand')
-        self.da.set_head_down()
+        self.da.self.set_head_normal()
         while self.ds.current_context == "":
             time.sleep(0.1)
         if self.ds.current_context == "Drive to the table":
