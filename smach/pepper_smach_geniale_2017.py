@@ -45,13 +45,19 @@ class DataAcutators:
         rospy.loginfo("Detecting Objects: %s" % str(b.data))
 
     def set_head_down(self):
-        self.head_pub.publish(self.down)
+        target = String()
+        target.data = self.down
+        self.head_pub.publish(target)
 
     def set_head_drive(self):
-        self.head_pub.publish(self.drive)
+        target = String()
+        target.data = self.drive
+        self.head_pub.publish(target)
 
     def set_head_normal(self):
-        self.head_pub.publish(self.normal)
+        target = String()
+        target.data = self.normal
+        self.head_pub.publish(target)
 
     def look_closer(self):
         try:
