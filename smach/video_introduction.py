@@ -7,10 +7,10 @@ from naoqi_driver.naoqi_node import NaoqiNode
 
 
 class TTS(object):
-    def __init__(self):
+    def __init__(self, appl):
         super(TTS, self).__init__()
-        app.start()
-        session = app.session
+        appl.start()
+        session = appl.session
         self.memory = session.service("ALMemory")
         self.tts = session.service("ALTextToSpeech")
         self.motion = session.service("ALMotion")
