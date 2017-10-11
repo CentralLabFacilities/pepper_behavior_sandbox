@@ -57,7 +57,7 @@ class Video_introduction(object):
     def run(self):
         self.motion.moveTo(0,-0.4,0)
         self.tts.say_something_blocking("Hi!")
-        self.pubAnimation("animations/Stand/Gestures/ShowSky_9")
+        self.pubAnimation.publish("animations/Stand/Gestures/ShowSky_9")
         self.tts.say_something_blocking("My name is Tobi! I would like to participate in the RoboCup 2018! I will shortly introduce my system architecture!")
         self.tts.say_something("ROS is running on my head, wrapping NaoQi!")
         self.pubAnimation.publish("animations/Stand/Gestures/But_1")
