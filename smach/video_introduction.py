@@ -44,11 +44,11 @@ class Video_introduction(object):
     def run(self):
         self.motion.moveTo(0,-0.4,0)
         self.tts.say_something("Hello! This is my second brain! This is some more filler text")
-        self.pubHead("0:-70:0")
+        self.pubHead.pub("0:-70:0")
         time.sleep(1)
-        self.pubAnimation("animation/Stand/Gestures/ShowSky_5")
+        self.pubAnimation.pub("animation/Stand/Gestures/ShowSky_5")
         time.sleep(3)
-        self.pubHead("0:0:0")
+        self.pubHead.pub("0:0:0")
         self.tts.say_something("This is the end.")
 
 
