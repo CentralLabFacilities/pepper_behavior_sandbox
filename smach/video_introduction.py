@@ -3,26 +3,54 @@
 import qi
 import sys
 from optparse import OptionParser
-from naoqi_driver.naoqi_node import NaoqiNode
+import rospy
+from std_msgs.msg import String
+import time
+import actionlib
+from naoqi_bridge_msgs.msg import SpeechWithFeedbackAction, SpeechWithFeedbackGoal
 
 
-class TTS(object):
+class TalkControllerPepper:
+    def __init__(self, sim=False):
+        self.sim = sim
+        if sim:
+            self.head_pub = rospy.Publisher('/talk', String, queue_size=1)
+        else:
+            self.speech_as = actionlib.SimpleActionClient('/naoqi_tts_feedback', SpeechWithFeedbackAction)
+            self.speech_as.wait_for_server(rospy.Duration(2))
+        rospy.loginfo("Connected to Speech Client.")
+
+    def say_something(self, _text):
+        tts_goal = SpeechWithFeedbackGoal()
+        tts_goal.say = _text
+        self.speech_as.send_goal(tts_goal)
+
+
+
+class Video_introduction(object):
     def __init__(self, appl):
-        super(TTS, self).__init__()
+        super(Video_introduction, self).__init__()
         appl.start()
         session = appl.session
         self.memory = session.service("ALMemory")
-        self.tts = session.service("ALTextToSpeech")
         self.motion = session.service("ALMotion")
-        self.animation = session.service("ALAnimationPlayer")
-        self.last_said = ""
-        self.pitch = 1.0
-        self.tts.setParameter("pitchShift", self.pitch)
+        self.animation = session.service("ALAnimationPlayer"
+        self.pubAnimation = rospy.Publisher("/pepper_robot/head/pose", String, queue_size=1)
+        self.pubHead = rospy.Publisher("/pepper_robot/animation_player", String, queue_size=1)
+        self.tts = TalkControllerPepper()
 
     # (re-) connect to NaoQI:
 
     def run(self):
-        self.tts.say("TEST")
+        self.motion.moveTo(0,-0.4,0)
+        self.tts.say_something("Hello! This is my second brain! This is some more filler text")
+        self.pubHead("0:-0.7:0")
+        time.sleep(1)
+        self.pubAnimation("animation/Stand/Gestures/ShowSky_5")
+        time.sleep(3)
+        self.pubHead("0:0:0")
+        self.tts.say_something("This is the end.")
+
 
 
 if __name__ == "__main__":
@@ -37,5 +65,5 @@ if __name__ == "__main__":
         print ("Can't connect to Naoqi")
         sys.exit(1)
 
-    tts = TTS(app)
-    tts.run()
+    vi = Video_introduction(app)
+    vi.run()
