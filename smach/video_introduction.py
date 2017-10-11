@@ -34,9 +34,8 @@ class Video_introduction(object):
         session = appl.session
         self.memory = session.service("ALMemory")
         self.motion = session.service("ALMotion")
-        self.animation = session.service("ALAnimationPlayer")
-        self.pubAnimation = rospy.Publisher("/pepper_robot/head/pose", String, queue_size=1)
-        self.pubHead = rospy.Publisher("/pepper_robot/animation_player", String, queue_size=1)
+        self.pubAnimation = rospy.Publisher("/pepper_robot/animation_player", String, queue_size=1)
+        self.pubHead = rospy.Publisher("/pepper_robot/head/pose", String, queue_size=1)
         self.tts = TalkControllerPepper()
 
     # (re-) connect to NaoQI:
