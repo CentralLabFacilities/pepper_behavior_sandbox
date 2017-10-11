@@ -57,6 +57,7 @@ if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("--pip", dest="pip", default=True)
     parser.add_option("--pport", dest="pport", default=True)
+    rospy.init_node('pepper_video_introduction', anonymous=True)
     (options, args) = parser.parse_args()
     try:
         connection_url = options.pip + ":" + options.pport
