@@ -55,7 +55,7 @@ class Video_introduction(object):
     # (re-) connect to NaoQI:
 
     def run(self):
-        self.motion.moveTo(0,-0.4,0)
+        self.motion.moveTo(0,-0.7,0)
         self.tts.say_something_blocking("Hi!")
         self.pubAnimation.publish("animations/Stand/Gestures/ShowSky_9")
         self.tts.say_something_blocking("My name is Tobi! I would like to participate in the RoboCup 2018! I will shortly introduce my system architecture!")
