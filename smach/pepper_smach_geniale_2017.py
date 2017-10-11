@@ -106,8 +106,7 @@ class DataSensors:
     def __init__(self):
         self.speech_rec_context = rospy.Subscriber("/pepper_robot/speechrec/context", String, self.context_callback)
         self.people_sensor = rospy.Subscriber("/clf_perception_vision/people/raw", ExtendedPeople, self.people_callback)
-        self.speech_rec_context = rospy.Subscriber("/clf_detect_objects_surb/objects", MarkerArray,
-                                                   self.object_callback)
+        self.objects_sensor = rospy.Subscriber("/clf_perception_surb/objects", MarkerArray, self.object_callback)
         self.current_context = ""
         self.current_objects = []
         self.current_people = []
