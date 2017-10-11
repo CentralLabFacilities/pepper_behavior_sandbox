@@ -66,8 +66,10 @@ class Video_introduction(object):
         time.sleep(1)
         self.tts.say_something("This is my Laptop and the only external computing resource! Additional components like behavior coordination, object recognition and person perception are running on it!")
         self.pubAnimation.publish("animations/Stand/Gestures/ShowSky_5")
+        time.sleep(3)
         self.pubHead.publish("0:0:0")
         time.sleep(5)
+        self.pubAnimation.publish("animations/Stand/Gestures/ShowTablet_2")
         self.tts.say_something_blocking("Lastly, I want to show you my tablet! Where additional information is displayed and which can be used to interact with me.")
         self.tts.say_something_blocking("Now I am going to show you some of my skills with the help of Felix and Kai!")
 
