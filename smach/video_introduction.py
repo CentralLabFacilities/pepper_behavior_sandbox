@@ -45,7 +45,7 @@ class Video_introduction(object):
         self.tts.say_something("Hello! This is my second brain! This is some more filler text")
         self.pubHead.publish("0:-70:0")
         time.sleep(1)
-        self.pubAnimation.publish("animation/Stand/Gestures/ShowSky_5")
+        self.pubAnimation.publish("animations/Stand/Gestures/ShowSky_5")
         time.sleep(3)
         self.pubHead.publish("0:0:0")
         self.tts.say_something("This is the end.")
