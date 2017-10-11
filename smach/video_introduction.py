@@ -5,6 +5,7 @@ import sys
 from optparse import OptionParser
 from naoqi_driver.naoqi_node import NaoqiNode
 
+
 class TTS(object):
     def __init__(self):
         super(TTS, self).__init__()
@@ -24,7 +25,6 @@ class TTS(object):
         self.tts.say("TEST")
 
 
-
 if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("--pip", dest="pip", default=True)
@@ -39,4 +39,3 @@ if __name__ == "__main__":
 
     tts = TTS(app)
     tts.run()
-
