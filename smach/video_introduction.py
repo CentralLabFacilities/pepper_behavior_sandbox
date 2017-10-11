@@ -56,7 +56,9 @@ class Video_introduction(object):
 
     def run(self):
         self.motion.moveTo(0,-0.4,0)
-        self.tts.say_something_blocking("Hello! My name is Tobi! I would like to participate in the RoboCup 2018! I will shortly introduce my system architecture!")
+        self.tts.say_something_blocking("Hi!")
+        self.pubAnimation("animations/Stand/Gestures/ShowSky_9")
+        self.tts.say_something_blocking("My name is Tobi! I would like to participate in the RoboCup 2018! I will shortly introduce my system architecture!")
         self.tts.say_something("ROS is running on my head, wrapping NaoQi!")
         self.pubAnimation.publish("animations/Stand/Gestures/But_1")
         time.sleep(2)
@@ -68,11 +70,11 @@ class Video_introduction(object):
         self.pubAnimation.publish("animations/Stand/Gestures/ShowSky_5")
         time.sleep(3)
         self.pubHead.publish("0:0:0")
-        time.sleep(5)
+        time.sleep(8)
         self.pubAnimation.publish("animations/Stand/Gestures/Me_7")
         self.tts.say_something_blocking("Lastly, I want to show you my tablet! Where additional information is displayed and which can be used to interact with me.")
         self.tts.say_something_blocking("Now I am going to show you some of my skills with the help of Felix and Kai!")
-        self.tts.say_something_blocking("Please remember, I am not the fastest driving robot. But people are actively working on that!")
+        self.tts.say_something_blocking("Please remember, I am not the fastest driving robot. But my team is actively working on that!")
 
 
 
