@@ -196,7 +196,7 @@ class WaitForCommand(smach.State):
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             return 'persons'
-        elif self.ds.current_context == "How many people do you see":
+        elif self.ds.current_context == "Count people please":
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             return 'persons'
