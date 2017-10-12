@@ -28,6 +28,7 @@ class DataAcutators:
         self.obj_compute = rospy.Publisher('/clf_detect_objects_surb/compute', Bool, queue_size=1)
         self.people_compute = rospy.Publisher('/clf_detect_dlib_faces/compute', Bool, queue_size=1)
         self.dd = rospy.Publisher('/pepper_robot/drivedirect', String, queue_size=1)
+        self.td = rospy.Publisher('/pepper_robot/turndirect', String, queue_size=1)
         rospy.loginfo("Connecting to /move_base...")
         self.nav_as.wait_for_server()
         rospy.loginfo("Connected.")
@@ -63,6 +64,16 @@ class DataAcutators:
         try:
             self.set_head_drive()
             self.dd.publish("0.15:0.0:0.0")
+        except Exception, e:
+            return str(5)
+            self.set_head_normal()
+        self.set_head_normal()
+        return "3"
+
+    def turn(self, _value):
+        try:
+            self.set_head_drive()
+            self.td.publish(_value)
         except Exception, e:
             return str(5)
             self.set_head_normal()
@@ -200,6 +211,10 @@ class WaitForCommand(smach.State):
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             return 'persons'
+        elif self.ds.current_context == "Turn around":
+            rospy.loginfo(self.ds.current_context)
+            self.ds.reset_context()
+            return 'turn'
         rospy.logwarn('No valid command')
         self.ds.reset_context()
         return 'none'
@@ -267,7 +282,7 @@ class WhatIs(smach.State):
     def execute(self, userdata):
         self.da.set_head_down()
         self.da.compute_objects(True)
-        time.sleep(2.5)
+        time.sleep(1.5)
         rospy.loginfo('Entering State WhatIs')
         see = "I see "
         objects = self.ds.current_objects
@@ -290,7 +305,7 @@ class WhoIs(smach.State):
     def execute(self, userdata):
         rospy.loginfo('Entering State WhatIs')
         self.da.compute_people(True)
-        time.sleep(2.5)
+        time.sleep(1.5)
         people = self.ds.current_people
         if len(people) < 1:
             self.da.say_something("I can not see any person, I am sorry.")
@@ -305,6 +320,18 @@ class WhoIs(smach.State):
         self.ds.reset_people()
         self.da.compute_people(False)
         return 'whois'
+
+
+class Turn(smach.State):
+    def __init__(self, _da):
+        smach.State.__init__(self, outcomes=['turn'])
+        self.da = _da
+
+    def execute(self, userdata):
+        rospy.loginfo('Entering State Turn')
+        self.da.turn("-120.0")
+        time.sleep(1.5)
+        return 'turn'
 
 
 def main():
@@ -327,6 +354,7 @@ def main():
                                             'what': 'WHATIS',
                                             'closer': 'LOOKCLOSER',
                                             'persons': 'WHOIS',
+                                            'turn': 'TURN',
                                             'none': 'WAIT'})
 
         smach.StateMachine.add('GOTO', GoTo(da),
@@ -342,6 +370,8 @@ def main():
         smach.StateMachine.add('LOOKCLOSER', LookCloser(da),
                                transitions={'arrived': 'WAIT',
                                             'fail': 'WAIT'})
+
+        smach.StateMachine.add('TURN', Turn(da), transitions={'turn': 'WAIT'})
 
     # Introspection viewer
     sis = smach_ros.IntrospectionServer('server_name', sm, '/GENIALE')
