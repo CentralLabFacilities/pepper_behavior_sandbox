@@ -155,6 +155,7 @@ class WaitForCommand(smach.State):
                                              'shelf',
                                              'sliding door',
                                              'exit door',
+                                             'turn',
                                              'none'],
                              input_keys=['go_to_goal'],
                              output_keys=['go_to_goal'])
