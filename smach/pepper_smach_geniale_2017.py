@@ -208,11 +208,11 @@ class WaitForCommand(smach.State):
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             return 'persons'
-        elif self.ds.current_context == "Count people please":
+        elif self.ds.current_context == "Count the people":
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             return 'persons'
-        elif self.ds.current_context == "Turn around":
+        elif self.ds.current_context == "Tobi turn around":
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             return 'turn'
