@@ -330,7 +330,7 @@ class Turn(smach.State):
 
     def execute(self, userdata):
         rospy.loginfo('Entering State Turn')
-        self.da.turn("-180.0")
+        self.da.turn("-140.0")
         time.sleep(1.5)
         return 'turn'
 
