@@ -184,11 +184,19 @@ class WaitForCommand(smach.State):
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             return 'what'
+        elif self.ds.current_context == "What is this":
+            rospy.loginfo(self.ds.current_context)
+            self.ds.reset_context()
+            return 'what'
         elif self.ds.current_context == "Please look a little closer":
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             return 'closer'
         elif self.ds.current_context == "Detect people please":
+            rospy.loginfo(self.ds.current_context)
+            self.ds.reset_context()
+            return 'persons'
+        elif self.ds.current_context == "How many people do you see":
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             return 'persons'
