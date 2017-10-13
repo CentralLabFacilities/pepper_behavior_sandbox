@@ -2,11 +2,11 @@
 
 import qi
 import sys
-from optparse import OptionParser
-import rospy
-from std_msgs.msg import String
 import time
+import rospy
 import actionlib
+from std_msgs.msg import String
+from optparse import OptionParser
 from naoqi_bridge_msgs.msg import SpeechWithFeedbackAction, SpeechWithFeedbackGoal
 
 
@@ -40,7 +40,6 @@ class TalkControllerPepper:
         return result
 
 
-
 class Video_introduction(object):
     def __init__(self, appl):
         super(Video_introduction, self).__init__()
@@ -55,27 +54,31 @@ class Video_introduction(object):
     # (re-) connect to NaoQI:
 
     def run(self):
-        self.motion.moveTo(0,-0.7,0)
+        self.motion.moveTo(0, -0.7, 0)
         self.tts.say_something_blocking("Hi!")
         self.pubAnimation.publish("animations/Stand/Gestures/ShowSky_9")
-        self.tts.say_something_blocking("My name is Tobi! I would like to participate in the RoboCup 2018! I will shortly introduce my system architecture!")
+        self.tts.say_something_blocking(
+            "My name is Tobi! I would like to participate in the RoboCup 2018! I will shortly introduce my system architecture!")
         self.tts.say_something("ROS is running on my head, wrapping NaoQi!")
         self.pubAnimation.publish("animations/Stand/Gestures/But_1")
         time.sleep(2)
-        self.tts.say_something_blocking("For example: The ROS navigation stack is deployed on my head, this enables me to navigate autonomously!")
+        self.tts.say_something_blocking(
+            "For example: The ROS navigation stack is deployed on my head, this enables me to navigate autonomously!")
         self.tts.say_something_blocking("I am also grabbing and streaming my camera inputs compressed using ROS")
         self.pubHead.publish("0:-70:0")
         time.sleep(1)
-        self.tts.say_something("This is my Laptop and the only external computing resource! Additional components like behavior coordination, object recognition and person perception are running on it!")
+        self.tts.say_something(
+            "This is my Laptop and the only external computing resource! Additional components like behavior coordination, object recognition and person perception are running on it!")
         self.pubAnimation.publish("animations/Stand/Gestures/ShowSky_5")
         time.sleep(3)
         self.pubHead.publish("0:0:0")
         time.sleep(8)
         self.pubAnimation.publish("animations/Stand/Gestures/Me_7")
-        self.tts.say_something_blocking("Lastly, I want to show you my tablet! Where additional information is displayed and which can be used to interact with me.")
+        self.tts.say_something_blocking(
+            "Lastly, I want to show you my tablet! Where additional information is displayed and which can be used to interact with me.")
         self.tts.say_something_blocking("Now I am going to show you some of my skills with the help of Felix and Kai!")
-        self.tts.say_something_blocking("Please remember, I am not the fastest driving robot. But my team is actively working on that!")
-
+        self.tts.say_something_blocking(
+            "Please remember, I am not the fastest driving robot. But my team is actively working on that!")
 
 
 if __name__ == "__main__":

@@ -1,17 +1,21 @@
 #!/usr/bin/env python
 
+import tf
 import time
+import copy
+import math
 import rospy
 import smach
 import smach_ros
 import actionlib
+from threading import Lock
 from std_msgs.msg import String, Bool
-from math import radians, degrees
+from clf_perception_vision.srv import *
 from people_msgs.msg import Person, People
 from visualization_msgs.msg import Marker, MarkerArray
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
-from clf_perception_vision.msg import ExtendedPeople, ExtendedPersonStamped
 from geometry_msgs.msg import PoseWithCovarianceStamped, Quaternion
+from clf_perception_vision.msg import ExtendedPeople, ExtendedPersonStamped
 from tf.transformations import quaternion_from_euler, euler_from_quaternion
 from naoqi_bridge_msgs.msg import SpeechWithFeedbackAction, SpeechWithFeedbackActionGoal, SpeechWithFeedbackGoal
 
@@ -113,14 +117,75 @@ class DataAcutators:
         return result
 
 
+class ClosestPersonSensor:
+    def __init__(self):
+        self.mutex = Lock()
+        self.people = []
+        self.people_sensor = rospy.Subscriber("/clf_perception_vision/people/raw/transform", ExtendedPeople,
+                                              self.people_callback)
+        print("Init Person Sensor")
+
+    def people_callback(self, data):
+        self.mutex.acquire()
+        self.people = []
+        for p in data.persons:
+            self.people.append(p)
+        self.mutex.release()
+
+    def distance(self, trans):
+        dist = math.sqrt(trans.x * trans.x + trans.y * trans.y + trans.z * trans.z)
+        return dist
+
+    def get_closest(self):
+        self.mutex.acquire()
+        tmp_people = copy.deepcopy(self.people)
+        self.mutex.release()
+        min_dist = 10000.0
+        transform_id = None
+        for p in tmp_people:
+            pose = p.pose
+            dist = self.distance(pose.pose.position)
+            if dist < min_dist:
+                min_dist = dist
+                rospy.loginfo("New min distance %f" % min_dist)
+                transform_id = p.transformid
+        return transform_id
+
+
+class IdSensor:
+    def __init__(self):
+        rospy.loginfo("Waiting for Service Person ID")
+        rospy.wait_for_service('pepper_face_identification')
+        rospy.loginfo("Init Person ID Sensor")
+
+    def identify(self, _data):
+        try:
+            person_id = rospy.ServiceProxy('pepper_face_identification', DoIKnowThatPerson)
+            resp = person_id(_data)
+            return resp.known, resp.name
+        except rospy.ServiceException, e:
+            rospy.logwarn("Service call failed: %s" % e)
+
+
 class DataSensors:
     def __init__(self):
+        self.id_sensor = IdSensor()
+        self.closest_person = ClosestPersonSensor()
         self.speech_rec_context = rospy.Subscriber("/pepper_robot/speechrec/context", String, self.context_callback)
         self.people_sensor = rospy.Subscriber("/clf_perception_vision/people/raw", ExtendedPeople, self.people_callback)
         self.objects_sensor = rospy.Subscriber("/clf_perception_surb/objects", MarkerArray, self.object_callback)
         self.current_context = ""
         self.current_objects = []
         self.current_people = []
+
+    def identify(self):
+        person_id = self.closest_person.get_closest()
+        if person_id is not None:
+            known, name = self.id_sensor.identify(person_id)
+            return known
+        else:
+            rospy.logwarn("No person id found")
+            return person_id
 
     def reset_context(self):
         self.current_context = ""
@@ -156,6 +221,7 @@ class WaitForCommand(smach.State):
                                              'sliding door',
                                              'exit door',
                                              'turn',
+                                             'know',
                                              'none'],
                              input_keys=['go_to_goal'],
                              output_keys=['go_to_goal'])
@@ -216,6 +282,10 @@ class WaitForCommand(smach.State):
             rospy.loginfo(self.ds.current_context)
             self.ds.reset_context()
             return 'turn'
+        elif self.ds.current_context == "Do you know me":
+            rospy.loginfo(self.ds.current_context)
+            self.ds.reset_context()
+            return 'know'
         rospy.logwarn('No valid command')
         self.ds.reset_context()
         return 'none'
@@ -335,6 +405,23 @@ class Turn(smach.State):
         return 'turn'
 
 
+class Know(smach.State):
+    def __init__(self, _ds, _da):
+        smach.State.__init__(self, outcomes=['result'])
+        self.da = _da
+        self.ds = _ds
+
+    def execute(self, userdata):
+        rospy.loginfo('Entering State Know')
+        result = self.ds.identify()
+        rospy.loginfo("Person ID result %s" % str(result))
+        if result is not None and result is not False:
+            self.da.say_something("Yes I know you!")
+        else:
+            self.da.say_something("No, I don't know you.")
+        return 'result'
+
+
 def main():
     rospy.init_node('geniale_pepper_state_machine')
     ds = DataSensors()
@@ -356,6 +443,7 @@ def main():
                                             'closer': 'LOOKCLOSER',
                                             'persons': 'WHOIS',
                                             'turn': 'TURN',
+                                            'know': 'KNOW',
                                             'none': 'WAIT'})
 
         smach.StateMachine.add('GOTO', GoTo(da),
@@ -373,6 +461,8 @@ def main():
                                             'fail': 'WAIT'})
 
         smach.StateMachine.add('TURN', Turn(da), transitions={'turn': 'WAIT'})
+
+        smach.StateMachine.add('KNOW', Know(ds, da), transitions={'result': 'WAIT'})
 
     # Introspection viewer
     sis = smach_ros.IntrospectionServer('server_name', sm, '/GENIALE')
