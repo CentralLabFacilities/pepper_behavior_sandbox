@@ -26,6 +26,7 @@ class DataAcutators:
         self.down = '25.0:0.0'
         self.drive = '15.0:0.0'
         self.normal = '0.0:0.0'
+        self.people = '-15.0:0.0'
         self.current_goal = MoveBaseGoal()
         self.nav_as = actionlib.SimpleActionClient('/move_base', MoveBaseAction)
         self.speech_as = actionlib.SimpleActionClient('/naoqi_tts_feedback', SpeechWithFeedbackAction)
@@ -63,6 +64,11 @@ class DataAcutators:
     def set_head_normal(self):
         target = String()
         target.data = self.normal
+        self.head_pub.publish(target)
+
+    def set_head_people(self):
+        target = String()
+        target.data = self.people
         self.head_pub.publish(target)
 
     def look_closer(self):
@@ -416,6 +422,7 @@ class Know(smach.State):
 
     def execute(self, userdata):
         rospy.loginfo('Entering State Know')
+        self.da.set_head_people()
         result = self.ds.identify()
         rospy.loginfo("Person ID result %s" % str(result))
         if result is not None and result is not False:
