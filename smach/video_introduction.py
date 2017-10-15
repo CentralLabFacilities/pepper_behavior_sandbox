@@ -83,7 +83,7 @@ class VideoIntroduction(object):
 
 class VideoIntroduction2(object):
     def __init__(self, appl):
-        super(VideoIntroduction, self).__init__()
+        super(VideoIntroduction2, self).__init__()
         appl.start()
         session = appl.session
         self.memory = session.service("ALMemory")
