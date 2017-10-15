@@ -6,6 +6,7 @@ import copy
 import math
 import rospy
 import smach
+import random
 import smach_ros
 import actionlib
 from threading import Lock
@@ -410,15 +411,17 @@ class Know(smach.State):
         smach.State.__init__(self, outcomes=['result'])
         self.da = _da
         self.ds = _ds
+        self.helper_text_know = ["Yes, I know you!", "I remember you!", "Yes, I know who you are!", "Well, yes I know you."]
+        self.helper_text_dontknow = ["No, I don't know you!", "Sorry, I don't know who you are.", "Nope, I don't know you.", "Sorry, I cannot remember you."]
 
     def execute(self, userdata):
         rospy.loginfo('Entering State Know')
         result = self.ds.identify()
         rospy.loginfo("Person ID result %s" % str(result))
         if result is not None and result is not False:
-            self.da.say_something("Yes I know you!")
+            self.da.say_something(random.choice(self.helper_text_know))
         else:
-            self.da.say_something("No, I don't know you.")
+            self.da.say_something(random.choice(self.helper_text_know))
         return 'result'
 
 
