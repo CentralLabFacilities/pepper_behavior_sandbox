@@ -108,6 +108,34 @@ class VideoIntroduction2(object):
         self.motion.moveTo(0, 0, math.radians(180.0))
 
 
+class VideoIntroduction3(object):
+    def __init__(self, appl):
+        super(VideoIntroduction3, self).__init__()
+        appl.start()
+        session = appl.session
+        self.memory = session.service("ALMemory")
+        self.motion = session.service("ALMotion")
+        self.pubAnimation = rospy.Publisher("/pepper_robot/animation_player", String, queue_size=1)
+        self.pubHead = rospy.Publisher("/pepper_robot/head/pose", String, queue_size=1)
+        self.tts = TalkControllerPepper()
+
+    # (re-) connect to NaoQI:
+
+    def run(self):
+        self.tts.say_something_blocking("Hi for the last time, I promise!")
+        time.sleep(2)
+        self.tts.say_something_blocking(
+            "My team also developed a simulation environment based on MORSE.")
+        time.sleep(5)
+        self.tts.say_something("The simulation exposes the same ROS interfaces as my physical representation. For instance, color and depth camera streams as well as simulated laser scans.")
+        time.sleep(5)
+        self.tts.say_something_blocking("This enables my team members to test new algorithms or do automated regression testing, even if I am not physically available.")
+        time.sleep(5)
+        self.tts.say_something_blocking("The best thing is, they are going to make the simulation open source soon.")
+        time.sleep(5)
+        self.tts.say_something_blocking("I hope you enjoyed watching my qualification video. Have a nice day and see you in Montral, hopefully.")
+
+
 if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("--pip", dest="pip", default=True)
@@ -124,5 +152,8 @@ if __name__ == "__main__":
     #vi = VideoIntroduction(app)
     #vi.run()
 
-    vi2 = VideoIntroduction2(app)
-    vi2.run()
+    #vi2 = VideoIntroduction2(app)
+    #vi2.run()
+
+    vi3 = VideoIntroduction3(app)
+    vi3.run()
