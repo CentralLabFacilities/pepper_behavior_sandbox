@@ -421,7 +421,7 @@ class Know(smach.State):
         if result is not None and result is not False:
             self.da.say_something(random.choice(self.helper_text_know))
         else:
-            self.da.say_something(random.choice(self.helper_text_know))
+            self.da.say_something(random.choice(self.helper_text_dontknow))
         return 'result'
 
 
