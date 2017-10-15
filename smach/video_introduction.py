@@ -3,6 +3,7 @@
 import qi
 import sys
 import time
+import math
 import rospy
 import actionlib
 from std_msgs.msg import String
@@ -96,15 +97,15 @@ class VideoIntroduction2(object):
 
     def run(self):
         self.motion.moveTo(0, -0.7, 0)
-        self.tts.say_something_blocking("Hi again!")
         self.pubAnimation.publish("animations/Stand/Gestures/ShowSky_9")
+        self.tts.say_something_blocking("Hi again!")
         self.tts.say_something_blocking(
             "Now, I am going to show my people perception and recognition skills.")
         self.tts.say_something("My people perception works in 2 and 3D. Thus, I detect people in my color image and then I calculate the corresponding 3D position")
         self.pubAnimation.publish("animations/Stand/Gestures/But_1")
         time.sleep(2)
         self.tts.say_something_blocking("Let's see how this works.")
-        self.motion.moveTo(0, 0, 180.0)
+        self.motion.moveTo(0, 0, math.radians(180.0))
 
 
 if __name__ == "__main__":
