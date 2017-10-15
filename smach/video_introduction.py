@@ -40,9 +40,9 @@ class TalkControllerPepper:
         return result
 
 
-class Video_introduction(object):
+class VideoIntroduction(object):
     def __init__(self, appl):
-        super(Video_introduction, self).__init__()
+        super(VideoIntroduction, self).__init__()
         appl.start()
         session = appl.session
         self.memory = session.service("ALMemory")
@@ -81,11 +81,37 @@ class Video_introduction(object):
             "Please remember, I am not the fastest driving robot. But my team is actively working on that!")
 
 
+class VideoIntroduction2(object):
+    def __init__(self, appl):
+        super(VideoIntroduction, self).__init__()
+        appl.start()
+        session = appl.session
+        self.memory = session.service("ALMemory")
+        self.motion = session.service("ALMotion")
+        self.pubAnimation = rospy.Publisher("/pepper_robot/animation_player", String, queue_size=1)
+        self.pubHead = rospy.Publisher("/pepper_robot/head/pose", String, queue_size=1)
+        self.tts = TalkControllerPepper()
+
+    # (re-) connect to NaoQI:
+
+    def run(self):
+        self.motion.moveTo(0, -0.7, 0)
+        self.tts.say_something_blocking("Hi again!")
+        self.pubAnimation.publish("animations/Stand/Gestures/ShowSky_9")
+        self.tts.say_something_blocking(
+            "Now, I am going to show my people perception and recognition skills.")
+        self.tts.say_something("My people perception works in 2 and 3D. Thus, I detect people in my color image and then I calculate the corresponding 3D position")
+        self.pubAnimation.publish("animations/Stand/Gestures/But_1")
+        time.sleep(2)
+        self.tts.say_something_blocking("Let's see how this works.")
+        self.motion.moveTo(0, 0, 180.0)
+
+
 if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("--pip", dest="pip", default=True)
     parser.add_option("--pport", dest="pport", default=True)
-    rospy.init_node('pepper_video_introduction', anonymous=True)
+    rospy.init_node('pepper_VideoIntroduction', anonymous=True)
     (options, args) = parser.parse_args()
     try:
         connection_url = options.pip + ":" + options.pport
@@ -94,5 +120,8 @@ if __name__ == "__main__":
         print ("Can't connect to Naoqi")
         sys.exit(1)
 
-    vi = Video_introduction(app)
-    vi.run()
+    #vi = VideoIntroduction(app)
+    #vi.run()
+
+    vi2 = VideoIntroduction2(app)
+    vi2.run()
