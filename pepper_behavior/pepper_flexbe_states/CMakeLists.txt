@@ -24,4 +24,5 @@ catkin_package(
 # install executables
 #install(PROGRAMS bin/hello
 #        DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+install(DIRECTORY src DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})
 
