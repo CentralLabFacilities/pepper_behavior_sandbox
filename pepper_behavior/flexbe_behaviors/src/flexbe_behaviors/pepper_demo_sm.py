@@ -11,6 +11,7 @@ from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyC
 from pepper_flexbe_states.wait_for_open_door import WaitForOpenDoorState
 from pepper_flexbe_states.set_navgoal_state import MoveBaseState
 from pepper_flexbe_states.generate_navgoal import GenerateNavgoalState
+from pepper_flexbe_states.talk_state import TalkState
 # Additional imports can be added inside the following tags
 # [MANUAL_IMPORT]
 
@@ -48,7 +49,7 @@ class PepperDemoSM(Behavior):
 
 
 	def create(self):
-		# x:614 y:129, x:348 y:36
+		# x:699 y:30, x:496 y:139
 		_state_machine = OperatableStateMachine(outcomes=['finished', 'failed'])
 
 		# Additional creation code can be added inside the following tags
@@ -58,25 +59,31 @@ class PepperDemoSM(Behavior):
 
 
 		with _state_machine:
-			# x:82 y:27
+			# x:25 y:83
 			OperatableStateMachine.add('Wait',
 										WaitForOpenDoorState(),
 										transitions={'done': 'SetNavGoal'},
 										autonomy={'done': Autonomy.Off})
 
-			# x:313 y:124
+			# x:235 y:130
 			OperatableStateMachine.add('NavigateToGoal',
 										MoveBaseState(),
-										transitions={'arrived': 'finished', 'failed': 'failed'},
+										transitions={'arrived': 'SayHi', 'failed': 'failed'},
 										autonomy={'arrived': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'waypoint': 'waypoint'})
 
-			# x:86 y:124
+			# x:234 y:21
 			OperatableStateMachine.add('SetNavGoal',
 										GenerateNavgoalState(x=self.x, y=self.y, theta=self.theta),
 										transitions={'done': 'NavigateToGoal'},
 										autonomy={'done': Autonomy.Off},
 										remapping={'navgoal': 'waypoint'})
+
+			# x:454 y:24
+			OperatableStateMachine.add('SayHi',
+										TalkState(message="Hi, I am here", blocking=True),
+										transitions={'done': 'finished', 'failed': 'failed'},
+										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 
 
 		return _state_machine

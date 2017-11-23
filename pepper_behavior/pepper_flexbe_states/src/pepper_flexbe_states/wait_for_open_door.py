@@ -44,4 +44,3 @@ class WaitForOpenDoorState(EventState):
 
     def on_enter(self, userdata):
         self._sub.enable_buffer(self._topic)
-
