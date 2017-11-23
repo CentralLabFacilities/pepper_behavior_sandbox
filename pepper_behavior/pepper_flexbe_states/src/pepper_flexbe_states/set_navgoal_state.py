@@ -14,6 +14,7 @@ Created on 11/19/2015
 @author: Spyros Maniatopoulos
 """
 
+
 class MoveBaseState(EventState):
     """
     Navigates a robot to a desired position and orientation using move_base.
@@ -27,8 +28,8 @@ class MoveBaseState(EventState):
     def __init__(self):
         """Constructor"""
 
-        super(MoveBaseState, self).__init__(outcomes = ['arrived', 'failed'],
-                                            input_keys = ['waypoint'])
+        super(MoveBaseState, self).__init__(outcomes=['arrived', 'failed'],
+                                            input_keys=['waypoint'])
 
         self._action_topic = "/move_base"
 
@@ -36,7 +37,6 @@ class MoveBaseState(EventState):
 
         self._arrived = False
         self._failed = False
-
 
     def execute(self, userdata):
         """Wait for action result and return outcome accordingly"""
@@ -59,7 +59,6 @@ class MoveBaseState(EventState):
                 self._failed = True
                 return 'failed'
 
-
     def on_enter(self, userdata):
         """Create and send action goal"""
 
@@ -76,7 +75,6 @@ class MoveBaseState(EventState):
                                      orientation=Quaternion(*qt))
 
         goal.target_pose.header.frame_id = "odom"
-        # goal.target_pose.header.stamp.secs = 5.0
 
         # Send the action goal for execution
         try:
