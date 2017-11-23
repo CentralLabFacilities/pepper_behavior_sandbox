@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+import socket
 from flexbe_core import EventState, Logger
 from flexbe_core.proxy import ProxyActionClient, ProxyPublisher
 from actionlib_msgs.msg import GoalStatus
@@ -22,7 +22,8 @@ class TalkState(EventState):
     <= failed                   Execution failed
     """
 
-    SIM = True
+    # DIRTY HACK!
+    SIM = socket.gethostname().lower() != 'vanadium'
 
     def __init__(self, message, blocking=True):
         """Constructor"""
