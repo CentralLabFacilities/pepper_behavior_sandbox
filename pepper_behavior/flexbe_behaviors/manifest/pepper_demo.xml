@@ -16,12 +16,12 @@
 	<!-- Available Parameters -->
 	<params>
 
-		<param type="numeric" name="x" default="3.0" label="x" hint="Sets the x">
+		<param type="numeric" name="x" default="1.0" label="x" hint="Sets the x">
 			<min value="0.0" />
 			<max value="10.0" />
 		</param>
 
-		<param type="numeric" name="y" default="3.0" label="y" hint="Sets the y">
+		<param type="numeric" name="y" default="1.0" label="y" hint="Sets the y">
 			<min value="-5.0" />
 			<max value="5.0" />
 		</param>

@@ -8,10 +8,11 @@
 ###########################################################
 
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
-from pepper_flexbe_states.wait_for_open_door import WaitForOpenDoorState
+from pepper_flexbe_states.wait_for_naoqi_speech import WaitForNaoQiSpeechState
 from pepper_flexbe_states.set_navgoal_state import MoveBaseState
 from pepper_flexbe_states.generate_navgoal import GenerateNavgoalState
 from pepper_flexbe_states.talk_state import TalkState
+from pepper_flexbe_states.wait_for_open_door import WaitForOpenDoorState
 # Additional imports can be added inside the following tags
 # [MANUAL_IMPORT]
 
@@ -33,8 +34,8 @@ class PepperDemoSM(Behavior):
 		self.name = 'Pepper Demo'
 
 		# parameters of this behavior
-		self.add_parameter('x', 3.0)
-		self.add_parameter('y', 3.0)
+		self.add_parameter('x', 1.0)
+		self.add_parameter('y', 1.0)
 		self.add_parameter('theta', 0)
 
 		# references to used behaviors
@@ -59,10 +60,10 @@ class PepperDemoSM(Behavior):
 
 
 		with _state_machine:
-			# x:25 y:83
-			OperatableStateMachine.add('Wait',
-										WaitForOpenDoorState(),
-										transitions={'done': 'SetNavGoal'},
+			# x:33 y:30
+			OperatableStateMachine.add('WaitForGo',
+										WaitForNaoQiSpeechState(string_to_rec="go"),
+										transitions={'done': 'WaitForOpenDoor'},
 										autonomy={'done': Autonomy.Off})
 
 			# x:235 y:130
@@ -84,6 +85,12 @@ class PepperDemoSM(Behavior):
 										TalkState(message="Hi, I am here", blocking=True),
 										transitions={'done': 'finished', 'failed': 'failed'},
 										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
+
+			# x:44 y:132
+			OperatableStateMachine.add('WaitForOpenDoor',
+										WaitForOpenDoorState(),
+										transitions={'done': 'SetNavGoal'},
+										autonomy={'done': Autonomy.Off})
 
 
 		return _state_machine

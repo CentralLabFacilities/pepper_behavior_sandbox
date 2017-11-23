@@ -6,7 +6,7 @@ from geometry_msgs.msg import Pose, Point, Quaternion, Pose2D
 
 
 class GenerateNavgoalState(EventState):
-    '''
+    """
     Implements a state that generates a Navgoal.
 
     <# x        float           x-coordinate
@@ -16,19 +16,19 @@ class GenerateNavgoalState(EventState):
     #> navgoal  Pose2D		    The navgoal.
 
     <= done						Indicates completion.
-    '''
+    """
 
     def __init__(self, x, y, theta):
-        '''
+        """
         Constructor
-        '''
+        """
         super(GenerateNavgoalState, self).__init__(outcomes=['done'], output_keys=['navgoal'])
         self.x = x
         self.y = y
         self.theta = theta
 
     def execute(self, userdata):
-        '''Execute this state'''
+        """Execute this state"""
         pose = Pose2D()
         pose.x = self.x
         pose.y = self.y
@@ -39,6 +39,5 @@ class GenerateNavgoalState(EventState):
         return 'done'
 
     def on_enter(self, userdata):
+        # nothing to do
         pass
-
-    # nothing to do

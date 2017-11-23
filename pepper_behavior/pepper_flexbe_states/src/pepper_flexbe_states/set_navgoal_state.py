@@ -27,12 +27,10 @@ class MoveBaseState(EventState):
 
     def __init__(self):
         """Constructor"""
-
         super(MoveBaseState, self).__init__(outcomes=['arrived', 'failed'],
                                             input_keys=['waypoint'])
 
         self._action_topic = "/move_base"
-
         self._client = ProxyActionClient({self._action_topic: MoveBaseAction})
 
         self._arrived = False
@@ -67,13 +65,10 @@ class MoveBaseState(EventState):
 
         # Create and populate action goal
         goal = MoveBaseGoal()
-
         pt = Point(x=userdata.waypoint.x, y=userdata.waypoint.y)
         qt = transformations.quaternion_from_euler(0, 0, userdata.waypoint.theta)
-
         goal.target_pose.pose = Pose(position=pt,
                                      orientation=Quaternion(*qt))
-
         goal.target_pose.header.frame_id = "odom"
 
         # Send the action goal for execution
