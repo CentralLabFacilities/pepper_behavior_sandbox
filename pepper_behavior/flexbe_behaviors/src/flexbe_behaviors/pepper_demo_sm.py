@@ -8,11 +8,11 @@
 ###########################################################
 
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
-from pepper_flexbe_states.wait_for_naoqi_speech import WaitForNaoQiSpeechState
-from pepper_flexbe_states.set_navgoal_state import MoveBaseState
+from pepper_flexbe_states.wait_for_open_door import WaitForOpenDoorState
 from pepper_flexbe_states.generate_navgoal import GenerateNavgoalState
 from pepper_flexbe_states.talk_state import TalkState
-from pepper_flexbe_states.wait_for_open_door import WaitForOpenDoorState
+from pepper_flexbe_states.wait_for_naoqi_speech import WaitForNaoQiSpeechState
+from pepper_flexbe_states.set_navgoal_state import MoveBaseState
 # Additional imports can be added inside the following tags
 # [MANUAL_IMPORT]
 
@@ -50,7 +50,7 @@ class PepperDemoSM(Behavior):
 
 
 	def create(self):
-		# x:699 y:30, x:496 y:139
+		# x:263 y:359, x:575 y:244
 		_state_machine = OperatableStateMachine(outcomes=['finished', 'failed'])
 
 		# Additional creation code can be added inside the following tags
@@ -60,37 +60,63 @@ class PepperDemoSM(Behavior):
 
 
 		with _state_machine:
-			# x:33 y:30
-			OperatableStateMachine.add('WaitForGo',
-										WaitForNaoQiSpeechState(string_to_rec="go"),
-										transitions={'done': 'WaitForOpenDoor'},
+			# x:33 y:26
+			OperatableStateMachine.add('WaitForOpenDoor',
+										WaitForOpenDoorState(),
+										transitions={'done': 'SetNavGoalInside'},
 										autonomy={'done': Autonomy.Off})
 
-			# x:235 y:130
-			OperatableStateMachine.add('NavigateToGoal',
-										MoveBaseState(),
-										transitions={'arrived': 'SayHi', 'failed': 'failed'},
-										autonomy={'arrived': Autonomy.Off, 'failed': Autonomy.Off},
-										remapping={'waypoint': 'waypoint'})
-
-			# x:234 y:21
-			OperatableStateMachine.add('SetNavGoal',
+			# x:224 y:26
+			OperatableStateMachine.add('SetNavGoalInside',
 										GenerateNavgoalState(x=self.x, y=self.y, theta=self.theta),
-										transitions={'done': 'NavigateToGoal'},
+										transitions={'done': 'NavigateToOrderingPos'},
 										autonomy={'done': Autonomy.Off},
 										remapping={'navgoal': 'waypoint'})
 
 			# x:454 y:24
-			OperatableStateMachine.add('SayHi',
-										TalkState(message="Hi, I am here", blocking=True),
-										transitions={'done': 'finished', 'failed': 'failed'},
+			OperatableStateMachine.add('SayHiAndAskForOrder',
+										TalkState(message="Hi, I am here. Do you want a drink or snack?", blocking=True),
+										transitions={'done': 'WaitForOrder', 'failed': 'failed'},
 										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 
-			# x:44 y:132
-			OperatableStateMachine.add('WaitForOpenDoor',
-										WaitForOpenDoorState(),
-										transitions={'done': 'SetNavGoal'},
-										autonomy={'done': Autonomy.Off})
+			# x:723 y:13
+			OperatableStateMachine.add('WaitForOrder',
+										WaitForNaoQiSpeechState(strings_to_rec=['drink','snack'], topic='/pepper_robot/speechrec/context'),
+										transitions={'drink': 'SayCoke', 'snack': 'SayChips'},
+										autonomy={'drink': Autonomy.Off, 'snack': Autonomy.Off})
+
+			# x:692 y:121
+			OperatableStateMachine.add('SayCoke',
+										TalkState(message='I will bring a coke', blocking=True),
+										transitions={'done': 'SetNavGoalStartPos', 'failed': 'failed'},
+										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
+
+			# x:867 y:165
+			OperatableStateMachine.add('SayChips',
+										TalkState(message='I will bring chips', blocking=True),
+										transitions={'done': 'SetNavGoalStartPos', 'failed': 'failed'},
+										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
+
+			# x:826 y:326
+			OperatableStateMachine.add('SetNavGoalStartPos',
+										GenerateNavgoalState(x=0, y=0, theta=0.0),
+										transitions={'done': 'NavigateToStartPos'},
+										autonomy={'done': Autonomy.Off},
+										remapping={'navgoal': 'waypoint2'})
+
+			# x:434 y:342
+			OperatableStateMachine.add('NavigateToStartPos',
+										MoveBaseState(),
+										transitions={'arrived': 'finished', 'failed': 'failed'},
+										autonomy={'arrived': Autonomy.Off, 'failed': Autonomy.Off},
+										remapping={'waypoint': 'waypoint2'})
+
+			# x:218 y:116
+			OperatableStateMachine.add('NavigateToOrderingPos',
+										MoveBaseState(),
+										transitions={'arrived': 'SayHiAndAskForOrder', 'failed': 'failed'},
+										autonomy={'arrived': Autonomy.Off, 'failed': Autonomy.Off},
+										remapping={'waypoint': 'waypoint'})
 
 
 		return _state_machine
