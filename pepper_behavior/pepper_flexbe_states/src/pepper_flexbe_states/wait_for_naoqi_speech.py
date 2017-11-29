@@ -40,7 +40,7 @@ class WaitForNaoQiSpeechState(EventState):
     def execute(self, userdata):
         """Execute this state"""
         if self.recognized is not None:
-            return self.outcomes[self._target_strings.index(self.recognized)]
+            return self._outcomes[self._target_strings.index(self.recognized)]
 
     def on_enter(self, userdata):
         self._sub.subscribe(self._topic, String, self._speech_callback)
