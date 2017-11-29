@@ -21,7 +21,10 @@ class WaitForNaoQiSpeechState(EventState):
         """
         Constructor
         """
-        super(WaitForNaoQiSpeechState, self).__init__(outcomes=strings_to_rec)
+        outcomes = []
+        for rec_str in strings_to_rec:
+            outcomes.append(rec_str.replace(' ', ''))
+        super(WaitForNaoQiSpeechState, self).__init__(outcomes=outcomes)
         self._topic = topic
         self._target_strings = strings_to_rec
         self._sub = ProxySubscriberCached()
