@@ -30,9 +30,12 @@ class WaitForNaoQiSpeechState(EventState):
         self._sub = ProxySubscriberCached()
 
     def _speech_callback(self, msg):
+        Logger.loginfo('speechrec callback:%s' % msg.data.lower())
         for result in self._target_strings:
-            if msg.data.lower() == result:
-                self.recognized = result
+            Logger.loginfo('\tspeechrec check:%s' % result.lower())
+            if msg.data.lower() == result.lower():
+                Logger.loginfo('\t\tspeechrec MATCH!')
+                self.recognized = result.lower()
 
     def execute(self, userdata):
         """Execute this state"""
