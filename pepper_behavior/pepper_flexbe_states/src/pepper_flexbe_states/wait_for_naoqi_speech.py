@@ -35,12 +35,16 @@ class WaitForNaoQiSpeechState(EventState):
             Logger.loginfo('\tspeechrec check:%s' % result.lower())
             if msg.data.lower() == result.lower():
                 Logger.loginfo('\t\tspeechrec MATCH!')
-                self.recognized = result.lower()
+                self.recognized = result
 
     def execute(self, userdata):
         """Execute this state"""
         if self.recognized is not None:
-            return self._outcomes[self._target_strings.index(self.recognized)]
+            try:
+                index = self._target_strings.index(self.recognized)
+                return self._outcomes[index]
+            except Exception as e:
+                Logger.loginfo(str(e))
 
     def on_enter(self, userdata):
         self._sub.subscribe(self._topic, String, self._speech_callback)
