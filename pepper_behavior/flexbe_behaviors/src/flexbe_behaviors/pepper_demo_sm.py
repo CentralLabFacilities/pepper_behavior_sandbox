@@ -81,19 +81,19 @@ class PepperDemoSM(Behavior):
 
 			# x:723 y:13
 			OperatableStateMachine.add('WaitForOrder',
-										WaitForNaoQiSpeechState(strings_to_rec=['drink','snack'], topic='/pepper_robot/speechrec/context'),
-										transitions={'drink': 'SayCoke', 'snack': 'SayChips'},
-										autonomy={'drink': Autonomy.Off, 'snack': Autonomy.Off})
+										WaitForNaoQiSpeechState(strings_to_rec=['Do you know me','What is this'], outcomes=['know','what'], topic='/pepper_robot/speechrec/context'),
+										transitions={'know': 'SayDontKnow', 'what': 'SayNoIdea'},
+										autonomy={'know': Autonomy.Off, 'what': Autonomy.Off})
 
 			# x:692 y:121
-			OperatableStateMachine.add('SayCoke',
-										TalkState(message='I will bring a coke', blocking=True),
+			OperatableStateMachine.add('SayDontKnow',
+										TalkState(message='No, I dont know you', blocking=True),
 										transitions={'done': 'SetNavGoalStartPos', 'failed': 'failed'},
 										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 
 			# x:867 y:165
-			OperatableStateMachine.add('SayChips',
-										TalkState(message='I will bring chips', blocking=True),
+			OperatableStateMachine.add('SayNoIdea',
+										TalkState(message='I have no Idea', blocking=True),
 										transitions={'done': 'SetNavGoalStartPos', 'failed': 'failed'},
 										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 

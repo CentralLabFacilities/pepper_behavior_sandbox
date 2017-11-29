@@ -11,21 +11,21 @@ class WaitForNaoQiSpeechState(EventState):
     Implements a state that waits for a NaoQI-Speech-Command.
 
     -- strings_to_rec        string[] 			List of speech commands to listen for
+    -- outcomes              string[] 			List of outcomes corresponding to the speech commands
 
     <= done						Indicates completion.
     """
 
     recognized = None
+    _outcomes = None
 
-    def __init__(self, strings_to_rec, topic='/pepper_robot/speechrec/context'):
+    def __init__(self, strings_to_rec, outcomes, topic='/pepper_robot/speechrec/context'):
         """
         Constructor
         """
-        outcomes = []
-        for rec_str in strings_to_rec:
-            outcomes.append(rec_str.replace(' ', ''))
         super(WaitForNaoQiSpeechState, self).__init__(outcomes=outcomes)
         self._topic = topic
+        self._outcomes = outcomes
         self._target_strings = strings_to_rec
         self._sub = ProxySubscriberCached()
 
@@ -37,7 +37,7 @@ class WaitForNaoQiSpeechState(EventState):
     def execute(self, userdata):
         """Execute this state"""
         if self.recognized is not None:
-            return self.recognized.replace(' ', '')
+            return self.outcomes[self._target_strings.index(self.recognized)]
 
     def on_enter(self, userdata):
         self._sub.subscribe(self._topic, String, self._speech_callback)
