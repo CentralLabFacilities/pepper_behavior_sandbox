@@ -34,8 +34,8 @@ class PepperDemoSM(Behavior):
 		self.name = 'Pepper Demo'
 
 		# parameters of this behavior
-		self.add_parameter('x', 1.0)
-		self.add_parameter('y', 1.0)
+		self.add_parameter('x', 3.75)
+		self.add_parameter('y', 4.62)
 		self.add_parameter('theta', 0)
 
 		# references to used behaviors
@@ -68,14 +68,14 @@ class PepperDemoSM(Behavior):
 
 			# x:224 y:26
 			OperatableStateMachine.add('SetNavGoalInside',
-										GenerateNavgoalState(x=self.x, y=self.y, theta=self.theta),
+										GenerateNavgoalState(x=self.x, y=self.y, theta=self.theta, frame_id='map'),
 										transitions={'done': 'NavigateToOrderingPos'},
 										autonomy={'done': Autonomy.Off},
 										remapping={'navgoal': 'waypoint'})
 
 			# x:454 y:24
-			OperatableStateMachine.add('SayHiAndAskForOrder',
-										TalkState(message="Hi, I am here. Do you want a drink or snack?", blocking=True),
+			OperatableStateMachine.add('SayHiAndAskForCommand',
+										TalkState(message="Hi, I am here. How can I help you?", blocking=True),
 										transitions={'done': 'WaitForOrder', 'failed': 'failed'},
 										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 
@@ -99,7 +99,7 @@ class PepperDemoSM(Behavior):
 
 			# x:826 y:326
 			OperatableStateMachine.add('SetNavGoalStartPos',
-										GenerateNavgoalState(x=0, y=0, theta=0.0),
+										GenerateNavgoalState(x=0, y=0, theta=0.0, frame_id='odom'),
 										transitions={'done': 'NavigateToStartPos'},
 										autonomy={'done': Autonomy.Off},
 										remapping={'navgoal': 'waypoint2'})
@@ -114,7 +114,7 @@ class PepperDemoSM(Behavior):
 			# x:218 y:116
 			OperatableStateMachine.add('NavigateToOrderingPos',
 										MoveBaseState(),
-										transitions={'arrived': 'SayHiAndAskForOrder', 'failed': 'failed'},
+										transitions={'arrived': 'SayHiAndAskForCommand', 'failed': 'failed'},
 										autonomy={'arrived': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'waypoint': 'waypoint'})
 

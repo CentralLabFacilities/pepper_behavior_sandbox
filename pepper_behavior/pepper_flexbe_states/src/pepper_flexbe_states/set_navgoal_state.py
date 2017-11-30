@@ -5,8 +5,6 @@ from flexbe_core.proxy import ProxyActionClient
 
 from actionlib_msgs.msg import GoalStatus
 from move_base_msgs.msg import *
-from geometry_msgs.msg import Pose, Point, Quaternion, Pose2D
-from tf import transformations
 
 """
 Created on 11/19/2015
@@ -19,7 +17,7 @@ class MoveBaseState(EventState):
     """
     Navigates a robot to a desired position and orientation using move_base.
 
-    ># waypoint     Pose2D      Target waypoint for navigation.
+    ># waypoint     PoseStamped      Target waypoint for navigation.
 
     <= arrived                  Navigation to target pose succeeded.
     <= failed                   Navigation to target pose failed.
@@ -48,11 +46,15 @@ class MoveBaseState(EventState):
             status = self._client.get_state(self._action_topic)
             if status == GoalStatus.SUCCEEDED:
                 self._arrived = True
-                Logger.loginfo('Arrived at (%.1f,%.1f)' % (userdata.waypoint.x, userdata.waypoint.y))
+                Logger.loginfo('Arrived at (%.1f,%.1f) [%s]' % (
+                    userdata.waypoint.pose.position.x, userdata.waypoint.pose.position.y,
+                    userdata.waypoint.header.frame_id))
                 return 'arrived'
             elif status in [GoalStatus.PREEMPTED, GoalStatus.REJECTED,
                             GoalStatus.RECALLED, GoalStatus.ABORTED]:
-                Logger.loginfo('Could not reach (%.1f,%.1f)' % (userdata.waypoint.x, userdata.waypoint.y))
+                Logger.loginfo('Could not reach (%.1f,%.1f) [%s]' % (
+                    userdata.waypoint.pose.position.x, userdata.waypoint.pose.position.y,
+                    userdata.waypoint.header.frame_id))
                 Logger.logwarn('Navigation failed: %s' % str(status))
                 self._failed = True
                 return 'failed'
@@ -65,16 +67,14 @@ class MoveBaseState(EventState):
 
         # Create and populate action goal
         goal = MoveBaseGoal()
-        pt = Point(x=userdata.waypoint.x, y=userdata.waypoint.y)
-        qt = transformations.quaternion_from_euler(0, 0, userdata.waypoint.theta)
-        goal.target_pose.pose = Pose(position=pt,
-                                     orientation=Quaternion(*qt))
-        goal.target_pose.header.frame_id = "odom"
+        goal.target_pose = userdata.waypoint
 
         # Send the action goal for execution
         try:
             self._client.send_goal(self._action_topic, goal)
-            Logger.loginfo('Started Navigation to (%.1f,%.1f)' % (userdata.waypoint.x, userdata.waypoint.y))
+            Logger.loginfo('Started Navigation to (%.1f,%.1f) [%s]' % (
+                    userdata.waypoint.pose.position.x, userdata.waypoint.pose.position.y,
+                    userdata.waypoint.header.frame_id))
         except Exception as e:
             Logger.logwarn("Unable to send navigation action goal:\n%s" % str(e))
             self._failed = True

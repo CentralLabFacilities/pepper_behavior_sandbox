@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="Pepper AR Demo">
+
+	<executable package_path="flexbe_behaviors.pepper_ar_demo_sm" class="PepperARDemoSM" />
+	<tagstring>demo ar pepper</tagstring>
+	<author>Felix Friese</author>
+	<date>Do Nov 30 2017</date>
+	<description>
+		Hololens AR-Demo for Pepper
+	</description>
+
+
+	<!-- Contained Behaviors -->
+
+	<!-- Available Parameters -->
+
+</behavior>

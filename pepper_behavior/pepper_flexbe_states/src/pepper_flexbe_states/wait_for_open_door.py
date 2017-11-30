@@ -38,9 +38,11 @@ class WaitForOpenDoorState(EventState):
                     err += self.old_values[i] - values[i]
                 err /= len(values)
                 if err < 0 and abs(err) > self.ERR_THRESHOLD:
+                    Logger.loginfo('THRESHOLD REACHED! (%.3f) - Door should be open!' % err)
                     return 'done'
 
                 self.old_values = values
 
     def on_enter(self, userdata):
         self._sub.enable_buffer(self._topic)
+        Logger.loginfo('Waiting for open door...')

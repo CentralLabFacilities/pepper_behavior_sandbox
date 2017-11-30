@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import socket
+import rospy
 from flexbe_core import EventState, Logger
 from flexbe_core.proxy import ProxyActionClient, ProxyPublisher
 from actionlib_msgs.msg import GoalStatus
@@ -51,7 +52,13 @@ class TalkState(EventState):
         if self._failed:
             return 'failed'
 
-        if self.SIM or not self._blocking:
+        if not self._blocking:
+            return 'done'
+
+        if self.SIM:
+            started = rospy.Time.now()
+            while rospy.Time.now() - started < rospy.Duration(5):
+                self._rate.sleep()
             return 'done'
 
         if self._client.has_result(self._action_topic):
