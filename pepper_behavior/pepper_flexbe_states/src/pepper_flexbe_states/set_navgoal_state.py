@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
 from flexbe_core import EventState, Logger
-from flexbe_core.proxy import ProxyActionClient
+from flexbe_core.proxy import ProxyActionClient, ProxyPublisher
 
 from actionlib_msgs.msg import GoalStatus
+from std_msgs.msg import String
 from move_base_msgs.msg import *
 
 """
@@ -27,6 +28,9 @@ class MoveBaseState(EventState):
         """Constructor"""
         super(MoveBaseState, self).__init__(outcomes=['arrived', 'failed'],
                                             input_keys=['waypoint'])
+
+        self._head_topic = '/pepper_robot/head/pose'
+        ProxyPublisher.createPublisher(self._pub, self._head_topic, String)
 
         self._action_topic = "/move_base"
         self._client = ProxyActionClient({self._action_topic: MoveBaseAction})
@@ -69,6 +73,9 @@ class MoveBaseState(EventState):
         goal = MoveBaseGoal()
         goal.target_pose = userdata.waypoint
 
+        # Set Head Pose Down
+        self._pub.publish(self._head_topic, '25:0')
+
         # Send the action goal for execution
         try:
             self._client.send_goal(self._action_topic, goal)
@@ -89,5 +96,11 @@ class MoveBaseState(EventState):
     def on_exit(self, userdata):
         self.cancel_active_goals()
 
+        # Set Head Pose Normal
+        self._pub.publish(self._head_topic, '0:0')
+
     def on_stop(self):
         self.cancel_active_goals()
+
+        # Set Head Pose Normal
+        self._pub.publish(self._head_topic, '0:0')

@@ -6,7 +6,6 @@ from flexbe_core import EventState, Logger
 from geometry_msgs.msg import PoseStamped
 
 
-
 class GenerateNavgoalState(EventState):
     """
     Implements a state that generates a Navgoal.

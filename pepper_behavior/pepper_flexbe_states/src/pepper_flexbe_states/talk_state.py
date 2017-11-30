@@ -16,23 +16,27 @@ class TalkState(EventState):
     """
     Makes the Robot talk
 
-    -- blocking     bool        Whether or not this state blocks execution
-    -- message      String      What to say
+    -- blocking             bool        Whether or not this state blocks execution
+    -- message              String      What to say
+    -- force-real-robot     bool        force action goal instead of espeak
 
     <= done                     Execution succeeded
     <= failed                   Execution failed
     """
 
-    # DIRTY HACK!
-    SIM = socket.gethostname().lower() != 'vanadium'
-
-    def __init__(self, message, blocking=True):
+    def __init__(self, message, blocking=True, force_real_robot=False):
         """Constructor"""
 
         super(TalkState, self).__init__(outcomes=['done', 'failed'])
 
         self._blocking = blocking
         self._text = message
+
+        if force_real_robot:
+            self.SIM = False
+        else:
+            # DIRTY HACK!
+            self.SIM = socket.gethostname().lower() != 'vanadium'
 
         if self.SIM:
             self._topic = '/talk'
