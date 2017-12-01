@@ -1,11 +1,8 @@
 #!/usr/bin/env python
-import socket
-import rospy
 from flexbe_core import EventState, Logger
-from flexbe_core.proxy import ProxyActionClient, ProxyPublisher
+from flexbe_core.proxy import ProxyActionClient
 from actionlib_msgs.msg import GoalStatus
-from std_msgs.msg import String
-from naoqi_bridge_msgs.msg import SpeechWithFeedbackAction, SpeechWithFeedbackActionGoal, SpeechWithFeedbackGoal
+from naoqi_bridge_msgs.msg import SpeechWithFeedbackAction, SpeechWithFeedbackGoal
 
 """
 
@@ -18,32 +15,20 @@ class TalkState(EventState):
 
     -- blocking             bool        Whether or not this state blocks execution
     -- message              String      What to say
-    -- force-real-robot     bool        force action goal instead of espeak
 
     <= done                     Execution succeeded
     <= failed                   Execution failed
     """
 
-    def __init__(self, message, blocking=True, force_real_robot=False):
+    def __init__(self, message, blocking=True):
         """Constructor"""
 
         super(TalkState, self).__init__(outcomes=['done', 'failed'])
 
         self._blocking = blocking
         self._text = message
-
-        if force_real_robot:
-            self.SIM = False
-        else:
-            # DIRTY HACK!
-            self.SIM = socket.gethostname().lower() != 'vanadium'
-
-        if self.SIM:
-            self._topic = '/talk'
-            ProxyPublisher.createPublisher(self._pub, self._topic, String)
-        else:
-            self._action_topic = '/naoqi_tts_feedback'
-            self._client = ProxyActionClient({self._action_topic: SpeechWithFeedbackAction})
+        self._action_topic = '/naoqi_tts_feedback'
+        self._client = ProxyActionClient({self._action_topic: SpeechWithFeedbackAction})
 
         self._done = False
         self._failed = False
@@ -57,12 +42,6 @@ class TalkState(EventState):
             return 'failed'
 
         if not self._blocking:
-            return 'done'
-
-        if self.SIM:
-            started = rospy.Time.now()
-            while rospy.Time.now() - started < rospy.Duration(5):
-                self._rate.sleep()
             return 'done'
 
         if self._client.has_result(self._action_topic):
@@ -98,16 +77,14 @@ class TalkState(EventState):
                 self._failed = True
 
     def cancel_active_goals(self):
-        if not self.SIM and self._client.is_available(self._action_topic):
+        if self._client.is_available(self._action_topic):
             if self._client.is_active(self._action_topic):
                 if not self._client.has_result(self._action_topic):
                     self._client.cancel(self._action_topic)
                     Logger.loginfo('Cancelled TTS active action goal.')
 
     def on_exit(self, userdata):
-        if not self.SIM:
-            self.cancel_active_goals()
+        self.cancel_active_goals()
 
     def on_stop(self):
-        if not self.SIM:
-            self.cancel_active_goals()
+        self.cancel_active_goals()
