@@ -62,19 +62,16 @@ class TalkState(EventState):
         self._done = False
         self._failed = False
 
-        if self.SIM:
-            self._pub.publish(self._topic, self._text)
-        else:
-            # Create and populate action goal
-            goal = SpeechWithFeedbackGoal()
-            goal.say = self._text
+        # Create and populate action goal
+        goal = SpeechWithFeedbackGoal()
+        goal.say = self._text
 
-            try:
-                self._client.send_goal(self._action_topic, goal)
-                Logger.loginfo('Send TTS goal')
-            except Exception as e:
-                Logger.logwarn("Unable to send tts action goal:\n%s" % str(e))
-                self._failed = True
+        try:
+            self._client.send_goal(self._action_topic, goal)
+            Logger.loginfo('Send TTS goal')
+        except Exception as e:
+            Logger.logwarn("Unable to send tts action goal:\n%s" % str(e))
+            self._failed = True
 
     def cancel_active_goals(self):
         if self._client.is_available(self._action_topic):
