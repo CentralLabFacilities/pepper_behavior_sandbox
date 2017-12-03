@@ -81,7 +81,9 @@ class TalkState(EventState):
                     Logger.loginfo('Cancelled TTS active action goal.')
 
     def on_exit(self, userdata):
-        self.cancel_active_goals()
+        if self._blocking:
+            self.cancel_active_goals()
 
     def on_stop(self):
-        self.cancel_active_goals()
+        if self._blocking:
+            self.cancel_active_goals()
