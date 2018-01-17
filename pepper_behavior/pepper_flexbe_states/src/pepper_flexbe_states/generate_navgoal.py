@@ -4,18 +4,19 @@ import math
 import rospy
 from flexbe_core import EventState, Logger
 from geometry_msgs.msg import PoseStamped
+from tf import transformations
 
 
-class GenerateNavgoalState(EventState):
+class GenerateNavGoalState(EventState):
     """
-    Implements a state that generates a Navgoal.
+    Implements a state that generates a Nav-goal.
 
-    <# x        float           x-coordinate
-    <# y        float           y-coordinate
-    <# theta    float           theta
-    <# frame_id string          frame_id
+    <# x                  float         x-coordinate
+    <# y                  float         y-coordinate
+    <# theta              float         theta in degrees
+    <# frame_id           string        frame_id
 
-    #> navgoal  PoseStamped		    The navgoal.
+    #> generated_goal     PoseStamped   the nav-goal.
 
     <= done						Indicates completion.
     """
@@ -24,30 +25,25 @@ class GenerateNavgoalState(EventState):
         """
         Constructor
         """
-        super(GenerateNavgoalState, self).__init__(outcomes=['done'], output_keys=['navgoal'])
+        super(GenerateNavGoalState, self).__init__(outcomes=['done'], output_keys=['generated_goal'])
         self.x = x
         self.y = y
-        self.theta = theta
+        self.theta = theta * math.pi / 180
         self.frame_id = frame_id
 
     def execute(self, userdata):
         """Execute this state"""
         pose = PoseStamped()
-
         pose.header.stamp = rospy.Time.now()
         pose.header.frame_id = self.frame_id
         pose.pose.position.x = self.x
         pose.pose.position.y = self.y
-        pose.pose.orientation.w = math.cos(self.theta / 2)
-        pose.pose.orientation.x = self.x * math.sin(self.theta / 2)
-        pose.pose.orientation.y = self.y * math.sin(self.theta / 2)
-        pose.pose.orientation.z = 0.0 * math.sin(self.theta / 2)
-
-        userdata.navgoal = pose
-
-        # nothing to check
+        quaternion = transformations.quaternion_from_euler(0.0, 0.0, self.theta)
+        pose.pose.orientation.x = quaternion[0]
+        pose.pose.orientation.y = quaternion[1]
+        pose.pose.orientation.z = quaternion[2]
+        pose.pose.orientation.w = quaternion[3]
+        userdata.generated_goal = pose
+        Logger.loginfo('Generated nav-goal: %r' % pose.pose)
         return 'done'
 
-    def on_enter(self, userdata):
-        # nothing to do
-        pass

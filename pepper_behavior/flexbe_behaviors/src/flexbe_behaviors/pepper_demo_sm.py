@@ -9,7 +9,7 @@
 
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
 from pepper_flexbe_states.wait_for_open_door import WaitForOpenDoorState
-from pepper_flexbe_states.generate_navgoal import GenerateNavgoalState
+from pepper_flexbe_states.generate_navgoal import GenerateNavGoalState
 from pepper_flexbe_states.talk_state import TalkState
 from pepper_flexbe_states.wait_for_naoqi_speech import WaitForNaoQiSpeechState
 from pepper_flexbe_states.set_navgoal_state import MoveBaseState
@@ -68,10 +68,10 @@ class PepperDemoSM(Behavior):
 
 			# x:224 y:26
 			OperatableStateMachine.add('SetNavGoalInside',
-										GenerateNavgoalState(x=self.x, y=self.y, theta=self.theta, frame_id='map'),
+										GenerateNavGoalState(x=self.x, y=self.y, theta=self.theta, frame_id='map'),
 										transitions={'done': 'NavigateToOrderingPos'},
 										autonomy={'done': Autonomy.Off},
-										remapping={'navgoal': 'waypoint'})
+										remapping={'generated_goal': 'waypoint'})
 
 			# x:454 y:24
 			OperatableStateMachine.add('SayHiAndAskForCommand',
@@ -99,10 +99,10 @@ class PepperDemoSM(Behavior):
 
 			# x:826 y:326
 			OperatableStateMachine.add('SetNavGoalStartPos',
-										GenerateNavgoalState(x=0, y=0, theta=0.0, frame_id='odom'),
+										GenerateNavGoalState(x=0, y=0, theta=0.0, frame_id='odom'),
 										transitions={'done': 'NavigateToStartPos'},
 										autonomy={'done': Autonomy.Off},
-										remapping={'navgoal': 'waypoint2'})
+										remapping={'generated_goal': 'waypoint2'})
 
 			# x:434 y:342
 			OperatableStateMachine.add('NavigateToStartPos',

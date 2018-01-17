@@ -10,7 +10,7 @@
 from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyContainer, PriorityContainer, Logger
 from pepper_flexbe_states.wait_for_naoqi_speech import WaitForNaoQiSpeechState
 from pepper_flexbe_states.set_navgoal_state import MoveBaseState
-from pepper_flexbe_states.generate_navgoal import GenerateNavgoalState
+from pepper_flexbe_states.generate_navgoal import GenerateNavGoalState
 from pepper_flexbe_states.talk_state import TalkState
 from pepper_flexbe_states.check_for_person_state import CheckForPersonState
 # Additional imports can be added inside the following tags
@@ -72,10 +72,10 @@ class LeadToAppartmentDemoSM(Behavior):
 
             # x:641 y:25
             OperatableStateMachine.add('SetNavgoalAtAppartment',
-                                        GenerateNavgoalState(x=14.3982963562, y=-4.98356437683, theta=-105.676, frame_id='map'),
+                                        GenerateNavGoalState(x=14.3982963562, y=-4.98356437683, theta=-105.676, frame_id='map'),
                                         transitions={'done': 'GuideToAppartment'},
                                         autonomy={'done': Autonomy.Off},
-                                        remapping={'navgoal': 'outside_appartment'})
+                                        remapping={'generated_goal': 'outside_appartment'})
 
             # x:106 y:157
             OperatableStateMachine.add('AnnounceArrival',
@@ -91,10 +91,10 @@ class LeadToAppartmentDemoSM(Behavior):
 
             # x:103 y:319
             OperatableStateMachine.add('SetNavgoalInside',
-                                        GenerateNavgoalState(x=19.3413391113, y=-5.72398090363, theta=24.596, frame_id='map'),
+                                        GenerateNavGoalState(x=20.5, y=-5.7, theta=-110, frame_id='map'),
                                         transitions={'done': 'DriveInside'},
                                         autonomy={'done': Autonomy.Off},
-                                        remapping={'navgoal': 'inside_appartment'})
+                                        remapping={'generated_goal': 'inside_appartment'})
 
             # x:106 y:412
             OperatableStateMachine.add('DriveInside',
@@ -123,7 +123,7 @@ class LeadToAppartmentDemoSM(Behavior):
 
             # x:593 y:359
             OperatableStateMachine.add('SayNotFound',
-                                        TalkState(message='Sorry, Bill is not here', blocking=True),
+                                        TalkState(message='Ich konnte Bill leider nicht finden.', blocking=True),
                                         transitions={'done': 'finished', 'failed': 'failed'},
                                         autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 
