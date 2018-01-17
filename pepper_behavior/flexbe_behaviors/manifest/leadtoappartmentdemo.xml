@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="LeadToAppartmentDemo">
+
+	<executable package_path="flexbe_behaviors.leadtoappartmentdemo_sm" class="LeadToAppartmentDemoSM" />
+	<tagstring></tagstring>
+	<author>ffriese</author>
+	<date>Wed Jan 17 2018</date>
+	<description>
+		Simple Demo where Pepper leads Guests to the Appartment
+	</description>
+
+
+	<!-- Contained Behaviors -->
+
+	<!-- Available Parameters -->
+
+</behavior>
