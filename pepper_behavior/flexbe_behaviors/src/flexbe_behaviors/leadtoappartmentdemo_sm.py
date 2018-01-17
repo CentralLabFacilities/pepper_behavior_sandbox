@@ -71,7 +71,7 @@ class LeadToAppartmentDemoSM(Behavior):
 
             # x:641 y:25
             OperatableStateMachine.add('SetNavgoalAtAppartment',
-                                        GenerateNavgoalState(x=5, y=5, theta=0.0, frame_id='map'),
+                                        GenerateNavgoalState(x=14.3982963562, y=-4.98356437683, theta=-105.676, frame_id='map'),
                                         transitions={'done': 'GuideToAppartment'},
                                         autonomy={'done': Autonomy.Off},
                                         remapping={'navgoal': 'outside_appartment'})
@@ -90,7 +90,7 @@ class LeadToAppartmentDemoSM(Behavior):
 
             # x:103 y:319
             OperatableStateMachine.add('SetNavgoalInside',
-                                        GenerateNavgoalState(x=6, y=7, theta=0.0, frame_id='map'),
+                                        GenerateNavgoalState(x=19.3413391113, y=-5.72398090363, theta=24.596, frame_id='map'),
                                         transitions={'done': 'DriveInside'},
                                         autonomy={'done': Autonomy.Off},
                                         remapping={'navgoal': 'inside_appartment'})
