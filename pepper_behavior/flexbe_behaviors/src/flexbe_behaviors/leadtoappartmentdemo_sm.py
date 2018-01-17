@@ -12,6 +12,7 @@ from pepper_flexbe_states.wait_for_naoqi_speech import WaitForNaoQiSpeechState
 from pepper_flexbe_states.set_navgoal_state import MoveBaseState
 from pepper_flexbe_states.generate_navgoal import GenerateNavgoalState
 from pepper_flexbe_states.talk_state import TalkState
+from pepper_flexbe_states.check_for_person_state import CheckForPersonState
 # Additional imports can be added inside the following tags
 # [MANUAL_IMPORT]
 
@@ -46,7 +47,7 @@ class LeadToAppartmentDemoSM(Behavior):
 
 
     def create(self):
-        # x:135 y:584, x:382 y:306
+        # x:766 y:486, x:382 y:306
         _state_machine = OperatableStateMachine(outcomes=['finished', 'failed'])
 
         # Additional creation code can be added inside the following tags
@@ -98,7 +99,7 @@ class LeadToAppartmentDemoSM(Behavior):
             # x:106 y:412
             OperatableStateMachine.add('DriveInside',
                                         MoveBaseState(),
-                                        transitions={'arrived': 'finished', 'failed': 'failed'},
+                                        transitions={'arrived': 'SearchForBill', 'failed': 'failed'},
                                         autonomy={'arrived': Autonomy.Off, 'failed': Autonomy.Off},
                                         remapping={'waypoint': 'inside_appartment'})
 
@@ -106,6 +107,24 @@ class LeadToAppartmentDemoSM(Behavior):
             OperatableStateMachine.add('AcknowlegdeCommand',
                                         TalkState(message='Mit Vergnügen. Bitte folgen Sie mir.', blocking=True),
                                         transitions={'done': 'SetNavgoalAtAppartment', 'failed': 'SetNavgoalAtAppartment'},
+                                        autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
+
+            # x:327 y:439
+            OperatableStateMachine.add('SearchForBill',
+                                        CheckForPersonState(name=billexample, timeout=2.0),
+                                        transitions={'found': 'SayHello', 'not_found': 'SayNotFound', 'failed': 'failed'},
+                                        autonomy={'found': Autonomy.Off, 'not_found': Autonomy.Off, 'failed': Autonomy.Off})
+
+            # x:552 y:499
+            OperatableStateMachine.add('SayHello',
+                                        TalkState(message='Hallo Bill!', blocking=True),
+                                        transitions={'done': 'finished', 'failed': 'failed'},
+                                        autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
+
+            # x:593 y:359
+            OperatableStateMachine.add('SayNotFound',
+                                        TalkState(message='Sorry, Bill is not here', blocking=True),
+                                        transitions={'done': 'finished', 'failed': 'failed'},
                                         autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 
 
