@@ -78,7 +78,7 @@ class CheckForPersonState(EventState):
         self._transform_listener.subscribe(self._transform_topic, ExtendedPeople, self.people_callback)
 
     def on_exit(self, userdata):
-        self._transform_listener.unsubscribe_topic()
+        self._transform_listener.unsubscribe_topic(self._transform_topic)
 
     def on_stop(self):
-        self._transform_listener.unsubscribe_topic()
+        self._transform_listener.unsubscribe_topic(self._transform_topic)
