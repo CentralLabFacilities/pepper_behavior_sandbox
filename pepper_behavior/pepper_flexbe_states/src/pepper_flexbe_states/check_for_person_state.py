@@ -53,7 +53,7 @@ class CheckForPersonState(EventState):
     def execute(self, userdata):
         """wait for transform callback, check all transforms for requested person"""
         elapsed = rospy.get_rostime() - self._start_time
-        if elapsed > self._timeout:
+        if elapsed.to_sec() > self._timeout:
             return 'not_found'
         self._mutex.acquire()
         if self._callback_received:
