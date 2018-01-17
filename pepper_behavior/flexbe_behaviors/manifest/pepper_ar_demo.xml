@@ -14,11 +14,5 @@
 	<!-- Contained Behaviors -->
 
 	<!-- Available Parameters -->
-	<params>
-
-		<param type="boolean" name="ForceRealRobot" default="False" label="ForceRealRobot" hint="Sets the ForceRealRobot" />
-
-	</params>
-
 
 </behavior>

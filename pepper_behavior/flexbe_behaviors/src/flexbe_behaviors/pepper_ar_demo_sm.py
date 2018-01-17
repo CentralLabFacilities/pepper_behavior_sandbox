@@ -11,7 +11,7 @@ from flexbe_core import Behavior, Autonomy, OperatableStateMachine, ConcurrencyC
 from pepper_flexbe_states.wait_for_ros_navgoal import WaitForRosNavgoalState
 from pepper_flexbe_states.set_navgoal_state import MoveBaseState
 from pepper_flexbe_states.talk_state import TalkState
-from flexbe_states.publisher_bool_state import PublisherBoolState
+from generic_flexbe_states.publisher_bool_state import PublisherBoolState
 from pepper_flexbe_states.wait_for_naoqi_speech import WaitForNaoQiSpeechState
 # Additional imports can be added inside the following tags
 # [MANUAL_IMPORT]
@@ -34,7 +34,6 @@ class PepperARDemoSM(Behavior):
 		self.name = 'Pepper AR Demo'
 
 		# parameters of this behavior
-		self.add_parameter('ForceRealRobot', False)
 
 		# references to used behaviors
 
@@ -76,7 +75,7 @@ class PepperARDemoSM(Behavior):
 
 			# x:285 y:144
 			OperatableStateMachine.add('SayWayBlocked',
-										TalkState(message='My way is blocked. Please clear the way and call me again', blocking=True, force_real_robot=self.ForceRealRobot),
+										TalkState(message='My way is blocked. Please clear the way and call me again', blocking=True),
 										transitions={'done': 'WaitForWayClear', 'failed': 'failed'},
 										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 
@@ -96,7 +95,7 @@ class PepperARDemoSM(Behavior):
 
 			# x:289 y:58
 			OperatableStateMachine.add('SayHereIAm',
-										TalkState(message='Here I am, please place the object in the highlighted space', blocking=True, force_real_robot=self.ForceRealRobot),
+										TalkState(message='Here I am, please place the object in the highlighted space', blocking=True),
 										transitions={'done': 'GraspSpaceOn', 'failed': 'failed'},
 										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 
@@ -114,7 +113,7 @@ class PepperARDemoSM(Behavior):
 
 			# x:725 y:311
 			OperatableStateMachine.add('GRASP',
-										TalkState(message='I would be grasping now, if I could', blocking=True, force_real_robot=self.ForceRealRobot),
+										TalkState(message='I would be grasping now, if I could', blocking=True),
 										transitions={'done': 'WaitForHololensGoal', 'failed': 'failed'},
 										autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 
