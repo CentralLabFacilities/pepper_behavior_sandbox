@@ -111,7 +111,7 @@ class LeadToAppartmentDemoSM(Behavior):
 
             # x:327 y:439
             OperatableStateMachine.add('SearchForBill',
-                                        CheckForPersonState(name=billexample, timeout=2.0),
+                                        CheckForPersonState(name='billexample', timeout=2.0),
                                         transitions={'found': 'SayHello', 'not_found': 'SayNotFound', 'failed': 'failed'},
                                         autonomy={'found': Autonomy.Off, 'not_found': Autonomy.Off, 'failed': Autonomy.Off})
 
