@@ -78,13 +78,13 @@ class LeadToAppartmentDemoSM(Behavior):
 
             # x:106 y:157
             OperatableStateMachine.add('AnnounceArrival',
-                                        TalkState(message='Here We Are. I hope you enjoy your stay.', blocking=True),
+                                        TalkState(message='Wir sind angekommen. Ich hoffe Sie genießen ihren Aufenthalt.', blocking=True),
                                         transitions={'done': 'SetNavgoalInside', 'failed': 'failed'},
                                         autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 
             # x:546 y:232
             OperatableStateMachine.add('AnnounceFailure',
-                                        TalkState(message='Unfortunately I could not guide you to the appartment. I am deeply sorry', blocking=True),
+                                        TalkState(message='Leider konnte ich meine Aufgabe nicht ausführen. Es tut mir sehr leid.', blocking=True),
                                         transitions={'done': 'failed', 'failed': 'failed'},
                                         autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 
@@ -104,7 +104,7 @@ class LeadToAppartmentDemoSM(Behavior):
 
             # x:342 y:26
             OperatableStateMachine.add('AcknowlegdeCommand',
-                                        TalkState(message='With Pleasure. Follow my lead.', blocking=True),
+                                        TalkState(message='Mit Vergnügen. Bitte folgen Sie mir.', blocking=True),
                                         transitions={'done': 'SetNavgoalAtAppartment', 'failed': 'SetNavgoalAtAppartment'},
                                         autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 
