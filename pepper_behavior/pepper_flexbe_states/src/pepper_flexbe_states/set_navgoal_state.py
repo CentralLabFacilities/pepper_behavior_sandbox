@@ -19,16 +19,17 @@ class MoveBaseState(EventState):
     Navigates a robot to a desired position and orientation using move_base.
 
     ># waypoint     PoseStamped      Target waypoint for navigation.
+    <# head_angle   int              Head-Pose for navigation.
 
     <= arrived                  Navigation to target pose succeeded.
     <= failed                   Navigation to target pose failed.
     """
 
-    def __init__(self):
+    def __init__(self, head_angle=25):
         """Constructor"""
         super(MoveBaseState, self).__init__(outcomes=['arrived', 'failed'],
                                             input_keys=['waypoint'])
-
+        self._head_angle = head_angle
         self._head_topic = '/pepper_robot/head/pose'
         ProxyPublisher.createPublisher(self._pub, self._head_topic, String)
 
@@ -73,8 +74,8 @@ class MoveBaseState(EventState):
         goal = MoveBaseGoal()
         goal.target_pose = userdata.waypoint
 
-        # Set Head Pose Down
-        self._pub.publish(self._head_topic, '25:0')
+        # Set Head Pose (Down = '25:0')
+        self._pub.publish(self._head_topic, '%d:0' % self._head_angle)
 
         # Send the action goal for execution
         try:
