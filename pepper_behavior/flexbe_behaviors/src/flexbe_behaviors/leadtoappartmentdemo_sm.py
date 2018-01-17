@@ -65,7 +65,7 @@ class LeadToAppartmentDemoSM(Behavior):
 
             # x:329 y:147
             OperatableStateMachine.add('GuideToAppartment',
-                                        MoveBaseState(),
+                                        MoveBaseState(head_angle=0),
                                         transitions={'arrived': 'AnnounceArrival', 'failed': 'AnnounceFailure'},
                                         autonomy={'arrived': Autonomy.Off, 'failed': Autonomy.Off},
                                         remapping={'waypoint': 'outside_appartment'})
@@ -98,7 +98,7 @@ class LeadToAppartmentDemoSM(Behavior):
 
             # x:106 y:412
             OperatableStateMachine.add('DriveInside',
-                                        MoveBaseState(),
+                                        MoveBaseState(head_angle=0),
                                         transitions={'arrived': 'SearchForBill', 'failed': 'failed'},
                                         autonomy={'arrived': Autonomy.Off, 'failed': Autonomy.Off},
                                         remapping={'waypoint': 'inside_appartment'})

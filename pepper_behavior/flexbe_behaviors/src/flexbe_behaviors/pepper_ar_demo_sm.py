@@ -68,7 +68,7 @@ class PepperARDemoSM(Behavior):
 
 			# x:46 y:57
 			OperatableStateMachine.add('DriveToHololensGoal',
-										MoveBaseState(),
+										MoveBaseState(head_angle=25),
 										transitions={'arrived': 'SayHereIAm', 'failed': 'SayWayBlocked'},
 										autonomy={'arrived': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'waypoint': 'navgoal'})

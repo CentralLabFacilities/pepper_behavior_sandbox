@@ -106,14 +106,14 @@ class PepperDemoSM(Behavior):
 
 			# x:434 y:342
 			OperatableStateMachine.add('NavigateToStartPos',
-										MoveBaseState(),
+										MoveBaseState(head_angle=25),
 										transitions={'arrived': 'finished', 'failed': 'failed'},
 										autonomy={'arrived': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'waypoint': 'waypoint2'})
 
 			# x:218 y:116
 			OperatableStateMachine.add('NavigateToOrderingPos',
-										MoveBaseState(),
+										MoveBaseState(head_angle=25),
 										transitions={'arrived': 'SayHiAndAskForCommand', 'failed': 'failed'},
 										autonomy={'arrived': Autonomy.Off, 'failed': Autonomy.Off},
 										remapping={'waypoint': 'waypoint'})
