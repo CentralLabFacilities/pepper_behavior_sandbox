@@ -46,3 +46,10 @@ class WaitForOpenDoorState(EventState):
     def on_enter(self, userdata):
         self._sub.enable_buffer(self._topic)
         Logger.loginfo('Waiting for open door...')
+
+    def on_stop(self):
+            self._sub.unsubscribe_topic(self._topic)
+
+    def on_exit(self):
+        self._sub.unsubscribe_topic(self._topic)
+
