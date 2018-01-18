@@ -60,10 +60,9 @@ class CheckForPersonState(EventState):
             known = False
             for p in self._people:
                 request = DoIKnowThatPersonRequest()
-                request.name = self.name
                 request.transform_id = p.transformid
                 response = self._service_proxy.call(self._service_name, request)
-                if response.known:
+                if response.name == self.name:
                     known = True
             self._mutex.release()
             if known:
