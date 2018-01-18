@@ -13,6 +13,7 @@ from pepper_flexbe_states.set_navgoal_state import MoveBaseState
 from pepper_flexbe_states.generate_navgoal import GenerateNavGoalState
 from pepper_flexbe_states.talk_state import TalkState
 from pepper_flexbe_states.check_for_person_state import CheckForPersonState
+from pepper_flexbe_states.wait import WaitState
 # Additional imports can be added inside the following tags
 # [MANUAL_IMPORT]
 
@@ -79,8 +80,8 @@ class LeadToAppartmentDemoSM(Behavior):
 
             # x:106 y:157
             OperatableStateMachine.add('AnnounceArrival',
-                                        TalkState(message='Wir sind angekommen. Ich hoffe Sie genießen ihren Aufenthalt.', blocking=True),
-                                        transitions={'done': 'SetNavgoalInside', 'failed': 'failed'},
+                                        TalkState(message='Wir sind angekommen. Bitte treten Sie ein, ich komme nach.', blocking=True),
+                                        transitions={'done': 'WaitForClear', 'failed': 'failed'},
                                         autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
 
             # x:546 y:232
@@ -126,6 +127,12 @@ class LeadToAppartmentDemoSM(Behavior):
                                         TalkState(message='Ich konnte Bill leider nicht finden.', blocking=True),
                                         transitions={'done': 'finished', 'failed': 'failed'},
                                         autonomy={'done': Autonomy.Off, 'failed': Autonomy.Off})
+
+            # x:103 y:231
+            OperatableStateMachine.add('WaitForClear',
+                                        WaitState(time=30),
+                                        transitions={'done': 'SetNavgoalInside'},
+                                        autonomy={'done': Autonomy.Off})
 
 
         return _state_machine
