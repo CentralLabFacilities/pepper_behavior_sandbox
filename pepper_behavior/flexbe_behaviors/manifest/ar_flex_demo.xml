@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<behavior name="AR_Flex_Demo">
+
+	<executable package_path="flexbe_behaviors.ar_flex_demo_sm" class="AR_Flex_DemoSM" />
+	<tagstring></tagstring>
+	<author>ffriese</author>
+	<date>Mon Jan 22 2018</date>
+	<description>
+		Flexible AR-Demo
+	</description>
+
+
+	<!-- Contained Behaviors -->
+	<contains name="Pepper AR Demo" />
+
+	<!-- Available Parameters -->
+
+</behavior>
