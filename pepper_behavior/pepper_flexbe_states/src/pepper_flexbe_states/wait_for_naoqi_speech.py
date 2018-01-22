@@ -54,4 +54,3 @@ class WaitForNaoQiSpeechState(EventState):
 
     def on_exit(self, userdata):
         self._sub.unsubscribe_topic(self._topic)
-S
