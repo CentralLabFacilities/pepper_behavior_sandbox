@@ -37,3 +37,9 @@ class WaitForRosNavgoalState(EventState):
     def on_enter(self, userdata):
         self._navgoal = None
         self._sub.subscribe(self._topic, PoseStamped, self._navgoal_callback)
+
+    def on_stop(self):
+        self._sub.unsubscribe_topic(self._topic)
+
+    def on_exit(self, userdata):
+        self._sub.unsubscribe_topic(self._topic)

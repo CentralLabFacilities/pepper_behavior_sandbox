@@ -48,7 +48,7 @@ class WaitForOpenDoorState(EventState):
         Logger.loginfo('Waiting for open door...')
 
     def on_stop(self):
-            self._sub.unsubscribe_topic(self._topic)
+        self._sub.unsubscribe_topic(self._topic)
 
     def on_exit(self):
         self._sub.unsubscribe_topic(self._topic)
