@@ -23,6 +23,7 @@ class WaitForRosNavgoalState(EventState):
         super(WaitForRosNavgoalState, self).__init__(outcomes=['done'], output_keys=['navgoal'])
         self._sub = ProxySubscriberCached()
         self._topic = topic
+        self._navgoal = None
 
     def execute(self, userdata):
         """Execute this state"""
@@ -31,6 +32,15 @@ class WaitForRosNavgoalState(EventState):
             return 'done'
 
     def _navgoal_callback(self, msg):
+        # prevent re-using latched message
+        # (this is probably only happening when using rostopic pub from the console, but whatever)
+        try:
+            if self.last_id == msg.header.stamp:
+                return
+        except AttributeError:
+            pass
+        self.last_id = msg.header.stamp
+
         Logger.loginfo('navgoal callback on topic %s:%s' % (self._topic, str(msg.pose.position).replace('\n', ' ')))
         self._navgoal = msg
 

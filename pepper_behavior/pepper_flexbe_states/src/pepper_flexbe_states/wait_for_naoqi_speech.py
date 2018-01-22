@@ -25,9 +25,10 @@ class WaitForNaoQiSpeechState(EventState):
         """
         super(WaitForNaoQiSpeechState, self).__init__(outcomes=outcomes)
         self._topic = topic
-        self._outcomes = outcomes
+        self.outcomes = outcomes
         self._target_strings = strings_to_rec
         self._sub = ProxySubscriberCached()
+        self.recognized = None
 
     def _speech_callback(self, msg):
         Logger.loginfo('speechrec callback:%s' % msg.data.lower())
@@ -42,11 +43,12 @@ class WaitForNaoQiSpeechState(EventState):
         if self.recognized is not None:
             try:
                 index = self._target_strings.index(self.recognized)
-                return self._outcomes[index]
+                return self.outcomes[index]
             except Exception as e:
                 Logger.loginfo(str(e))
 
     def on_enter(self, userdata):
+        self.recognized = None
         self._sub.subscribe(self._topic, String, self._speech_callback)
 
     def on_stop(self):
