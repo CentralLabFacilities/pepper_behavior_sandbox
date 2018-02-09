@@ -1,5 +1,5 @@
 import rospy
-from clf_perception_vision.srv import *
+from clf_perception_vision_msgs.srv import *
 
 
 class IdSensor:
